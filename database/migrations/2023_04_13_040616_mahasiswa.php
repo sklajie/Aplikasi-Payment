@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('kelas', 10);
             $table->string('email', 50)->unique();
             $table->number('no_hp', 15);
+            $table->string('prodi', 40);
+            $table->string('alamat');
             $table->timestamps();
         });
     }

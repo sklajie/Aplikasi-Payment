@@ -14,7 +14,7 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('level', function (Blueprint $table) {
-            $table->id();
+            $table->id_level();
             $table->string('name_level', 15);
             $table->timestamps();
         });

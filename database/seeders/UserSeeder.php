@@ -24,6 +24,24 @@ class UserSeeder extends Seeder
             'id_level' => 1,
             'password' => Hash::make('superadmin123'),
         ]);
+        
+        DB::table('users')->insert([
+            'name' => 'Admin Keuangan',
+            'username' => 'adminkeuangan',
+            'email' => 'adminkeuangan@gmail.com',
+            'no_hp' => '08534523678',
+            'id_level' => 2,
+            'password' => Hash::make('adminkeuangan123'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Admin Apps',
+            'username' => 'adminapps',
+            'email' => 'adminapps@gmail.com',
+            'no_hp' => '085674834534',
+            'id_level' => 3,
+            'password' => Hash::make('adminapps123'),
+        ]);
 
     }
 }

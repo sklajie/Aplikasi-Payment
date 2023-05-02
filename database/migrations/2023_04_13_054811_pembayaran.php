@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id_pembayaran();
+            $table->string('semester', 15);
             $table->string('amount', 10);
             $table->string('va', 15);
             $table->boolean('openPayment');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('username', 50)->unique();
             $table->string('email', 50)->unique();
             $table->number('no_hp', 15);
+            $table->string('mode', 15);
             $table->string('password', 20);
             $table->timestamps();
         });

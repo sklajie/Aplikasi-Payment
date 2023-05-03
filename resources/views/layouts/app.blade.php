@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>p</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<link rel="icon" href="../img/logo.png" type="image/x-icon"/>
+	<link rel="icon" href="../assets/img/icon.ico" type="image/x-icon"/>
 
 	<!-- Fonts and icons -->
 	<script src="../assets/js/plugin/webfont/webfont.min.js"></script>
@@ -65,7 +64,7 @@
 			<!-- End Logo Header -->
 
 			<!-- Navbar Header -->
-			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="orange2">
+			<nav class="navbar navbar-header navbar-expand-lg" style="background-color: rgb(3, 195, 3);">
 				
 				<div class="container-fluid">
 					<div class="collapse" id="search-nav">
@@ -104,10 +103,10 @@
 
 											@if (Route::has('login'))
 
-
 												<li class="dropdown-item" href="{{ route('login') }}">
 													<a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
 												</li>
+
 											@endif
 
 										@else
@@ -196,12 +195,21 @@
 							</div>							
 							
 						<ul class="nav nav-primary">
-						<li class="nav-item ">
+
+						<li class="nav-section">
+							<span class="sidebar-mini-icon">
+								<i class="fa fa-ellipsis-h"></i>
+							</span>
+							<h4 class="text-section">Navigation</h4>
+						</li>
+
+						<li class="nav-item">
 							<a href="/home">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
 							</a>
 						</li>
+
 						{{-- <li class="nav-item {{ $title === "Data Pengguna" ? 'active' : '' }}">
 							<a href="/admin/datauser">
 								<i class="fas fa-layer-group"></i>
@@ -209,46 +217,53 @@
 								
 							</a>
 						</li> --}}
-						<li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">Manage data</h4>
-						</li>
+						
 						<li class="nav-item">
-							<a href="/admin/datapenyakit">
+							<a href="#">
+								<i class="fas fa-user-friends"></i>
+								<p>Users</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
+								<i class="fas fa-file-invoice-dollar"></i>
+								<p>Histori Pembayaran</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
+								<i class="fas fa-th-list"></i>
+								<p>Data Pembayaran</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
+								<i class="fas fa-key"></i>
+								<p>API Keys</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
+								<i class="fas fa-swatchbook"></i>
+								<p>Dokumentasi</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
+								<i class="far fa-list-alt"></i>
+								<p>Pembayaran Lainnya</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
 								<i class="fas fa-layer-group"></i>
-								<p>Data Penyakit</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/admin/datagejala">
-								<i class="fas fa-th-list"></i>
-								<p>Data Gejala</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/admin/datasolusi">
-								<i class="fas fa-th-list"></i>
-								<p>Data Solusi</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/admin/datapenyebab">
-								<i class="fas fa-th-list"></i>
-								<p>Data Penyebab</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/admin/datapasien">
-								<i class="fas fa-users"></i>
-								<p>Data Pasien</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="/admin/datadiagnosa">
-								<i class="fas fa-pen-square"></i>
-								<p>Data Diagnosa</p>
+								<p>Kategori Pembayaran</p>
 							</a>
 						</li>
 						{{-- <li class="nav-item {{ $title === "Detail Penyakit" ? 'active' : '' }}">
@@ -257,36 +272,6 @@
 								<p>Data Detail Penyakit</p>
 							</a>
 						</li> --}}
-						<li class="nav-section" style="border-top: 1px solid rgba(241, 241, 241, 0.1); margin:10px 10px;">
-						</li>
-						<li class="nav-item">
-							<div>
-							<a data-toggle="collapse" href="#sidebarLayouts">
-								<i class="fa fa-ellipsis-h"></i>
-								<p>Detail Penyakit</p>
-								<span class="caret"></span>
-							</a>
-							<div class="collapse" id="sidebarLayouts">
-								<ul class="nav nav-collapse">
-									<li class="nav-item ">
-										<a href="/admin/detailpenyakit_gejala">
-											<span class="sub-item">Gejala</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/detailpenyakit_penyebab">
-											<span class="sub-item">Penyabab</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/detailpenyakit_solusi">
-											<span class="sub-item">Solusi</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						</li>
 					</ul>
 				@else
 				
@@ -298,6 +283,7 @@
 						</li>
 					</ul>	
 					<div class="dropdown-divider"></div>
+					
 				@endif
 						
 				</div>
@@ -335,7 +321,7 @@
 		
 		
 		<!-- Custom template | don't include it in your project! -->
-		<div class="custom-template">
+		{{-- <div class="custom-template">
 			<div class="title">Settings</div>
 			<div class="custom-content">
 				<div class="switcher">
@@ -404,7 +390,7 @@
 				<i class="flaticon-settings"></i>
 			</div>
 		</div>
-		<!-- End Custom template -->
+		<!-- End Custom template --> --}}
 	</div>
 </div>
 	<!--   Core JS Files   -->
@@ -450,99 +436,53 @@
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
 	<script src="../assets/js/setting-demo.js"></script>
 
+
 	<script>
-		// Circles.create({
-		// 	id:'circles-1',
-		// 	radius:45,
-		// 	value:60,
-		// 	maxValue:100,
-		// 	width:7,
-		// 	text: 5,
-		// 	colors:['#f1f1f1', '#FF9E27'],
-		// 	duration:400,
-		// 	wrpClass:'circles-wrp',
-		// 	textClass:'circles-text',
-		// 	styleWrapper:true,
-		// 	styleText:true
-		// })
 
-		// Circles.create({
-		// 	id:'circles-2',
-		// 	radius:45,
-		// 	value:70,
-		// 	maxValue:100,
-		// 	width:7,
-		// 	text: 36,
-		// 	colors:['#f1f1f1', '#2BB930'],
-		// 	duration:400,
-		// 	wrpClass:'circles-wrp',
-		// 	textClass:'circles-text',
-		// 	styleWrapper:true,
-		// 	styleText:true
-		// })
+		var multipleBarChart = document.getElementById('multipleBarChart').getContext('2d')
 
-		// Circles.create({
-		// 	id:'circles-3',
-		// 	radius:45,
-		// 	value:40,
-		// 	maxValue:100,
-		// 	width:7,
-		// 	text: 12,
-		// 	colors:['#f1f1f1', '#F25961'],
-		// 	duration:400,
-		// 	wrpClass:'circles-wrp',
-		// 	textClass:'circles-text',
-		// 	styleWrapper:true,
-		// 	styleText:true
-		// })
-
-		var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
-
-		var mytotalIncomeChart = new Chart(totalIncomeChart, {
+		var myMultipleBarChart = new Chart(multipleBarChart, {
 			type: 'bar',
 			data: {
-				labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
+				labels: ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"],
 				datasets : [{
-					label: "Total Income",
-					backgroundColor: '#ff9e27',
-					borderColor: 'rgb(23, 125, 255)',
-					data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+					label: "Sudah Bayar",
+					backgroundColor: '#59d05d',
+					borderColor: '#59d05d',
+					data: [95, 100, 112, 101, 144, 159, 178, 156],
+				},{
+					label: "Belum Bayar",
+					backgroundColor: 'red',
+					borderColor: '#fdaf4b',
+					data: [145, 256, 244, 233, 210, 279, 287, 253],
 				}],
 			},
 			options: {
-				responsive: true,
+				responsive: true, 
 				maintainAspectRatio: false,
 				legend: {
-					display: false,
+					position : 'bottom'
 				},
+				title: {
+					display: true,
+					text: 'Traffic Stats'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false
+				},
+				responsive: true,
 				scales: {
-					yAxes: [{
-						ticks: {
-							display: false //this will remove only the label
-						},
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
+					xAxes: [{
+						stacked: true,
 					}],
-					xAxes : [ {
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
+					yAxes: [{
+						stacked: true
 					}]
-				},
+				}
 			}
 		});
 
-		$('#lineChart').sparkline([105,103,123,100,95,105,115], {
-			type: 'line',
-			height: '70',
-			width: '100%',
-			lineWidth: '2',
-			lineColor: '#ffa534',
-			fillColor: 'rgba(255, 165, 52, .14)'
-		});
 	</script>
 	
 </body>

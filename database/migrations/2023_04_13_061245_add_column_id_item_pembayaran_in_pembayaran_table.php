@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pembayaran', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_item_pembayaran')->after('date');
-            $table->foreign('id_item_pembayaran')->references('id_item_pembayaran')->on('item_pembayaran')->onDelete('restrict');
+            $table->uuid('item_pembayaran_id')->primary()->after('date');
+            $table->foreign('item_pembayaran_id')->references('id')->on('item_pembayaran')->onDelete('restrict');
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pembayaran', function (Blueprint $table) {
-            $table->dropForeign(['id_item_pembayaran']);
-            $table->dropColumn('id_item_pembayaran');
+            $table->dropForeign(['item_pembayaran_id']);
+            $table->dropColumn('item_pembayaran_id');
         });
     }
 };

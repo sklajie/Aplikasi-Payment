@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trasnsaksi', function (Blueprint $table) {
-            $table->id_trasnsaksi();
+        Schema::create('response', function (Blueprint $table) {
+            $table->uuid('id')->primary();
         });
     }
 
@@ -21,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trasnsaksi');
+        Schema::dropIfExists('response');
     }
 };

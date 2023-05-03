@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('id_level')->after('email');
-            $table->foreign('id_level')->references('id')->on('level')->onDelete('restrict');
+            $table->uuid('level_id')->primary()->after('email');
+            $table->foreign('level_id')->references('id')->on('level')->onDelete('restrict');
 
         });
     }
@@ -30,8 +30,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             
-            $table->dropForeign(['id_level']);
-            $table->dropColumn('id_level');
+            $table->dropForeign(['level_id']);
+            $table->dropColumn('level_id');
 
         });
     }

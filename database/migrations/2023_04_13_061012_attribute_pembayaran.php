@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attribute_pembayaran', function (Blueprint $table) {
-            $table->id_attribute_pembayaran();
+            $table->uuid('id')->primary();
             $table->string('name', 30);
             $table->string('value', 20);
         });

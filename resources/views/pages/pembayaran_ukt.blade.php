@@ -39,81 +39,20 @@
 								<div class="card-header">
 									<div class="d-flex align-items-center">
 										<h4 class="card-title"><b>Data Pembayaran</b></h4>
-										<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
-											<i class="fa fa-plus"></i>
-											&NonBreakingSpace;Tambahkan
-										</button>
 									</div>
 								</div>
 								<div class="card-body">
-									<!-- Modal new-->
-									<div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header no-bd">
-													<h5 class="modal-title">
-														<span class="fw-mediumbold">
-														Tambahkan</span> 
-														<span class="fw-light">
-															penyakit
-														</span>
-													</h5>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
-														<div class="row">
-															<div class="col-sm-12">
-																<div class="form-group form-group-default">
-																	<form action="" method="POST">
-																		@csrf
-																	<div>
-																	<label>Kode Penyakit</label>
-																	<input type="text" class="form-control" value="" name="kode_penyakit" placeholder="masukan kode penyakit" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px;" readonly>
-																	<br>
-																	<label>Nama Penyakit</label>
-																	<input type="text" class="form-control" name="nama_penyakit" placeholder="masukan nama penyakit" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px;">
-																	<br>
-																	<label>Deskripsi Penyakit</label>
-																	<textarea name="deskripsi" placeholder="masukan deskripsi" class="form-control" id="" cols="30" rows="10" style="border: 1px solid #f1f1f1; padding-left:10px;"></textarea>
-																	{{-- <input type="textarea" class="form-control" name="deskripsi" placeholder="masukan deskripsi penyakit" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px;"> --}}
-																	{{-- <label>Gejala</label>
-																	<select id="gejala[]" class="form-control js-example-basic-multiple" name="id_gejala[]" multiple="multiple" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px; width:100%;">
-																		
-																		@foreach ($gejala as $item)
-																			<option value="{{ $item->id }}">{{ $item->nama_gejala }}</option>
-																		@endforeach
-																	</select>
-																	<label>Gejala</label>
-																	<select id="gejala[]" class="form-control js-multiple" name="id_gejala[]" multiple="multiple" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px; width:100%;">
-																		
-																		@foreach ($gejala as $item)
-																			<option value="{{ $item->id }}">{{ $item->nama_gejala }}</option>
-																		@endforeach
-																	</select> --}}
-																	</div>
-																	<div class="modal-footer no-bd">
-																		<input type="submit" class="btn btn-primary" name="submit" value="Add">
-																		{{-- <button type="submit" id="addRowButton" class="btn btn-primary" name="submit">Add</button> --}}
-																		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-																	</div>
-																</form>
-																</div>
-															</div>
-														</div>		
-												</div>
-											</div>
-										</div>
-									</div>
-
+									<form action="">
+										
+									</form>
+								</div>
 									
 									<div class="table-responsive">
 										<table id="add-row" class="display table table-striped table-hover" >
 											<thead>
 												<tr>
 													<th style="width: 2%">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" id="head-cb">
                                                     </th>
 													<th>Nim</th>
 													<th>Nama</th>
@@ -144,78 +83,10 @@
 													<td>
 														<div class="form-button-action">
 															<button type="button" data-toggle="modal" data-original-title="Edit"  title="" data-target="#updateRowModal" class="btn btn-link btn-info btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-print">&NonBreakingSpace; Edit</i>
+																<i class="fa fa-print">&NonBreakingSpace;Print</i>
 															</button>
 
-																{{-- modal update --}}
-																<div class="modal fade" id="updateRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-																	<div class="modal-dialog" role="document">
-																		<div class="modal-content">
-																			<div class="modal-header no-bd">
-																				<h5 class="modal-title">
-																					<span class="fw-mediumbold">
-																					Edit</span> 
-																					<span class="fw-light">
-																						nama penyakit
-																					</span>
-																				</h5>
-																				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																					<span aria-hidden="true">&times;</span>
-																				</button>
-																			</div>
-																			<div class="modal-body">
-																					<div class="row">
-																						<div class="col-sm-12">
-																							<div class="form-group form-group-default">
-																								<form action="" method="POST">
-																									@method('put')
-																									@csrf
-																								<div>
-																								<label>Kode Penyakit</label>
-																								<input type="text" class="form-control" disabled value="" name="kode_penyakit" placeholder="masukan kode penyakit" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px;">
-																								<br>
-																								<label>Nama Penyakit</label>
-																								<input type="text" class="form-control" name="nama_penyakit" value="" placeholder="masukan nama penyakit" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px;">
-																								<br>
-																								<label>Deskripsi Penyakit</label>
-																								<textarea name="deskripsi" class="form-control" id="" cols="30" rows="10" value="" style="border: 1px solid #f1f1f1; padding-left:10px;"></textarea>
-																								{{-- <input type="text" class="form-control" name="nama_penyakit" value="{{ $data->nama_penyakit }}" placeholder="masukan nama penyakit" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px;"> --}}
-																								<br>
-																								{{-- <label for="">Gejala</label>
-																									<ul>
-																										@foreach ($data->tgejala as $item)
-																											<li>{{ $item->nama_gejala }}</li>
-																										@endforeach
-																										
-																										
-																									</ul>
-																								<label for="">Gejala baru</label>
-																								<select id="id_gejala" class="form-control select-multiple" name="id_gejala[]" multiple="multiple" style="border: 1px solid #f1f1f1; line-height:40px; padding-left:10px; width:100%;">
-																									@foreach ($gejala as $item)
-																										<option value="{{ $item->id }}">{{ $item->nama_gejala }}</option>
-																									@endforeach
-																								</select>
-																								<script>
-																									$(document).ready(function() {
-																										$('.select-multiple').select2();
-																									});
-																									</script> --}}
-																								</div>
-																								<div class="modal-footer no-bd">
-																									<input type="submit" class="btn btn-warning" name="submit" value="Update">
-																									{{-- <button type="submit" id="addRowButton" class="btn btn-primary" name="submit">Add</button> --}}
-																									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-																								</div>
-																							</form>
-																							</div>
-																						</div>
-																					</div>		
-																			</div>
-																			
-																		</div>
-																	</div>
-																</div>
-
+						
 															
 															{{-- <form action="" method="POST">
 																@csrf

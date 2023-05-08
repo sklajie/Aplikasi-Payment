@@ -23,4 +23,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/cek', [App\Http\Controllers\CekController::class, 'index']);
 
-Route::resource('/Pembayaran', App\Http\Controllers\PembayaranController::class);
+Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class);
+Route::resource('/users', App\Http\Controllers\UserController::class );

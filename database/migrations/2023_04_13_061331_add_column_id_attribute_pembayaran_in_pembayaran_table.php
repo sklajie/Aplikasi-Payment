@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pembayaran', function (Blueprint $table) {
-            $table->uuid('attribute_pembayaran_id')->primary()->after('date');
+            $table->uuid('attribute_pembayaran_id')->after('date');
             $table->foreign('attribute_pembayaran_id')->references('id')->on('attribute_pembayaran')->onDelete('restrict');
         });
     }

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             
-            $table->uuid('level_id')->primary()->after('email');
-            $table->foreign('level_id')->references('id')->on('level')->onDelete('restrict');
+            $table->uuid('level_id')->after('email');
+            $table->foreign('level_id')->references('id')->on('levels')->onDelete('restrict');
 
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('openPayment');
             $table->date('activeDate');
             $table->date('inactiveDate');
-            $table->date('Date');
+            $table->date('date');
         });
     }
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>{{ $title }}</title>
+	<title>title</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="../assets/img/icon.ico" type="image/x-icon"/>
 
@@ -157,18 +157,18 @@
 				<div class="sidebar-content">
 					
 
-						{{-- @if ( Auth::user()) --}}
+						@if ( Auth::user())
 							<div class="user">
 								<div class="avatar-sm float-left mr-2 mt-1">
 									<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
 								</div>
 								<div class="info">
 									<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-										{{-- <span>
+										<span>
 											{{ Auth::user()->name }}
 											<span class="user-level">{{ Auth::user()->email }}</span>
 											
-										</span> --}}
+										</span>
 									</a>
 									<div class="clearfix"></div>
 		
@@ -210,18 +210,11 @@
 							</a>
 						</li>
 
-						{{-- <li class="nav-item {{ $title === "Data Pengguna" ? 'active' : '' }}">
-							<a href="/admin/datauser">
+						<li class="nav-item ">
+							<a href="/users">
 								<i class="fas fa-layer-group"></i>
 								<p>Users</p>
 								
-							</a>
-						</li> --}}
-						
-						<li class="nav-item">
-							<a href="#">
-								<i class="fas fa-user-friends"></i>
-								<p>Users</p>
 							</a>
 						</li>
 
@@ -232,8 +225,8 @@
 							</a>
 						</li>
 
-						<li class="nav-item {{ $title === "Data Pembayaran" ? 'active' : '' }} ">
-							<a href="#">
+						<li class="nav-item  ">
+							<a href="/pembayaran">
 								<i class="fas fa-th-list"></i>
 								<p>Data Pembayaran</p>
 							</a>
@@ -266,16 +259,11 @@
 								<p>Kategori Pembayaran</p>
 							</a>
 						</li>
-						{{-- <li class="nav-item {{ $title === "Detail Penyakit" ? 'active' : '' }}">
-							<a href="/admin/detailpenyakit">
-								<i class="fas fa-table"></i>
-								<p>Data Detail Penyakit</p>
-							</a>
-						</li> --}}
+						
 					</ul>
-				{{-- @else --}}
+				@else
 				
-					{{-- <ul class="nav nav-primary">
+					<ul class="nav nav-primary">
 						<li class="nav-item ">
 							<a href="/home">
 								<p>LOGIN</p>
@@ -283,8 +271,8 @@
 						</li>
 					</ul>	
 					<div class="dropdown-divider"></div>
-					 --}}
-				{{-- @endif --}}
+					
+				@endif
 						
 				</div>
 			</div>

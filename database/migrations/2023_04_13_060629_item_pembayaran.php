@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('item_pembayaran', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('description', 100);
-            $table->int('quantity', 1);
+            $table->integer('quantity');
             $table->double('itemPrice', 20);
             $table->double('amount', 20);
         });

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class LevelSeeder extends Seeder
 {
@@ -13,14 +14,17 @@ class LevelSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name_level' => 'Super Admin'
+        DB::table('levels')->insert([
+            'id' => Str::uuid(),
+            'nama_level' => 'Super Admin'
         ]);
-        DB::table('users')->insert([
-            'name_level' => 'Admin Keuangan'
+        DB::table('levels')->insert([
+            'id' => Str::uuid(),
+            'nama_level' => 'Admin Keuangan'
         ]);
-        DB::table('users')->insert([
-            'name_level' => 'Admin Apps'
+        DB::table('levels')->insert([
+            'id' => Str::uuid(),
+            'nama_level' => 'Admin Apps'
         ]);
     }
 }

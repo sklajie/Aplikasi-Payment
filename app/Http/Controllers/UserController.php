@@ -12,8 +12,9 @@ class UserController extends Controller
 {
     public function index()
     {
+        $title = 'Users';
         $level = Level::all();
-        return view('pages.users', compact('level'))->with([
+        return view('pages.users', compact('level','title'))->with([
             'user' => User::with('level')->get()->sortBy('level_id'),
         ]);
 

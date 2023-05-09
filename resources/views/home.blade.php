@@ -4,21 +4,24 @@
             <div class="main-panel">
 				
 				<div class="panel-header">
-					<div class="page-inner py-5">
-						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
-							<div>
-								<h2 class="text-black pb-2 fw-bold">Dashboard</h2>
-								<ul class="nav nav-primary">
-								<li class="nav-item">									
-										<i class="fas fa-home"> <i class=" fas fa-angle-right"></i></i>
+					<div class="page-inner">
+						<div class="page-header">
+							<h4 class="page-title" style="padding-top: 10px;">Dahboard</h4>
+						</div>
+						<div>
+							<ul class="breadcrumbs">
+								<li class="nav-home">
+									<a href="/home">
+										<i class="flaticon-home"></i>
+									</a>
 								</li>
+								<li class="separator">
+									<i class="flaticon-right-arrow"></i>
+								</li>
+
 							</ul>
 							</div>
-							<div class="ml-md-auto py-2 py-md-0">
-								<a href="#" class="btn btn-white btn-border btn-round mr-2">Manage</a>
-								<a href="#" class="btn btn-secondary btn-round">Add Customer</a>
-							</div>
-						</div>
+							<br>
 					</div>
 				</div>
 				<div class="page-inner mt--5">
@@ -135,6 +138,7 @@
 					</div>				
 				</div>
 			</footer>
+			
 		</div>
 
 @endsection

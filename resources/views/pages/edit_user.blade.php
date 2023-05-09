@@ -3,9 +3,10 @@
 @section('title' , 'Edit User' , 'active')
 
 @section('content')
+<br>
 <div class="main-panel">
-    <div class="container">
-        <h1 class="text-center mb-4">Edit Data</h1>
+        <div class="container">
+        <h1 class="text-center mb-4">Edit Data Pengguna</h1>
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('users.update', $user->id) }}" method="POST"  >
@@ -22,8 +23,18 @@
                                 @enderror
                     </div>
                     <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" value="{{$user->username}}" name="username" required autocomplete="username" autofocus>
+
+                                @error('username')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                    </div>
+                    <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{$user->email}}" required autocomplete="email" disabled>
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{$user->email}}" required autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -33,11 +44,22 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="role" class="form-label">Status</label>
-                        <select id="role" class="form-control" name="role_id">
-                            <option value="{{$user->level_id}}" hidden>{{$user->level}}</option>
+                        <label for="no_hp" class="form-label">No Handphone</label>
+                        <input id="no_hp" type="text" class="form-control @error('no_hp') is-invalid @enderror" value="{{$user->no_hp}}" name="no_hp" required autocomplete="no_hp" autofocus>
+
+                                @error('no_hp')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="level_id" class="form-label">Status</label>
+                        <select id="level_id" class="form-control" name="level_id">
+                            <option value="{{$user->level_id}}" hidden>{{$user->level['nama_level']}}</option>
                             @foreach ($level as $levels)
-                                <option value="{{$levels->id}}">{{$levels->name}}</option>
+                                <option value="{{$levels->id}}">{{$levels->nama_level}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -47,7 +69,7 @@
                         <input type="text" class="form-control" name="password" id="password" disabled  >
                     </div>
                     <button type="submit" class="btn btn-primary float" style="width: 100px;">Edit</button>   
-                    <a href="/user" class="btn btn-danger" style="width: 100px;">Kembali</a>
+                    <a href="/users" class="btn btn-danger" style="width: 100px;">Kembali</a>
                 </form>
                 
         </div>

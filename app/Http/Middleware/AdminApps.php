@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 
-class MustAdmin
+class AdminApps
 {
     /**
      * Handle an incoming request.
@@ -21,8 +21,8 @@ class MustAdmin
 
 
     if (Auth::user()){ 
-        if (Auth::user()->level['nama_level'] != 'Super Admin'){ 
-            return redirect(RouteServiceProvider::HOME);
+        if (Auth::user()->level['nama_level'] == 'Admin Apps'){ 
+            return redirect(RouteServiceProvider::API);
     } 
         return $next($request);
     }

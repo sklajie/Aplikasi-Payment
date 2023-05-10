@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title' , 'Users' , 'active')
+@section('title' , 'Pengguna' , 'active')
 
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
 							</li>
 						
 							<li class="nav-item">
-								<a href="/admin/datapenyakit">Data Pengguna</a>
+								<a href="/users">Data Pengguna</a>
 							</li>
 						</ul>
                         </div>

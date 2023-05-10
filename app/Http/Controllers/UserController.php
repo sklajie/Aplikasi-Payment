@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $title = 'Users';
         $level = Level::all();
-        return view('pages.users', compact('level','title'))->with([
+        return view('pages.users.users', compact('level','title'))->with([
             'user' => User::with('level')->get()->sortBy('level_id'),
         ]);
 
@@ -22,8 +22,9 @@ class UserController extends Controller
 
     public function create()
     {
+        $title = 'Users';
         $level = Level::all();
-        return view('pages.tambah_user', compact('level'))->with([
+        return view('pages.users.tambah_user', compact('level','title'))->with([
             'user' => User::with('level')->get()
         ]);
     }
@@ -59,8 +60,9 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        $title = 'Users';
         $level = level::all();
-        return view('pages.edit_user', compact('level'))->with([
+        return view('pages.users.edit_user', compact('level','title'))->with([
             'user' => User::find($id),
         ]); 
     }

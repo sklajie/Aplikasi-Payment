@@ -13,9 +13,15 @@ return new class extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('nama');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('address');
             $table->string('semester', 15);
-            $table->string('amount', 10);
+            $table->string('tahun_akademik');
+            $table->string('prodi');
             $table->string('va', 15);
+            $table->string('amount', 10);
             $table->boolean('openPayment');
             $table->date('activeDate');
             $table->date('inactiveDate');

@@ -1,12 +1,41 @@
 @extends('layouts.app')
 
-@section('title' , 'Edit User' , 'active')
+@section('title' , 'Edit Pengguna' , 'active')
 
 @section('content')
 <br>
 <div class="main-panel">
+    <div class="page-inner">
+        <h1 class="text-center mb-4">Edit Pengguna</h1>
+    <div>
+        <ul class="breadcrumbs">
+
+            <li class="nav-home">
+                <a href="/home">
+                    <i class="flaticon-home"></i>
+                </a>
+            </li>
+
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+        
+            <li class="nav-item">
+                <a href="/users">Data Pengguna</a>
+            </li>
+
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+
+            <li class="nav-item">
+                <a href="/users/create">Edit Pengguna</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+        <br>
         <div class="container">
-        <h1 class="text-center mb-4">Edit Data Pengguna</h1>
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('users.update', $user->id) }}" method="POST"  >

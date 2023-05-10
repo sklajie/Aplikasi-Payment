@@ -5,8 +5,37 @@
 @section('content')
 <br>
 <div class="main-panel">
-        <div class="container">
+    <div class="page-inner">
         <h1 class="text-center mb-4">Tambah Pengguna</h1>
+    <div>
+        <ul class="breadcrumbs">
+
+            <li class="nav-home">
+                <a href="/home">
+                    <i class="flaticon-home"></i>
+                </a>
+            </li>
+
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+        
+            <li class="nav-item">
+                <a href="/users">Data Pengguna</a>
+            </li>
+
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+
+            <li class="nav-item">
+                <a href="/users/create">Tambah Pengguna</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+        <br>
+        <div class="container">
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('users.store') }}" method="POST"  >
@@ -77,8 +106,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary float" style="width: 100px;">Tambah</button>   
                     <a href="/users" class="btn btn-danger" style="width: 100px;">Kembali</a>
-                </form>
-                
+                </form> 
         </div>
     </div>
 </div>

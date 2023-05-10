@@ -83,37 +83,16 @@
 <div class="app">
 	<div class="wrapper">
 		<div class="main-header">
-			<!-- Logo Header -->
-			<div class="logo-header" style="background-color: green">
-				
-				<a href="/" class="logo">
-					<p alt="navbar brand" class="navbar-brand" style="color: white">POLINDRA</p>
-				</a>
-				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon">
-						<i class="icon-menu"></i>
-					</span>
-				</button>
-				<button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
-				<div class="nav-toggle">
-					<button class="btn btn-toggle toggle-sidebar">
-						<i class="icon-menu"></i>
-					</button>
-				</div>
-			</div>
-			<!-- End Logo Header -->
-
 			<!-- Navbar Header -->
 			
 			<nav class="navbar navbar-header navbar-expand-lg" style="background-color: rgb(3, 195, 3);">
 				
 				<div class="container-fluid">
+					<a href="/" class="logo">
+						<p alt="navbar brand" class="navbar-brand" style="color: white">POLINDRA</p>
+					</a>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-						<li class="nav-item toggle-nav-search hidden-caret">
-							<a class="nav-link" data-toggle="collapse" href="#search-nav" role="button" aria-expanded="false" aria-controls="search-nav">
-								<i class="fa fa-search"></i>
-							</a>
-						</li>
+						
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
@@ -175,134 +154,6 @@
 			</nav>
 			<!-- End Navbar -->
 		</div>
-
-		<!-- Sidebar -->
-		<div class="sidebar" data-background-color="dark">			
-			<div class="sidebar-wrapper scrollbar scrollbar-inner">
-				<div class="sidebar-content">
-					
-
-						@if ( Auth::user())
-							<div class="user">
-								<div class="avatar-sm float-left mr-2 mt-1">
-									<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
-								</div>
-								<div class="info">
-									<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-										<span>
-											{{ Auth::user()->name }}
-											<span class="user-level">{{ Auth::user()->level['nama_level'] }}</span>
-											
-										</span>
-									</a>
-									<div class="clearfix"></div>
-		
-									<div class="collapse in" id="collapseExample">
-										<ul class="nav">
-											<li>
-												<a href="#profile">
-													<span class="link-collapse">My Profile</span>
-												</a>
-											</li>
-											<li>
-												<a href="#edit">
-													<span class="link-collapse">Edit Profile</span>
-												</a>
-											</li>
-											<li>
-												<a href="#settings">
-													<span class="link-collapse">Settings</span>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>							
-							
-						<ul class="nav nav-primary">
-
-						<li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">Navigation</h4>
-						</li>
-
-						<li class="nav-item {{$title === "Dashboard" ? 'active' : '' }}">
-							<a href="/home">
-								<i class="fas fa-home"></i>
-								<p>Dashboard</p>
-							</a>
-						</li>
-
-						<li class="nav-item {{ $title === "Users" ? 'active' : '' }}">
-							<a href="/users">
-								<i class="fas fa-layer-group"></i>
-								<p>Users</p>
-								
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="#">
-								<i class="fas fa-file-invoice-dollar"></i>
-								<p>Histori Pembayaran</p>
-							</a>
-						</li>
-
-						<li class="nav-item  {{ $title === "Data Pembayaran" ? 'active' : '' }}">
-							<a href="/pembayaran">
-								<i class="fas fa-th-list"></i>
-								<p>Data Pembayaran</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="#">
-								<i class="fas fa-key"></i>
-								<p>API Keys</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="#">
-								<i class="fas fa-swatchbook"></i>
-								<p>Dokumentasi</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="#">
-								<i class="far fa-list-alt"></i>
-								<p>Pembayaran Lainnya</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="#">
-								<i class="fas fa-layer-group"></i>
-								<p>Kategori Pembayaran</p>
-							</a>
-						</li>
-						
-					</ul>
-				@else
-				
-					<ul class="nav nav-primary">
-						<li class="nav-item ">
-							<a href="/home">
-								<p>LOGIN</p>
-							</a>
-						</li>
-					</ul>	
-					<div class="dropdown-divider"></div>
-					
-				@endif
-						
-				</div>
-			</div>
-		</div>
-		<!-- End Sidebar -->
 
 		<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

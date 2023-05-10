@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Http;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth']);
 
 Auth::routes();
 
@@ -23,5 +21,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/cek', [App\Http\Controllers\CekController::class, 'index']);
 
-Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class);
-Route::resource('/users', App\Http\Controllers\UserController::class );
+Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class)->middleware(['auth']);;
+Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth']);

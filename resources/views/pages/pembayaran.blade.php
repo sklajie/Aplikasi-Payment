@@ -54,9 +54,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-            {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Karyawan</button>
-          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Karyawan Excel</button> --}}
-          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{url('')}}/karyawan/export">Export Data Pembayaran</a>
+          <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button>
+          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Mahasiswa Excel</button>
+          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{url('')}}/karyawan/export">Export Data Pembayaran Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
           <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportKaryawanTerpilih()">Export Karyawan Terpilih</button>
@@ -72,42 +72,48 @@
                 </div>
                 <div class="col-md-3">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="1" checked="true"> NIM
+                    <input type="checkbox" class="tampilan" data-kolom="1"> ID
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="2" checked="true"> Nama
+                    <input type="checkbox" class="tampilan" data-kolom="2"> Kategori Pembayaran
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="3" checked="true"> Semester
+                    <input type="checkbox" class="tampilan" data-kolom="3" checked="true"> Nama
                   </label>
                 </div>
                 <div class="col-md-3">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> Tahun Akademik
+                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> Email
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="5" checked="true"> Tanggal Bayar
+                    <input type="checkbox" class="tampilan" data-kolom="5"> HandPhone
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="6" checked="true"> Status
-                  </label>
-                </div>
-                {{-- <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="7"> Detail Alamat
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="8"> Foto
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="9"> BPJS Kesehatan
+                    <input type="checkbox" class="tampilan" data-kolom="6"> Alamat
                   </label>
                 </div>
                 <div class="col-md-3">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="10"> BPJS Ketenagakerjaan
+                    <input type="checkbox" class="tampilan" data-kolom="7" checked="true"> Semester
                   </label>
-                </div> --}}
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="8" checked="true"> Prodi
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="9"> VA
+                  </label>
+                </div>
+                <div class="col-md-3">
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="10" checked="true"> Tahun Akademik
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="11" checked="true"> Tanggal Bayar
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="12" checked="true"> Status
+                  </label>
+                </div>
               </div>
               <br>
               <div class="row">
@@ -117,7 +123,9 @@
                 <div class="col-md-4">
                   <label>Semester</label>
                   <select id="filter-organisasi" class="form-control filter">
-                    <option value="">Pilih Organisasi</option>
+                    <option value="">pilih semester</option>
+                    <option value="">Genap</option>
+                    <option value=""></option>
                     {{-- @foreach($list_organisasi as $organisasi)
                     <option value=""></option>
                     @endforeach --}}
@@ -149,12 +157,18 @@
                     <th  style="width: 2%">
                       <input type="checkbox" id="head-cb">
                     </th>
-                    <th>Nim</th>
-					<th>Nama</th>
-					<th>Semester</th>
-					<th>Tahun Akademik</th>
-		    		<th>Tanggal Bayar</th>
-					<th>Status</th>
+                    <th>ID</th>
+                    <th>Kategori Pembayaran</th>
+                    <th>Nama</th>
+                    <th>E-mail</th>
+                    <th>Handphone</th>
+                    <th>Alamat</th>
+                    <th>Semester</th>
+                    <th>Prodi</th>
+                    <th>VA</th>
+                    <th>Tahun Akademik</th>
+                    <th>Tanggal Bayar</th>
+                    <th>Status</th>
                     <th>###</th>
                   </tr>
                   </thead>
@@ -167,7 +181,7 @@
       </div>
     </div>
 
-  {{-- <div class="modal fade" id="modal-create">
+ <div class="modal fade" id="modal-create">
     <div class="modal-dialog modal-lg">
       <form method="post" id="form-create" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
         <div class="modal-header">
@@ -222,9 +236,9 @@
               <label>Organisasi</label>
               <select name="organisasi_id" class="form-control" required>
                 <option value="">Pilih Organisasi</option>
-                @foreach($list_organisasi as $organisasi)
+                {{-- @foreach($list_organisasi as $organisasi)
                 <option value="{{$organisasi->id}}">{{$organisasi->nama}}</option>
-                @endforeach
+                @endforeach --}}
               </select>
             </div>
             <div class="col-md-12" style="margin-top: 4px;">
@@ -239,7 +253,7 @@
       </form>
     </div>
   </div>
-
+ {{-- 
   <div class="modal fade" id="modal-edit">
     <div class="modal-dialog modal-lg">
       <form method="post" id="form-edit" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
@@ -356,7 +370,7 @@
 
 @section('js')
 <script type="text/javascript">
-  let list_karyawan = [];
+  let list_pembayaran = [];
   let organisasi = $("#filter-organisasi").val()
   ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
   ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
@@ -405,7 +419,7 @@
         "targets": 1,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          list_karyawan[row.id] = row;
+          list_pembayaran[row.id] = row;
           return row.nik;
         }
       },
@@ -479,6 +493,20 @@
       },
       {
         "targets": 11,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
+          return row.nomor_bpjs_ketenagakerjaan;
+        }
+      },
+      {
+        "targets": 12,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
+          return row.nomor_bpjs_ketenagakerjaan;
+        }
+      },
+      {
+        "targets": 13,
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
@@ -528,7 +556,7 @@
   })
 
   function showDetailKaryawan(id) {
-    const karyawan = list_karyawan[id]
+    const karyawan = list_pembayaran[id]
     $("#modal-edit").modal('show')
     // SET SEMUA KE DEFAULT
     $("#form-edit input:not([name='_token']):not([name='_method'])").val('')
@@ -565,7 +593,7 @@
   function toggleStatus(id) {
     const _c = confirm("Anda yakin akan melakukan operasi ini ?")
     if(_c===true){
-      let karyawan = list_karyawan[id]
+      let karyawan = list_pembayaran[id]
       let status_update = ''
       if(karyawan.status=='aktif'){
         status_update = 'non aktif'
@@ -631,7 +659,7 @@
     })
     $("#button-nonaktif-all").prop('disabled',true)
     $.ajax({
-      url:"{{url('')}}/karyawan/aktifkan",
+      url:"{{url('')}}//pembayaran/aktivasi",
       method:'post',
       data:{ids:semua_id},
       success:function(res){
@@ -643,6 +671,27 @@
     // console.log(semua_id)
     // console.log("YANG TERPILIH AKAN DINONAKTIFKAN")
   }
+
+  $(document).ready(function() {
+    var table = $('#data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ url('') }}/pembayaran/aktivasi',
+            type: 'POST'
+        },
+        columns: [
+            { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false },
+            { data: 'id', name: 'id' },
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' }
+        ]
+    });
+    
+    $('#select-all').on('click', function() {
+        $('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+    });
+  });
 
   $(".filter").on('change',function(){
     organisasi = $("#filter-organisasi").val()

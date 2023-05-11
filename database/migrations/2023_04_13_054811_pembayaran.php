@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama');
+            $table->string('nim');
             $table->string('email');
             $table->string('phone');
             $table->string('address');

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\PembayaranController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +14,13 @@ use Illuminate\Support\Facades\Http;
 |
 */
 
+
 Route::get('/', function () {
     return view('home');
 });
+
+Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth','adminapps']);
+
 
 Auth::routes();
 
@@ -25,3 +30,9 @@ Route::get('/cek', [App\Http\Controllers\CekController::class, 'index']);
 
 Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class);
 Route::resource('/users', App\Http\Controllers\UserController::class );
+
+Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index')->middleware(['auth', 'adminkeuangan']);
+Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data')->middleware(['auth', 'adminkeuangan']);
+Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
+Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);
+

@@ -160,6 +160,7 @@
                     <th>ID</th>
                     <th>Kategori Pembayaran</th>
                     <th>Nama</th>
+                    <th>Nim</th>
                     <th>E-mail</th>
                     <th>Handphone</th>
                     <th>Alamat</th>
@@ -167,8 +168,10 @@
                     <th>Prodi</th>
                     <th>VA</th>
                     <th>Tahun Akademik</th>
+                    <th>Amount</th>
                     <th>Tanggal Bayar</th>
-                    <th>Status</th>
+                    <th>Status VA</th>
+                    <th>Status Pembayaran</th>
                     <th>###</th>
                   </tr>
                   </thead>
@@ -370,10 +373,10 @@
 
 @section('js')
 <script type="text/javascript">
-  let list_pembayaran = [];
-  let organisasi = $("#filter-organisasi").val()
-  ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
+  // let list_pembayaran = [];
+  // let organisasi = $("#filter-organisasi").val()
+  // ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
+  // ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -386,26 +389,26 @@
     "order": [[ 1, "desc" ]],
     "autoWidth": false,
     "ajax":{
-      url: "{{url('')}}/karyawan/data",
+      url: "{{url('')}}/pembayaran/data",
       type: "POST",
-      data:function(d){
-        d.organisasi = organisasi;
-        d.bpjs_kesehatan = bpjs_kesehatan;
-        d.bpjs_ketenagakerjaan = bpjs_ketenagakerjaan;
-        return d
-      }
+      // data:function(d){
+      //   // d.organisasi = organisasi;
+      //   // d.bpjs_kesehatan = bpjs_kesehatan;
+      //   // d.bpjs_ketenagakerjaan = bpjs_ketenagakerjaan;
+      //   return d
+      // }
     },
-    "initComplete": function(settings, json) {
-      const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
-      $.each(all_checkbox_view,function(key,checkbox){
-        let kolom = $(checkbox).data('kolom')
-        let is_checked = checkbox.checked
-        table.column(kolom).visible(is_checked)
-      })
-      setTimeout(function(){
-        table.columns.adjust().draw();
-      },3000)
-    },
+    // "initComplete": function(settings, json) {
+    //   const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
+    //   $.each(all_checkbox_view,function(key,checkbox){
+    //     let kolom = $(checkbox).data('kolom')
+    //     let is_checked = checkbox.checked
+    //     table.column(kolom).visible(is_checked)
+    //   })
+    //   setTimeout(function(){
+    //     table.columns.adjust().draw();
+    //   },3000)
+    // },
     columnDefs: [
       {
         "targets": 0,
@@ -420,93 +423,109 @@
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
           list_pembayaran[row.id] = row;
-          return row.nik;
+          return row.id;
         }
       },
       {
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama;
+          return row.kategori_pembayaran;
         }
       },
       {
         "targets": 3,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nomor_ktp;
+          return row.nama;
         }
       },
       {
         "targets": 4,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.telp;
+          return row.nim;
         }
       },
       {
         "targets": 5,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama_organisasi;
+          return row.email;
         }
       },
       {
         "targets": 6,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.email;
+          return row.phone;
         }
       },
       {
         "targets": 7,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.detail_alamat;
+          return row.address;
         }
       },
       {
         "targets": 8,
         "class":"text-nowrap",
-        "sortable":false,
         "render": function(data, type, row, meta){
-          if(row.foto==null){
-            return `<img style="max-width:85px;max-height:85px;" src="{{url('')}}/dist/img/default.png"/>`
-          }else{
-            return `<a href="{{url('')}}/karyawan/foto/${row.id}" target="_blank"><img style="max-width:85px;max-height:85px;" src="{{url('')}}/karyawan/foto/${row.id}"/></a>`
-          }
+          return row.semester;
         }
       },
       {
         "targets": 9,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nomor_bpjs_kesehatan;
+          return row.prodi;
         }
       },
       {
         "targets": 10,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nomor_bpjs_ketenagakerjaan;
+          return row.va;
         }
       },
       {
         "targets": 11,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nomor_bpjs_ketenagakerjaan;
+          return row.tahun_akademik;
         }
       },
       {
         "targets": 12,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nomor_bpjs_ketenagakerjaan;
+          return row.amount;
         }
       },
       {
         "targets": 13,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
+          return row.date;
+        }
+      },
+      {
+        "targets": 14,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
+          return row.openPayment;
+        }
+      },
+      {
+        "targets": 15,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
+          return row.Status;
+        }
+      },
+      {
+        "targets": 16,
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
@@ -537,188 +556,188 @@
     
   }
 
-  $("#form-create").on('submit',function(e){
-    e.preventDefault()
+  // $("#form-create").on('submit',function(e){
+  //   e.preventDefault()
     
 
-    $("#form-create").ajaxSubmit({
-      success:function(res){
-        table.ajax.reload(null,false)
-        // SET SEMUA KE DEFAULT
-        $("#form-create input:not([name='_token'])").val('')
-        $("#form-create textarea").val('')
-        $("#form-create select:not([name='status'])").val('')
+  //   $("#form-create").ajaxSubmit({
+  //     success:function(res){
+  //       table.ajax.reload(null,false)
+  //       // SET SEMUA KE DEFAULT
+  //       $("#form-create input:not([name='_token'])").val('')
+  //       $("#form-create textarea").val('')
+  //       $("#form-create select:not([name='status'])").val('')
 
 
-        $("#modal-create").modal('hide')
-      }
-    })
-  })
+  //       $("#modal-create").modal('hide')
+  //     }
+  //   })
+  // })
 
-  function showDetailKaryawan(id) {
-    const karyawan = list_pembayaran[id]
-    $("#modal-edit").modal('show')
-    // SET SEMUA KE DEFAULT
-    $("#form-edit input:not([name='_token']):not([name='_method'])").val('')
-    $("#form-edit textarea").val('')
-    $("#form-edit select:not([name='status'])").val('')
+  // function showDetailKaryawan(id) {
+  //   const karyawan = list_pembayaran[id]
+  //   $("#modal-edit").modal('show')
+  //   // SET SEMUA KE DEFAULT
+  //   $("#form-edit input:not([name='_token']):not([name='_method'])").val('')
+  //   $("#form-edit textarea").val('')
+  //   $("#form-edit select:not([name='status'])").val('')
 
 
-    $("#form-edit [name='id']").val(id)
-    $("#form-edit [name='nama']").val(karyawan.nama)
-    $("#form-edit [name='nomor_ktp']").val(karyawan.nomor_ktp)
-    $("#form-edit [name='nik']").val(karyawan.nik)
-    $("#form-edit [name='telp']").val(karyawan.telp)
-    $("#form-edit [name='email']").val(karyawan.email)
-    $("#form-edit [name='detail_alamat']").val(karyawan.detail_alamat)
-    $("#form-edit [name='status']").val(karyawan.status)
-    $("#form-edit [name='nomor_bpjs_kesehatan']").val(karyawan.nomor_bpjs_kesehatan)
-    $("#form-edit [name='nomor_bpjs_ketenagakerjaan']").val(karyawan.nomor_bpjs_ketenagakerjaan)
-    $("#form-edit [name='organisasi_id']").val(karyawan.organisasi_id)
-  }
+  //   $("#form-edit [name='id']").val(id)
+  //   $("#form-edit [name='nama']").val(karyawan.nama)
+  //   $("#form-edit [name='nomor_ktp']").val(karyawan.nomor_ktp)
+  //   $("#form-edit [name='nik']").val(karyawan.nik)
+  //   $("#form-edit [name='telp']").val(karyawan.telp)
+  //   $("#form-edit [name='email']").val(karyawan.email)
+  //   $("#form-edit [name='detail_alamat']").val(karyawan.detail_alamat)
+  //   $("#form-edit [name='status']").val(karyawan.status)
+  //   $("#form-edit [name='nomor_bpjs_kesehatan']").val(karyawan.nomor_bpjs_kesehatan)
+  //   $("#form-edit [name='nomor_bpjs_ketenagakerjaan']").val(karyawan.nomor_bpjs_ketenagakerjaan)
+  //   $("#form-edit [name='organisasi_id']").val(karyawan.organisasi_id)
+  // }
 
-  $("#form-edit").on('submit',function(e){
-    e.preventDefault()
-    $("#form-edit").ajaxSubmit({
-      success:function(res){
-        if(res===true){
-          alert("BERHASIL UPDATE KARYAWAN")
-          table.ajax.reload(null,false)
-          $("#modal-edit").modal('hide')
-        }
-      }
-    })
-  })
+  // $("#form-edit").on('submit',function(e){
+  //   e.preventDefault()
+  //   $("#form-edit").ajaxSubmit({
+  //     success:function(res){
+  //       if(res===true){
+  //         alert("BERHASIL UPDATE KARYAWAN")
+  //         table.ajax.reload(null,false)
+  //         $("#modal-edit").modal('hide')
+  //       }
+  //     }
+  //   })
+  // })
 
-  function toggleStatus(id) {
-    const _c = confirm("Anda yakin akan melakukan operasi ini ?")
-    if(_c===true){
-      let karyawan = list_pembayaran[id]
-      let status_update = ''
-      if(karyawan.status=='aktif'){
-        status_update = 'non aktif'
-      }else{
-        status_update = 'aktif'
-      }
-      $.ajax({
-        url:'{{url('')}}/karyawan/update_status',
-        method:'POST',
-        data:{id:id,status:status_update,_token:'{{csrf_token()}}'},
-        success:function(res){
-          if(res===true){
-            table.ajax.reload(null,false)
-          }
-        }
-      })
-    }
-  }
+  // function toggleStatus(id) {
+  //   const _c = confirm("Anda yakin akan melakukan operasi ini ?")
+  //   if(_c===true){
+  //     let karyawan = list_pembayaran[id]
+  //     let status_update = ''
+  //     if(karyawan.status=='aktif'){
+  //       status_update = 'non aktif'
+  //     }else{
+  //       status_update = 'aktif'
+  //     }
+  //     $.ajax({
+  //       url:'{{url('')}}/karyawan/update_status',
+  //       method:'POST',
+  //       data:{id:id,status:status_update,_token:'{{csrf_token()}}'},
+  //       success:function(res){
+  //         if(res===true){
+  //           table.ajax.reload(null,false)
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
 
-  $("#head-cb").on('click',function(){
-    var isChecked = $("#head-cb").prop('checked')
-    $(".cb-child").prop('checked',isChecked)
-    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-  })
+  // $("#head-cb").on('click',function(){
+  //   var isChecked = $("#head-cb").prop('checked')
+  //   $(".cb-child").prop('checked',isChecked)
+  //   $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+  //   $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+  // })
 
-  $("#table tbody").on('click','.cb-child',function(){
-    if($(this).prop('checked')!=true){
-      $("#head-cb").prop('checked',false)
-    }
+  // $("#table tbody").on('click','.cb-child',function(){
+  //   if($(this).prop('checked')!=true){
+  //     $("#head-cb").prop('checked',false)
+  //   }
 
-    let semua_checkbox = $("#table tbody .cb-child:checked")
-    let button_non_aktif_status = (semua_checkbox.length>0)
-    let button_export_terpilih_status = button_non_aktif_status;
-    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-  })
+  //   let semua_checkbox = $("#table tbody .cb-child:checked")
+  //   let button_non_aktif_status = (semua_checkbox.length>0)
+  //   let button_export_terpilih_status = button_non_aktif_status;
+  //   $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+  //   $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+  // })
 
-  function nonAktifkanTerpilih () {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    $("#button-nonaktif-all").prop('disabled',true)
-    $.ajax({
-      url:"{{url('')}}/karyawan/non-aktifkan",
-      method:'post',
-      data:{ids:semua_id},
-      success:function(res){
-        table.ajax.reload(null,false)
-        $("#button-nonaktif-all").prop('disabled',false)
-        $("#head-cb").prop('checked',false)
-      }
-    })
-  }
+  // function nonAktifkanTerpilih () {
+  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
+  //   let semua_id = []
+  //   $.each(checkbox_terpilih,function(index,elm){
+  //     semua_id.push(elm.value)
+  //   })
+  //   $("#button-nonaktif-all").prop('disabled',true)
+  //   $.ajax({
+  //     url:"{{url('')}}/karyawan/non-aktifkan",
+  //     method:'post',
+  //     data:{ids:semua_id},
+  //     success:function(res){
+  //       table.ajax.reload(null,false)
+  //       $("#button-nonaktif-all").prop('disabled',false)
+  //       $("#head-cb").prop('checked',false)
+  //     }
+  //   })
+  // }
 
-  function aktifkanTerpilih () {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    $("#button-nonaktif-all").prop('disabled',true)
-    $.ajax({
-      url:"{{url('')}}//pembayaran/aktivasi",
-      method:'post',
-      data:{ids:semua_id},
-      success:function(res){
-        table.ajax.reload(null,false)
-        $("#button-aktif-all").prop('disabled',false)
-        $("#head-cb").prop('checked',false)
-      }
-    })
-    // console.log(semua_id)
-    // console.log("YANG TERPILIH AKAN DINONAKTIFKAN")
-  }
+  // function aktifkanTerpilih () {
+  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
+  //   let semua_id = []
+  //   $.each(checkbox_terpilih,function(index,elm){
+  //     semua_id.push(elm.value)
+  //   })
+  //   $("#button-nonaktif-all").prop('disabled',true)
+  //   $.ajax({
+  //     url:"{{url('')}}//pembayaran/aktivasi",
+  //     method:'post',
+  //     data:{ids:semua_id},
+  //     success:function(res){
+  //       table.ajax.reload(null,false)
+  //       $("#button-aktif-all").prop('disabled',false)
+  //       $("#head-cb").prop('checked',false)
+  //     }
+  //   })
+  //   // console.log(semua_id)
+  //   // console.log("YANG TERPILIH AKAN DINONAKTIFKAN")
+  // }
 
-  $(document).ready(function() {
-    var table = $('#data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: '{{ url('') }}/pembayaran/aktivasi',
-            type: 'POST'
-        },
-        columns: [
-            { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false },
-            { data: 'id', name: 'id' },
-            { data: 'name', name: 'name' },
-            { data: 'email', name: 'email' }
-        ]
-    });
+  // $(document).ready(function() {
+  //   var table = $('#data-table').DataTable({
+  //       processing: true,
+  //       serverSide: true,
+  //       ajax: {
+  //           url: '{{ url('') }}/pembayaran/aktivasi',
+  //           type: 'POST'
+  //       },
+  //       columns: [
+  //           { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false },
+  //           { data: 'id', name: 'id' },
+  //           { data: 'name', name: 'name' },
+  //           { data: 'email', name: 'email' }
+  //       ]
+  //   });
     
-    $('#select-all').on('click', function() {
-        $('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-    });
-  });
+  //   $('#select-all').on('click', function() {
+  //       $('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+  //   });
+  // });
 
-  $(".filter").on('change',function(){
-    organisasi = $("#filter-organisasi").val()
-    bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-    bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
-    table.ajax.reload(null,false)
-  })
+  // $(".filter").on('change',function(){
+  //   organisasi = $("#filter-organisasi").val()
+  //   bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
+  //   bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
+  //   table.ajax.reload(null,false)
+  // })
 
-  function exportKaryawanTerpilih() {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    let ids = semua_id.join(',')
-    $("#button-export-terpilih").prop('disabled',true)
-    $("#form-export-terpilih [name='ids']").val(ids)
-    $("#form-export-terpilih").submit()
-    // $.ajax({
-    //   url:"{{url('')}}/karyawan/export_terpilih",
-    //   method:'POST',
-    //   data:{ids:semua_id},
-    //   success:function(res){
-    //     console.log(res)
-    //     $("#button-export-terpilih").prop('disabled',false)
-    //   }
-    // })
-  }
+  // function exportKaryawanTerpilih() {
+  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
+  //   let semua_id = []
+  //   $.each(checkbox_terpilih,function(index,elm){
+  //     semua_id.push(elm.value)
+  //   })
+  //   let ids = semua_id.join(',')
+  //   $("#button-export-terpilih").prop('disabled',true)
+  //   $("#form-export-terpilih [name='ids']").val(ids)
+  //   $("#form-export-terpilih").submit()
+  //   // $.ajax({
+  //   //   url:"{{url('')}}/karyawan/export_terpilih",
+  //   //   method:'POST',
+  //   //   data:{ids:semua_id},
+  //   //   success:function(res){
+  //   //     console.log(res)
+  //   //     $("#button-export-terpilih").prop('disabled',false)
+  //   //   }
+  //   // })
+  // }
 </script>
 @stop

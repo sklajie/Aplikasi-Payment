@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\PembayaranController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,7 +22,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/cek', [App\Http\Controllers\CekController::class, 'index']);
 
-Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class);
+Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index');
+Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data');
+
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
 Route::resource('/users', App\Http\Controllers\UserController::class );
 Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class)->middleware(['auth']);;

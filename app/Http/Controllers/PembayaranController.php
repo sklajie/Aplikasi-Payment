@@ -36,35 +36,52 @@ class PembayaranController extends Controller
     	$orderBy = 'pembayaran.nim';
         switch($request->input('order.1.column')){
             case "1":
-                $orderBy = 'mahasiswa.va';
+                $orderBy = 'pembayaran.id';
                 break;
             case "2":
-                $orderBy = 'mahasiswa.nama';
+                $orderBy = 'pembayaran.kategori_pembayaran';
                 break;
             case "3":
-                $orderBy = 'mahasiswa.semester';
+                $orderBy = 'pembayaran.nama';
                 break;
             case "4":
-                $orderBy = 'mahasiswa.amount';
+                $orderBy = 'pembayaran.nim';
                 break;
             case "5":
-                $orderBy = 'mahasiswa.tahun_akademik';
+                $orderBy = 'pembayaran.email';
                 break;
             case "6":
-                $orderBy = 'pembayaran.date';
+                $orderBy = 'pembayaran.phone';
                 break;
             case "7":
+                $orderBy = 'pembayaran.address';
+                break;
+            case "8":
+                $orderBy = 'pembayaran.semester';
+                break;
+            case "9":
+                $orderBy = 'pembayaran.tahun_akademik';
+                break;
+            case "10":
+                $orderBy = 'pembayaran.prodi';
+                break;
+            case "11":
+                $orderBy = 'pembayaran.va';
+                break;
+            case "12":
+                $orderBy = 'pembayaran.date';
+                break;
+            case "13":
                 $orderBy = 'pembayaran.openPayment';
                 break;
         }
 
         $data = Pembayaran::select([
-            'mahasiswa.*',
-            'organisasi.nama as nama_organisasi'
-        ])
-        ->where('status')
-        ->join('organisasi','organisasi.id','=','karyawan.organisasi_id')
-        ;
+            'pembayaran.*'
+        ]);
+        // ->where('status')
+        // ->join('organisasi','organisasi.id','=','karyawan.organisasi_id')
+        // ;
 
         // if($request->input('search.value')!=null){
         //     $data = $data->where(function($q)use($request){
@@ -99,11 +116,8 @@ class PembayaranController extends Controller
 
         $recordsFiltered = $data->get()->count();
         if($request->input('length')!=-1) $data = $data->skip($request->input('start'))->take($request->input('length'));
-        $data = $data->orderBy($orderBy,$request->input('order.0.dir'))->get();
-        $recordsTotal = $data->count();
         return response()->json([
             'draw'=>$request->input('draw'),
-            'recordsTotal'=>$recordsTotal,
             'recordsFiltered'=>$recordsFiltered,
             'data'=>$data
         ]);

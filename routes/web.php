@@ -14,7 +14,7 @@ use App\Http\Controllers\PembayaranController;
 |
 */
 
-Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth']);
+Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth','adminapps']);
 
 Auth::routes();
 
@@ -24,8 +24,6 @@ Route::get('/cek', [App\Http\Controllers\CekController::class, 'index']);
 
 Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index');
 Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data');
-
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
-Route::resource('/users', App\Http\Controllers\UserController::class );
-Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class)->middleware(['auth']);;
-Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth']);
+Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class)->middleware(['auth', 'superadmin']);
+Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);

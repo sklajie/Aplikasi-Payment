@@ -182,7 +182,7 @@
 				<div class="sidebar-content">
 					
 
-						@if ( Auth::user())
+						@if ( Auth::user()->level['nama_level'] == 'Super Admin')
 							<div class="user">
 								<div class="avatar-sm float-left mr-2 mt-1">
 									<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
@@ -204,16 +204,6 @@
 													<span class="link-collapse">My Profile</span>
 												</a>
 											</li>
-											<li>
-												<a href="#edit">
-													<span class="link-collapse">Edit Profile</span>
-												</a>
-											</li>
-											<li>
-												<a href="#settings">
-													<span class="link-collapse">Settings</span>
-												</a>
-											</li>
 										</ul>
 									</div>
 								</div>
@@ -229,7 +219,7 @@
 						</li>
 
 						<li class="nav-item {{$title === "Dashboard" ? 'active' : '' }}">
-							<a href="/home">
+							<a href="/">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
 							</a>
@@ -255,6 +245,20 @@
 								<i class="fas fa-th-list"></i>
 								<p>Data Pembayaran</p>
 							</a>
+						</li>		
+
+						<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
+							<a href="/lainnya">
+								<i class="far fa-list-alt"></i>
+								<p>Pembayaran Lainnya</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="#">
+								<i class="fas fa-layer-group"></i>
+								<p>Kategori Pembayaran</p>
+							</a>
 						</li>
 
 						<li class="nav-item">
@@ -270,33 +274,133 @@
 								<p>Dokumentasi</p>
 							</a>
 						</li>
-
-						<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
-							<a href="/lainnya">
-								<i class="far fa-list-alt"></i>
-								<p>Pembayaran Lainnya</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="#">
-								<i class="fas fa-layer-group"></i>
-								<p>Kategori Pembayaran</p>
-							</a>
-						</li>
 						
 					</ul>
-				@else
+				@elseif ( Auth::user()->level['nama_level'] == 'Admin Keuangan')
 				
-					<ul class="nav nav-primary">
-						<li class="nav-item ">
-							<a href="/home">
-								<p>LOGIN</p>
-							</a>
-						</li>
-					</ul>	
-					<div class="dropdown-divider"></div>
+				<div class="user">
+					<div class="avatar-sm float-left mr-2 mt-1">
+						<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
+					</div>
+					<div class="info">
+						<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+							<span>
+								{{ Auth::user()->name }}
+								<span class="user-level">{{ Auth::user()->level['nama_level'] }}</span>
+								
+							</span>
+						</a>
+						<div class="clearfix"></div>
+
+						<div class="collapse in" id="collapseExample">
+							<ul class="nav">
+								<li>
+									<a href="#profile">
+										<span class="link-collapse">My Profile</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>	
+
+				<ul class="nav nav-primary">
+
+					<li class="nav-section">
+						<span class="sidebar-mini-icon">
+							<i class="fa fa-ellipsis-h"></i>
+						</span>
+						<h4 class="text-section">Navigation</h4>
+					</li>
+
+					<li class="nav-item {{$title === "Dashboard" ? 'active' : '' }}">
+						<a href="/">
+							<i class="fas fa-home"></i>
+							<p>Dashboard</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a href="#">
+							<i class="fas fa-file-invoice-dollar"></i>
+							<p>Histori Pembayaran</p>
+						</a>
+					</li>
+
+					<li class="nav-item  {{ $title === "Data Pembayaran" ? 'active' : '' }}">
+						<a href="/pembayaran">
+							<i class="fas fa-th-list"></i>
+							<p>Data Pembayaran</p>
+						</a>
+					</li>		
+
+					<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
+						<a href="/lainnya">
+							<i class="far fa-list-alt"></i>
+							<p>Pembayaran Lainnya</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a href="#">
+							<i class="fas fa-layer-group"></i>
+							<p>Kategori Pembayaran</p>
+						</a>
+					</li>
+				</ul>
 					
+				@elseif ( Auth::user()->level['nama_level'] == 'Admin Apps')
+
+				<div class="user">
+					<div class="avatar-sm float-left mr-2 mt-1">
+						<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
+					</div>
+					<div class="info">
+						<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+							<span>
+								{{ Auth::user()->name }}
+								<span class="user-level">{{ Auth::user()->level['nama_level'] }}</span>
+								
+							</span>
+						</a>
+						<div class="clearfix"></div>
+
+						<div class="collapse in" id="collapseExample">
+							<ul class="nav">
+								<li>
+									<a href="#profile">
+										<span class="link-collapse">My Profile</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>	
+
+				<ul class="nav nav-primary">
+
+					<li class="nav-section">
+						<span class="sidebar-mini-icon">
+							<i class="fa fa-ellipsis-h"></i>
+						</span>
+						<h4 class="text-section">Navigation</h4>
+					</li>
+
+					<li class="nav-item">
+						<a href="#">
+							<i class="fas fa-key"></i>
+							<p>API Keys</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a href="#">
+							<i class="fas fa-swatchbook"></i>
+							<p>Dokumentasi</p>
+						</a>
+					</li>				
+				</ul>
+
 				@endif
 						
 				</div>

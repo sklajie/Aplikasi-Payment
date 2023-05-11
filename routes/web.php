@@ -21,15 +21,7 @@ Route::get('/', function () {
 
 Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth','adminapps']);
 
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/cek', [App\Http\Controllers\CekController::class, 'index']);
-
-Route::resource('/pembayaran', App\Http\Controllers\PembayaranController::class);
-Route::resource('/users', App\Http\Controllers\UserController::class );
 
 Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index')->middleware(['auth', 'adminkeuangan']);
 Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data')->middleware(['auth', 'adminkeuangan']);

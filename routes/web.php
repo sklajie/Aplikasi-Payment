@@ -14,11 +14,6 @@ use App\Http\Controllers\PembayaranController;
 |
 */
 
-
-Route::get('/', function () {
-    return view('home');
-});
-
 Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth','adminapps']);
 
 Auth::routes();

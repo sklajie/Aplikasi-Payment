@@ -28,32 +28,34 @@ class PembayaranExport implements FromQuery, WithHeadings, WithMapping
 	public function headings(): array
     {
         return [
+            'kategori_pembayaran_id',
             'nama',
-			'nomor_ktp',
-			'nik',
-			'telp',
-			'email',
-			'detail_alamat',
-			'status',
-			'nomor_bpjs_kesehatan',
-			'nomor_bpjs_ketenagakerjaan',
-			'organisasi_id'
+            'nim',
+            'email',
+            'phone',
+            'address',
+            'semester',
+            'tahun_akademik',
+            'prodi',
+            'amount',
+            'date',
         ];
     }
     
     public function map($pembayaran): array
     {
         return [
+            $pembayaran->kategori_pembayaran_id,
             $pembayaran->nama,
-            $pembayaran->nomor_ktp,
-            $pembayaran->nik,
-            $pembayaran->telp,
+            $pembayaran->nim,
             $pembayaran->email,
-            $pembayaran->detail_alamat,
-            $pembayaran->status,
-            $pembayaran->nomor_bpjs_kesehatan,
-            $pembayaran->nomor_bpjs_ketenagakerjaan,
-            $pembayaran->organisasi_id,
+            $pembayaran->phone,
+            $pembayaran->address,
+            $pembayaran->semester,
+            $pembayaran->tahun_akademik,
+            $pembayaran->prodi,
+            $pembayaran->amount,
+            $pembayaran->date,
         ];
     }
 }

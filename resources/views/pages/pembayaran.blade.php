@@ -56,7 +56,7 @@
         <div class="col-md-12">
           <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button>
           <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Mahasiswa Excel</button>
-          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{url('')}}/karyawan/export">Export Data Pembayaran Excel</a>
+          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Pembayaran Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
           <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportKaryawanTerpilih()">Export Karyawan Terpilih</button>
@@ -70,48 +70,58 @@
                 <div class="col-md-12">
                   <h4>Pilih Tampilan</h4>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>
                     <input type="checkbox" class="tampilan" data-kolom="1"> ID
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="2"> Kategori Pembayaran
+                    <input type="checkbox" class="tampilan" data-kolom="2" checked="true"> Kategori Pembayaran
                   </label>
-                  <label>
                     <input type="checkbox" class="tampilan" data-kolom="3" checked="true"> Nama
                   </label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> Email
+                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> NIM
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="5"> HandPhone
+                    <input type="checkbox" class="tampilan" data-kolom="5" checked="true"> E-mail
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="6"> Alamat
-                  </label>
-                </div>
-                <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="7" checked="true"> Semester
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="8" checked="true"> Prodi
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="9"> VA
+                    <input type="checkbox" class="tampilan" data-kolom="6"> Handphone
                   </label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="10" checked="true"> Tahun Akademik
+                    <input type="checkbox" class="tampilan" data-kolom="7"> Alamat
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="11" checked="true"> Tanggal Bayar
+                    <input type="checkbox" class="tampilan" data-kolom="8" checked="true"> Semester
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="12" checked="true"> Status
+                    <input type="checkbox" class="tampilan" data-kolom="9" checked="true"> Prodi
+                  </label>
+                </div>
+                <div class="col-md-2">
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="10"> VA
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="11" checked="true"> Tahun Akademik
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="12" checked="true"> Amount
+                  </label>
+                </div>
+                <div class="col-md-2">
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="13" checked="true">Tanggal bayar
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="14" checked="true"> Status VA
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="15" checked="true"> Status pembayaran
                   </label>
                 </div>
               </div>
@@ -373,7 +383,7 @@
 
 @section('js')
 <script type="text/javascript">
-  // let list_pembayaran = [];
+  let list_pembayaran = [];
   // let organisasi = $("#filter-organisasi").val()
   // ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
   // ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
@@ -391,25 +401,20 @@
     "ajax":{
       url: "{{url('')}}/pembayaran/data",
       type: "POST",
-      // data:function(d){
-      //   // d.organisasi = organisasi;
-      //   // d.bpjs_kesehatan = bpjs_kesehatan;
-      //   // d.bpjs_ketenagakerjaan = bpjs_ketenagakerjaan;
-      //   return d
-      // }
     },
-    // "initComplete": function(settings, json) {
-    //   const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
-    //   $.each(all_checkbox_view,function(key,checkbox){
-    //     let kolom = $(checkbox).data('kolom')
-    //     let is_checked = checkbox.checked
-    //     table.column(kolom).visible(is_checked)
-    //   })
-    //   setTimeout(function(){
-    //     table.columns.adjust().draw();
-    //   },3000)
-    // },
+    "initComplete": function(settings, json) {
+      const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
+      $.each(all_checkbox_view,function(key,checkbox){
+        let kolom = $(checkbox).data('kolom')
+        let is_checked = checkbox.checked
+        table.column(kolom).visible(is_checked)
+      })
+      setTimeout(function(){
+        table.columns.adjust().draw();
+      },2000)
+    },
     columnDefs: [
+      {targets:'_all', visible:true},
       {
         "targets": 0,
         "class":"text-nowrap",
@@ -430,7 +435,7 @@
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.kategori_pembayaran;
+          return row.kategori_pembayaran_id;
         }
       },
       {
@@ -517,13 +522,13 @@
           return row.openPayment;
         }
       },
-      {
-        "targets": 15,
-        "class":"text-nowrap",
-        "render": function(data, type, row, meta){
-          return row.Status;
-        }
-      },
+      // {
+      //   "targets": 15,
+      //   "class":"text-nowrap",
+      //   "render": function(data, type, row, meta){
+      //     return row.Status;
+      //   }
+      // },
       {
         "targets": 16,
         "sortable":false,
@@ -632,24 +637,24 @@
   //   }
   // }
 
-  // $("#head-cb").on('click',function(){
-  //   var isChecked = $("#head-cb").prop('checked')
-  //   $(".cb-child").prop('checked',isChecked)
-  //   $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-  //   $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-  // })
+  $("#head-cb").on('click',function(){
+    var isChecked = $("#head-cb").prop('checked')
+    $(".cb-child").prop('checked',isChecked)
+    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+  })
 
-  // $("#table tbody").on('click','.cb-child',function(){
-  //   if($(this).prop('checked')!=true){
-  //     $("#head-cb").prop('checked',false)
-  //   }
+  $("#table tbody").on('click','.cb-child',function(){
+    if($(this).prop('checked')!=true){
+      $("#head-cb").prop('checked',false)
+    }
 
-  //   let semua_checkbox = $("#table tbody .cb-child:checked")
-  //   let button_non_aktif_status = (semua_checkbox.length>0)
-  //   let button_export_terpilih_status = button_non_aktif_status;
-  //   $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-  //   $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-  // })
+    let semua_checkbox = $("#table tbody .cb-child:checked")
+    let button_non_aktif_status = (semua_checkbox.length>0)
+    let button_export_terpilih_status = button_non_aktif_status;
+    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+  })
 
   // function nonAktifkanTerpilih () {
   //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
@@ -719,25 +724,25 @@
   //   table.ajax.reload(null,false)
   // })
 
-  // function exportKaryawanTerpilih() {
-  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
-  //   let semua_id = []
-  //   $.each(checkbox_terpilih,function(index,elm){
-  //     semua_id.push(elm.value)
-  //   })
-  //   let ids = semua_id.join(',')
-  //   $("#button-export-terpilih").prop('disabled',true)
-  //   $("#form-export-terpilih [name='ids']").val(ids)
-  //   $("#form-export-terpilih").submit()
-  //   // $.ajax({
-  //   //   url:"{{url('')}}/karyawan/export_terpilih",
-  //   //   method:'POST',
-  //   //   data:{ids:semua_id},
-  //   //   success:function(res){
-  //   //     console.log(res)
-  //   //     $("#button-export-terpilih").prop('disabled',false)
-  //   //   }
-  //   // })
-  // }
+  function exportKaryawanTerpilih() {
+    let checkbox_terpilih = $("#table tbody .cb-child:checked")
+    let semua_id = []
+    $.each(checkbox_terpilih,function(index,elm){
+      semua_id.push(elm.value)
+    })
+    let ids = semua_id.join(',')
+    $("#button-export-terpilih").prop('disabled',true)
+    $("#form-export-terpilih [name='ids']").val(ids)
+    $("#form-export-terpilih").submit()
+    // $.ajax({
+    //   url:"{{url('')}}/karyawan/export_terpilih",
+    //   method:'POST',
+    //   data:{ids:semua_id},
+    //   success:function(res){
+    //     console.log(res)
+    //     $("#button-export-terpilih").prop('disabled',false)
+    //   }
+    // })
+  }
 </script>
 @stop

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use App\Imports\KaryawanImport;
-use App\Exports\KaryawanExport;
+use App\Exports\PembayaranExport;
 use App\Exports\TesExport;
 use Illuminate\Support\Facades\Http;
 
@@ -33,13 +33,13 @@ class PembayaranController extends Controller
 
     public function data(Request $request)
     {
-    	$orderBy = 'pembayaran.nim';
-        switch($request->input('order.1.column')){
+    	$orderBy = 'pembayaran.phone';
+        switch($request->input('order.0.column')){
             case "1":
                 $orderBy = 'pembayaran.id';
                 break;
             case "2":
-                $orderBy = 'pembayaran.kategori_pembayaran';
+                $orderBy = 'pembayaran.kategori_pembayaran_id';
                 break;
             case "3":
                 $orderBy = 'pembayaran.nama';
@@ -116,8 +116,11 @@ class PembayaranController extends Controller
 
         $recordsFiltered = $data->get()->count();
         if($request->input('length')!=-1) $data = $data->skip($request->input('start'))->take($request->input('length'));
+        $data = $data->orderBy($orderBy,$request->input('order.0.dir'))->get();
+        $recordsTotal = $data->count();
         return response()->json([
             'draw'=>$request->input('draw'),
+            'recordsTotal'=>$recordsTotal,
             'recordsFiltered'=>$recordsFiltered,
             'data'=>$data
         ]);
@@ -178,10 +181,10 @@ class PembayaranController extends Controller
 
     // }
 
-    // public function exportData(Request $request)
-    // {
-    //     return Excel::download(new KaryawanExport, 'karyawan.xlsx');
-    // }
+    public function exportData(Request $request)
+    {
+        return Excel::download(new PembayaranExport, 'Pembayaran.xlsx');
+    }
 
     // public function exportDataTerpilih(Request $request)
     // {

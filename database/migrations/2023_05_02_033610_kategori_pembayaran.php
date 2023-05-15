@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kategori_pembayaran', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('kategori_pembayaran');
+            $table->timestamps();
         });
     }
 

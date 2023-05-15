@@ -24,7 +24,7 @@ Auth::routes();
 
 Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index')->middleware(['auth', 'adminkeuangan']);
 Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data')->middleware(['auth', 'adminkeuangan']);
-Route::get('/pembayaran/export','App\Http\Controllers\PembayaranController@exportData')->middleware(['auth', 'adminkeuangan']);
+Route::get('/pembay aran/export','App\Http\Controllers\PembayaranController@exportData')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
 Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);
 Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranController::class )->middleware(['auth', 'adminkeuangan']);

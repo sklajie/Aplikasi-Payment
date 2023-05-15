@@ -10,7 +10,7 @@ class KategoriPembayaranController extends Controller
     public function index()
     {
         $title = 'Kategori Pembayaran';
-        return view('pages.kategori_pembayaran', compact('level','title'))->with([
+        return view('pages.kategori_pembayaran', compact('title'))->with([
             'kategori_pembayaran' => KategoriPembayaran::all(),
         ]);
 

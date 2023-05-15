@@ -48,6 +48,7 @@
 												<tr>
 													<th>No</th>
 													<th>Kategori</th>
+													<th>Action</th>
 												</tr>
 											</thead>
 											
@@ -55,7 +56,7 @@
 												@foreach ($kategori_pembayaran as $data)	
 												<tr>
 													<td>{{$loop->iteration}}</td>
-													<td>{{$data->name}}</td>
+													<td>{{$data->kategori_pembayaran}}</td>
 													<td>
 														
 														
@@ -64,8 +65,37 @@
 															@method('delete')
 													
 															<a href="{{ route('kategori_pembayaran.edit', $data->id )}}" class="btn btn-primary btn-xs"><i class="fa fa-print">&NonBreakingSpace; Edit</i></a>
-															<button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Yakin untuk menghapus kategori ini?')" ><i class="fa fa-trash">&NonBreakingSpace;</i>Hapus</button>
-														
+															
+															<!-- Button trigger modal -->
+															<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModalCenter">
+																<i class="fa fa-trash">&NonBreakingSpace;</i>Hapus
+															</button>
+
+															<!-- Modal -->
+															<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+																<div class="modal-dialog modal-dialog-centered" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																	<h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi Hapus Kategori</h5>
+																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+																	</div>
+																	<div class="modal-body">
+																	Jika Menghapus Kategori Ini, Maka Semua Data Yang Berkaitan Dengan Kategori Akan Terhapus
+																	</div>
+																	<div class="modal-body">
+																		Yakin Untuk Tetap Menghapus Kategori Ini?
+																	</div>
+																	<div class="modal-footer">
+																	<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+																	<button type="submit" class="btn btn-danger">Hapus</button>
+																	</div>
+																</div>
+																</div>
+															</div>
+
+
 														</form>
 													</td>
 												</tr>

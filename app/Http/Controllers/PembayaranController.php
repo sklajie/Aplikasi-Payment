@@ -6,7 +6,7 @@ use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
-use App\Imports\KaryawanImport;
+use App\Imports\pembayaranImport;
 use App\Exports\PembayaranExport;
 use App\Exports\TesExport;
 use Illuminate\Support\Facades\Http;
@@ -22,11 +22,16 @@ class PembayaranController extends Controller
     public function aktifasi(Request $request){
 
         $data = [
-            ['name' => $request->names, 'email' => 'johndoe@example.com', 'password' => 'password123'],
+            ['name' => $request->names, 'email' => 'johndoe@example.com', '' => 'password123'],
         ];
         
         foreach ($data as $pembayaran) {
-            $response =Http::withHeaders('')->post('https://billing-bpi-dev.maja.id/api/v2/invoice', $pembayaran);
+            $response =Http::withHeaders([
+                'ClientID' => 'BPI3764',
+                'SecretKey' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
+                'username' => '3764',
+                'password' => '3764' 
+            ])->post('https://billing-bpi-dev.maja.id/api/v2/invoice', $pembayaran);
         }
         
     }
@@ -173,13 +178,13 @@ class PembayaranController extends Controller
     //     return response()->json(true);
     // }
 
-    // public function importDataKaryawan(Request $request)
-    // {
-    //     $file = $request->file('excel-karyawan');
-    //     Excel::import(new KaryawanImport,$file);
-    //     return redirect()->back();
+    public function importDataMahasiswa(Request $request)
+    {
+        $file = $request->file('excel-karyawan');
+        Excel::import(new pembayaranImport, $file);
+        return redirect()->back();
 
-    // }
+    }
 
     public function exportData(Request $request)
     {
@@ -210,13 +215,16 @@ class PembayaranController extends Controller
     // }    
 
     public function downloadPdf(Request $request, $id){
-        $data['pembayaran'] = Pembayaran::select([
-                    'pembayaran.*',
-                    'kategori_pembayaran.nama as nama_organisasi'
-        ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
 
+    /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+        $data['pembayaran'] = Pembayaran::find($id);
         $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
-        return $pdf->stream('pembayaran.pdf');
+        return $pdf->download('pembayaran.pdf');
     }
 
     // public function getFoto(Request $request,$id)

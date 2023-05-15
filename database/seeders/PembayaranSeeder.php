@@ -37,6 +37,7 @@ class PembayaranSeeder extends Seeder
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),
+            'attribute_pembayaran_id' => fake()->randomElement($attribute_id),
             'item_pembayaran_id' => fake()->randomElement($item_id)
         ]);
 
@@ -57,7 +58,9 @@ class PembayaranSeeder extends Seeder
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),
+            'attribute_pembayaran_id' => fake()->randomElement($attribute_id),
             'item_pembayaran_id' => fake()->randomElement($item_id)
+            
         ]);
         
         DB::table('pembayaran')->insert([
@@ -77,6 +80,7 @@ class PembayaranSeeder extends Seeder
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),
+            'attribute_pembayaran_id' => fake()->randomElement($attribute_id),
             'item_pembayaran_id' => fake()->randomElement($item_id)
         ]);
     }

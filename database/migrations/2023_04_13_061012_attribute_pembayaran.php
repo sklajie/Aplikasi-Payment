@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name', 30);
             $table->string('value', 20);
+            $table->timestamps();
         });
     }
 

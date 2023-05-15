@@ -209,15 +209,15 @@ class PembayaranController extends Controller
     //     return response()->json(true);
     // }    
 
-    // public function downloadPdf(Request $request, $id){
-    //     $data['karyawan'] = Pembayaran::select([
-    //                 'karyawan.*',
-    //                 'organisasi.nama as nama_organisasi'
-    //     ])->join('organisasi','organisasi.id','=','karyawan.organisasi_id')->find($id);
+    public function downloadPdf(Request $request, $id){
+        $data['pembayaran'] = Pembayaran::select([
+                    'pembayaran.*',
+                    'kategori_pembayaran.nama as nama_organisasi'
+        ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
 
-    //     $pdf = PDF::loadView('pdf.karyawan', $data);
-    //     return $pdf->stream('karyawan.pdf');
-    // }
+        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        return $pdf->stream('pembayaran.pdf');
+    }
 
     // public function getFoto(Request $request,$id)
     // {

@@ -534,7 +534,7 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/karyawan/download_pdf/${row.id}" class="btn btn-sm btn-primary btn-block">Download Pdf</a>
+            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block">Download Pdf</a>
             <button onclick="showDetailKaryawan('${row.id}')" class="btn btn-sm btn-warning btn-block">Edit</button>
           `;
           if(row.status=='aktif'){

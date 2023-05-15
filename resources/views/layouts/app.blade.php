@@ -234,7 +234,7 @@
 						</li>
 
 						<li class="nav-item">
-							<a href="#">
+							<a href="/histori_pembayaran">
 								<i class="fas fa-file-invoice-dollar"></i>
 								<p>Histori Pembayaran</p>
 							</a>
@@ -248,28 +248,28 @@
 						</li>		
 
 						<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
-							<a href="/lainnya">
+							<a href="/pebayaran/lainnya">
 								<i class="far fa-list-alt"></i>
 								<p>Pembayaran Lainnya</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="#">
+							<a href="/kategori_pembayaran">
 								<i class="fas fa-layer-group"></i>
 								<p>Kategori Pembayaran</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="#">
+							<a href="/api">
 								<i class="fas fa-key"></i>
 								<p>API Keys</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="#">
+							<a href="/dokumentasi">
 								<i class="fas fa-swatchbook"></i>
 								<p>Dokumentasi</p>
 							</a>
@@ -321,7 +321,7 @@
 					</li>
 
 					<li class="nav-item">
-						<a href="#">
+						<a href="/pembayaran/histori_pembayaran">
 							<i class="fas fa-file-invoice-dollar"></i>
 							<p>Histori Pembayaran</p>
 						</a>
@@ -335,14 +335,14 @@
 					</li>		
 
 					<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
-						<a href="/lainnya">
+						<a href="/pembayaran/lainnya">
 							<i class="far fa-list-alt"></i>
 							<p>Pembayaran Lainnya</p>
 						</a>
 					</li>
 
 					<li class="nav-item">
-						<a href="#">
+						<a href="/kategori_pembayaran">
 							<i class="fas fa-layer-group"></i>
 							<p>Kategori Pembayaran</p>
 						</a>
@@ -387,14 +387,14 @@
 					</li>
 
 					<li class="nav-item">
-						<a href="#">
+						<a href="/api">
 							<i class="fas fa-key"></i>
 							<p>API Keys</p>
 						</a>
 					</li>
 
 					<li class="nav-item">
-						<a href="#">
+						<a href="/dokumentasi">
 							<i class="fas fa-swatchbook"></i>
 							<p>Dokumentasi</p>
 						</a>

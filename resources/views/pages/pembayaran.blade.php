@@ -120,9 +120,9 @@
                   <label>
                     <input type="checkbox" class="tampilan" data-kolom="14" checked="true"> Status VA
                   </label>
-                  <label>
+                  {{-- <label>
                     <input type="checkbox" class="tampilan" data-kolom="15" checked="true"> Status pembayaran
-                  </label>
+                  </label> --}}
                 </div>
               </div>
               <br>
@@ -152,7 +152,7 @@
                 </div> --}}
                 <div class="col-md-4">
                   <label>Status</label>
-                  <select id="filter-status" class="form-control filter">
+                  <select id="filter-open-payment" class="form-control filter">
                     <option value="" hidden>Status</option>
                     <option value="1">Lunas</option>
                     <option value="0">Belum lunas</option>
@@ -181,7 +181,7 @@
                     <th>Amount</th>
                     <th>Tanggal Bayar</th>
                     <th>Status VA</th>
-                    <th>Status Pembayaran</th>
+                    {{-- <th>Status Pembayaran</th> --}}
                     <th>###</th>
                   </tr>
                   </thead>
@@ -340,13 +340,13 @@
         </div>
       </form>
     </div>
-  </div>
+  </div> --}}
 
   <div class="modal fade" id="modal-import">
     <div class="modal-dialog modal-lg">
-      <form method="post" id="form-import" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
+      <form method="post" id="form-import" action="{{url('')}}/pembayaran/import-excel" enctype="multipart/form-data" class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Import Data Karyawan</h4>
+          <h4 class="modal-title">Import Data Mahasiswa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -356,11 +356,11 @@
           {{csrf_field()}}
           <div class="row">
             <div class="col-md-12">
-              <p>Import data karyawan sesuai format contoh berikut.<br/><a href="{{url('')}}/excel-karyawan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Karyawan</a></p>
+              <p>Import data Mahasiswa sesuai format contoh berikut.<br/><a href="{{url('')}}/Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
             </div>
             <div class="col-md-12">
-              <label>File Excel Karyawan</label>
-              <input type="file" name="excel-karyawan" required>
+              <label>File Excel Mahasiswa</label>
+              <input type="file" name="Tagihan" required>
             </div>
           </div>
         </div>
@@ -375,7 +375,7 @@
   <form action="{{url('')}}/karyawan/export_terpilih" method="post" id="form-export-terpilih" class="hidden">
     <input type="hidden" name="ids">
     <button class="hidden" style="display: none;" type="submit">S</button>
-  </form> --}}
+  </form> 
 
     </div>
 </div> 
@@ -386,7 +386,7 @@
   let list_pembayaran = [];
   // let organisasi = $("#filter-organisasi").val()
   // ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  let status = $("#filter-status").val()
+  let openPayment = $("#filter-open-payment").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -401,6 +401,10 @@
     "ajax":{
       url: "{{url('')}}/pembayaran/data",
       type: "POST",
+      data:function(d){
+        d.openPayment = openPayment;
+        return d
+      }
     },
     "initComplete": function(settings, json) {
       const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
@@ -530,13 +534,12 @@
       //   }
       // },
       {
-        "targets": 16,
+        "targets": 15,
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
             <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block">Cetak Invoice</a>
-            // <button onclick="showDetailKaryawan('${row.id}')" class="btn btn-sm btn-warning btn-block">Edit</button>
-          `;
+            `;
           if(row.status=='aktif'){
             tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
           }else{
@@ -718,7 +721,7 @@
   // });
 
   $(".filter").on('change',function(){
-    status = $("#filter-status").val()
+    openPayment = $("#filter-open-payment").val()
     table.ajax.reload(null,false)
   })
 

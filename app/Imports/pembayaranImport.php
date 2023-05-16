@@ -18,14 +18,14 @@ class pembayaranImport implements ToModel, WithHeadingRow
     {
         $now = date('Y-m-d H:i:s');
         return new Pembayaran([
-            'id' => $row['Nomor Tagihan'],
-            'nama'=>$row['Nama'],
-            'nim'=>$row['Nomor Pembayaran'],
-            'kategori_pembayaran_id' => $row['Jenis Tagihan'],
+            'id' => $row['id'],
+            'nama'=>$row['nama'],
+            'nim'=>$row['nim'],
+            'kategori_pembayaran_id' => $row['kategori_pembayaran_id'],
             'email'=>$row['email'],
-            'phone'=>$row['Telepon'],
-            'va'=>$row['Nomor Pembayaran'],
-            'amount'=>$row['Nominal 1'],
+            'phone'=>$row['phone'],
+            'va'=>$row['va'],
+            'amount'=>$row['amount'],
         ]);
     }
 }

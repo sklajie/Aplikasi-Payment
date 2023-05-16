@@ -86,11 +86,11 @@ class PembayaranController extends Controller
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
 
         //filter berdasarkan status
-        if($request->input('status')!=null){
-            if($request->input('status')==1){
-                $data = $data->whereNotNull('status');
-            }else if($request->input('status')==0){
-                $data = $data->whereNull('status');
+        if($request->input('openPayment')!=null){
+            if($request->input('openPayment')== 1){
+                $data = $data->where('openPayment', $request->openPayment);
+            }else{
+                $data = $data->where('openPayment', $request->openPayment);
             }
         }
 
@@ -108,8 +108,8 @@ class PembayaranController extends Controller
 
     public function importDataMahasiswa(Request $request)
     {
-        $file = $request->file('excel-karyawan');
-        Excel::import(new pembayaranImport, $file);
+        $file = $request->file('Tagihan');
+        Excel::import(new pembayaranImport , $file);
         return redirect()->back();
 
     }

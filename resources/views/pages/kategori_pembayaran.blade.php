@@ -8,7 +8,7 @@
 		<div class="main-panel">
 				<div class="page-inner">
 					<div class="page-header">
-						<h4 class="page-title" style="padding-top: 10px;">Data Pengguna</h4>
+						<h4 class="page-title" style="padding-top: 10px;">Data Kategori</h4>
 					</div>
                     <div>
 						<ul class="breadcrumbs">

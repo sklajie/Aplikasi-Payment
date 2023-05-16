@@ -96,7 +96,7 @@
 
                     <label for="password" class="form-label text-md-end">Password</label>
                     <div class="input-group">
-            
+
                         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password">
                     
                         @error('password')
@@ -120,6 +120,7 @@
                         </span>
                     </div>
                     </div>
+                    <br>
                     <br>
 
                     <button type="submit" class="btn btn-primary float" style="width: 100px;">Tambah</button>   

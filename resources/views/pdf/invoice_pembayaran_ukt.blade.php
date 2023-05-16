@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="{{ url('') }}/assets/css/bootstrap.min.css">
     <style type="text/css">
         .kiri h2{
-            text-align: left
-        }
+            text-align: left;
+                    }
 	</style>
 </head>
 <body>
@@ -28,30 +28,49 @@
     <br>
     <div class="container-fluid">
         <div>
-            <ul>
-                <li>nama</li>
-                <li>nim</li>
-                <li>va</li>
-                <li>prodi</li>
-                <li>Semster</li>
-            </ul>
+            <table class="full mt-1 mb-1" style="margin-top: 50px;">
+                <tr>
+                    <th width="100">Nama : </th>
+                    <td>{{$pembayaran->nama}}</td>
+                </tr>
+                <tr>
+                    <th>NIM :</th>
+                    <td>{{$pembayaran->nim}}</td>
+                </tr>
+                <tr>
+                    <th>Prodi :</th>
+                    <td>{{$pembayaran->prodi}}</td>
+                </tr>
+                <tr>
+                    <th>Semester :</th>
+                    <td>{{$pembayaran->semester}}</td>
+                </tr>
+                <tr>
+                    <th>Email :</th>
+                    <td>{{$pembayaran->email}}</td>
+                </tr>
+                <tr>
+                    <th>Telepon :</th>
+                    <td>{{$pembayaran->phone}}</td>
+                </tr>
+            </table>
         </div>
         <div>
             <table class="display table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>jenis pembayaran</th>
-                        <th>jumlah</th>
                         <th>tanggal bayar</th>
+                        <th>jumlah</th>
                         <th>status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>UKT</td>
-                        <td>Rp 5.000.000</td>
-                        <td>-</td>
-                        <td>Belum Lunas</td>
+                        <td>{{ $pembayaran->nama_kategori }}</td>
+                        <td>{{ $pembayaran->date }}</td>
+                        <td>{{ $pembayaran->amount }}</td>
+                        <td>{{ $pembayaran->status }}</td>
                     </tr>
                 </tbody>
 
@@ -59,13 +78,20 @@
 
         </div>
         <div style="height:200px"></div>
-        <div class="validasi">
-            <div style="width: 80%; float:left;" >
+        <center>
+            <div class="validasi">
+                <div style="width: 80%; float:left;" >
+                </div>
+                <div style="width: 20%; float:right;">
+                    <div>
+                        <p>tanggal</p>
+                    </div>
+                    <div class="ttd" style="height:100px; border-bottom: 1px solid #212121;">
+                        <p>(_______________________)</p>
+                    </div>
+                </div>
             </div>
-            <div style="width: 20%; float:right;">
-                <p>27 januari 2023</p>
-            </div>
-        </div>
+        </center>
     </div>
 
     

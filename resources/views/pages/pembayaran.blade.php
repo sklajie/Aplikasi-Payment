@@ -130,15 +130,15 @@
                 <div class="col-md-12">
                   <h4>Filter Data</h4>
                 </div>
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                   <label>Semester</label>
                   <select id="filter-organisasi" class="form-control filter">
                     <option value="">pilih semester</option>
                     <option value="">Genap</option>
                     <option value=""></option>
-                    {{-- @foreach($list_organisasi as $organisasi)
+                    @foreach($list_organisasi as $organisasi)
                     <option value=""></option>
-                    @endforeach --}}
+                    @endforeach
                   </select>
                 </div>
                 <div class="col-md-4">
@@ -149,11 +149,11 @@
                     <option value="2">Teknik Informatika</option>
                     <option value="3">Teknik Pendingin dan Tata udara</option>
                   </select>
-                </div>
+                </div> --}}
                 <div class="col-md-4">
                   <label>Status</label>
-                  <select id="filter-bpjs-ketenagakerjaan" class="form-control filter">
-                    <option value="">Status</option>
+                  <select id="filter-status" class="form-control filter">
+                    <option value="" hidden>Status</option>
                     <option value="1">Lunas</option>
                     <option value="0">Belum lunas</option>
                   </select>
@@ -386,7 +386,7 @@
   let list_pembayaran = [];
   // let organisasi = $("#filter-organisasi").val()
   // ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  // ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
+  let status = $("#filter-status").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -435,7 +435,7 @@
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.kategori_pembayaran_id;
+          return row.nama_kategori;
         }
       },
       {
@@ -534,8 +534,8 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block">Download Pdf</a>
-            <button onclick="showDetailKaryawan('${row.id}')" class="btn btn-sm btn-warning btn-block">Edit</button>
+            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block">Cetak Invoice</a>
+            // <button onclick="showDetailKaryawan('${row.id}')" class="btn btn-sm btn-warning btn-block">Edit</button>
           `;
           if(row.status=='aktif'){
             tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
@@ -717,12 +717,10 @@
   //   });
   // });
 
-  // $(".filter").on('change',function(){
-  //   organisasi = $("#filter-organisasi").val()
-  //   bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  //   bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
-  //   table.ajax.reload(null,false)
-  // })
+  $(".filter").on('change',function(){
+    status = $("#filter-status").val()
+    table.ajax.reload(null,false)
+  })
 
   function exportKaryawanTerpilih() {
     let checkbox_terpilih = $("#table tbody .cb-child:checked")

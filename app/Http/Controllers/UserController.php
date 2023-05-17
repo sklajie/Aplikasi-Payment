@@ -20,6 +20,11 @@ class UserController extends Controller
 
     }
 
+    public function show($id)
+    {
+        
+    }
+
     public function create()
     {
         $title = 'Users';
@@ -111,5 +116,12 @@ class UserController extends Controller
         return back()->with('Success','Berhasil Hapus Data');
     }
 
+    public function profil(Request $request){
 
+        $title = 'Profile';
+        $level = Level::all();
+        return view('pages.users.profil', compact('level', 'title'))->with([
+            'user' => user::all()
+        ]);
+    }
 }

@@ -56,7 +56,7 @@
         <div class="col-md-12">
           <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button>
           <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Mahasiswa Excel</button>
-          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{url('')}}/karyawan/export">Export Data Pembayaran Excel</a>
+          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Pembayaran Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
           <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportKaryawanTerpilih()">Export Karyawan Terpilih</button>
@@ -70,49 +70,59 @@
                 <div class="col-md-12">
                   <h4>Pilih Tampilan</h4>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>
                     <input type="checkbox" class="tampilan" data-kolom="1"> ID
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="2"> Kategori Pembayaran
+                    <input type="checkbox" class="tampilan" data-kolom="2" checked="true"> Kategori Pembayaran
                   </label>
-                  <label>
                     <input type="checkbox" class="tampilan" data-kolom="3" checked="true"> Nama
                   </label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> Email
+                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> NIM
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="5"> HandPhone
+                    <input type="checkbox" class="tampilan" data-kolom="5" checked="true"> E-mail
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="6"> Alamat
-                  </label>
-                </div>
-                <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="7" checked="true"> Semester
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="8" checked="true"> Prodi
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="9"> VA
+                    <input type="checkbox" class="tampilan" data-kolom="6"> Handphone
                   </label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="10" checked="true"> Tahun Akademik
+                    <input type="checkbox" class="tampilan" data-kolom="7"> Alamat
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="11" checked="true"> Tanggal Bayar
+                    <input type="checkbox" class="tampilan" data-kolom="8" checked="true"> Semester
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="12" checked="true"> Status
+                    <input type="checkbox" class="tampilan" data-kolom="9" checked="true"> Prodi
                   </label>
+                </div>
+                <div class="col-md-2">
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="10"> VA
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="11" checked="true"> Tahun Akademik
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="12" checked="true"> Amount
+                  </label>
+                </div>
+                <div class="col-md-2">
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="13" checked="true">Tanggal bayar
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="14" checked="true"> Status VA
+                  </label>
+                  {{-- <label>
+                    <input type="checkbox" class="tampilan" data-kolom="15" checked="true"> Status pembayaran
+                  </label> --}}
                 </div>
               </div>
               <br>
@@ -120,15 +130,15 @@
                 <div class="col-md-12">
                   <h4>Filter Data</h4>
                 </div>
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                   <label>Semester</label>
                   <select id="filter-organisasi" class="form-control filter">
                     <option value="">pilih semester</option>
                     <option value="">Genap</option>
                     <option value=""></option>
-                    {{-- @foreach($list_organisasi as $organisasi)
+                    @foreach($list_organisasi as $organisasi)
                     <option value=""></option>
-                    @endforeach --}}
+                    @endforeach
                   </select>
                 </div>
                 <div class="col-md-4">
@@ -139,11 +149,11 @@
                     <option value="2">Teknik Informatika</option>
                     <option value="3">Teknik Pendingin dan Tata udara</option>
                   </select>
-                </div>
+                </div> --}}
                 <div class="col-md-4">
                   <label>Status</label>
-                  <select id="filter-bpjs-ketenagakerjaan" class="form-control filter">
-                    <option value="">Status</option>
+                  <select id="filter-open-payment" class="form-control filter">
+                    <option value="" hidden>Status</option>
                     <option value="1">Lunas</option>
                     <option value="0">Belum lunas</option>
                   </select>
@@ -171,7 +181,7 @@
                     <th>Amount</th>
                     <th>Tanggal Bayar</th>
                     <th>Status VA</th>
-                    <th>Status Pembayaran</th>
+                    {{-- <th>Status Pembayaran</th> --}}
                     <th>###</th>
                   </tr>
                   </thead>
@@ -330,13 +340,13 @@
         </div>
       </form>
     </div>
-  </div>
+  </div> --}}
 
   <div class="modal fade" id="modal-import">
     <div class="modal-dialog modal-lg">
-      <form method="post" id="form-import" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
+      <form method="post" id="form-import" action="{{url('')}}/pembayaran/import-excel" enctype="multipart/form-data" class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Import Data Karyawan</h4>
+          <h4 class="modal-title">Import Data Mahasiswa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -346,11 +356,11 @@
           {{csrf_field()}}
           <div class="row">
             <div class="col-md-12">
-              <p>Import data karyawan sesuai format contoh berikut.<br/><a href="{{url('')}}/excel-karyawan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Karyawan</a></p>
+              <p>Import data Mahasiswa sesuai format contoh berikut.<br/><a href="{{url('')}}/Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
             </div>
             <div class="col-md-12">
-              <label>File Excel Karyawan</label>
-              <input type="file" name="excel-karyawan" required>
+              <label>File Excel Mahasiswa</label>
+              <input type="file" name="Tagihan" required>
             </div>
           </div>
         </div>
@@ -365,7 +375,7 @@
   <form action="{{url('')}}/karyawan/export_terpilih" method="post" id="form-export-terpilih" class="hidden">
     <input type="hidden" name="ids">
     <button class="hidden" style="display: none;" type="submit">S</button>
-  </form> --}}
+  </form> 
 
     </div>
 </div> 
@@ -373,10 +383,10 @@
 
 @section('js')
 <script type="text/javascript">
-  // let list_pembayaran = [];
+  let list_pembayaran = [];
   // let organisasi = $("#filter-organisasi").val()
   // ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  // ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
+  let openPayment = $("#filter-open-payment").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -391,25 +401,24 @@
     "ajax":{
       url: "{{url('')}}/pembayaran/data",
       type: "POST",
-      // data:function(d){
-      //   // d.organisasi = organisasi;
-      //   // d.bpjs_kesehatan = bpjs_kesehatan;
-      //   // d.bpjs_ketenagakerjaan = bpjs_ketenagakerjaan;
-      //   return d
-      // }
+      data:function(d){
+        d.openPayment = openPayment;
+        return d
+      }
     },
-    // "initComplete": function(settings, json) {
-    //   const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
-    //   $.each(all_checkbox_view,function(key,checkbox){
-    //     let kolom = $(checkbox).data('kolom')
-    //     let is_checked = checkbox.checked
-    //     table.column(kolom).visible(is_checked)
-    //   })
-    //   setTimeout(function(){
-    //     table.columns.adjust().draw();
-    //   },3000)
-    // },
+    "initComplete": function(settings, json) {
+      const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
+      $.each(all_checkbox_view,function(key,checkbox){
+        let kolom = $(checkbox).data('kolom')
+        let is_checked = checkbox.checked
+        table.column(kolom).visible(is_checked)
+      })
+      setTimeout(function(){
+        table.columns.adjust().draw();
+      },2000)
+    },
     columnDefs: [
+      {targets:'_all', visible:true},
       {
         "targets": 0,
         "class":"text-nowrap",
@@ -430,7 +439,7 @@
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.kategori_pembayaran;
+          return row.nama_kategori;
         }
       },
       {
@@ -517,21 +526,20 @@
           return row.openPayment;
         }
       },
+      // {
+      //   "targets": 15,
+      //   "class":"text-nowrap",
+      //   "render": function(data, type, row, meta){
+      //     return row.Status;
+      //   }
+      // },
       {
         "targets": 15,
-        "class":"text-nowrap",
-        "render": function(data, type, row, meta){
-          return row.Status;
-        }
-      },
-      {
-        "targets": 16,
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/karyawan/download_pdf/${row.id}" class="btn btn-sm btn-primary btn-block">Download Pdf</a>
-            <button onclick="showDetailKaryawan('${row.id}')" class="btn btn-sm btn-warning btn-block">Edit</button>
-          `;
+            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block">Cetak Invoice</a>
+            `;
           if(row.status=='aktif'){
             tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
           }else{
@@ -632,24 +640,24 @@
   //   }
   // }
 
-  // $("#head-cb").on('click',function(){
-  //   var isChecked = $("#head-cb").prop('checked')
-  //   $(".cb-child").prop('checked',isChecked)
-  //   $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-  //   $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-  // })
+  $("#head-cb").on('click',function(){
+    var isChecked = $("#head-cb").prop('checked')
+    $(".cb-child").prop('checked',isChecked)
+    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+  })
 
-  // $("#table tbody").on('click','.cb-child',function(){
-  //   if($(this).prop('checked')!=true){
-  //     $("#head-cb").prop('checked',false)
-  //   }
+  $("#table tbody").on('click','.cb-child',function(){
+    if($(this).prop('checked')!=true){
+      $("#head-cb").prop('checked',false)
+    }
 
-  //   let semua_checkbox = $("#table tbody .cb-child:checked")
-  //   let button_non_aktif_status = (semua_checkbox.length>0)
-  //   let button_export_terpilih_status = button_non_aktif_status;
-  //   $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-  //   $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-  // })
+    let semua_checkbox = $("#table tbody .cb-child:checked")
+    let button_non_aktif_status = (semua_checkbox.length>0)
+    let button_export_terpilih_status = button_non_aktif_status;
+    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+  })
 
   // function nonAktifkanTerpilih () {
   //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
@@ -712,32 +720,30 @@
   //   });
   // });
 
-  // $(".filter").on('change',function(){
-  //   organisasi = $("#filter-organisasi").val()
-  //   bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  //   bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
-  //   table.ajax.reload(null,false)
-  // })
+  $(".filter").on('change',function(){
+    openPayment = $("#filter-open-payment").val()
+    table.ajax.reload(null,false)
+  })
 
-  // function exportKaryawanTerpilih() {
-  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
-  //   let semua_id = []
-  //   $.each(checkbox_terpilih,function(index,elm){
-  //     semua_id.push(elm.value)
-  //   })
-  //   let ids = semua_id.join(',')
-  //   $("#button-export-terpilih").prop('disabled',true)
-  //   $("#form-export-terpilih [name='ids']").val(ids)
-  //   $("#form-export-terpilih").submit()
-  //   // $.ajax({
-  //   //   url:"{{url('')}}/karyawan/export_terpilih",
-  //   //   method:'POST',
-  //   //   data:{ids:semua_id},
-  //   //   success:function(res){
-  //   //     console.log(res)
-  //   //     $("#button-export-terpilih").prop('disabled',false)
-  //   //   }
-  //   // })
-  // }
+  function exportKaryawanTerpilih() {
+    let checkbox_terpilih = $("#table tbody .cb-child:checked")
+    let semua_id = []
+    $.each(checkbox_terpilih,function(index,elm){
+      semua_id.push(elm.value)
+    })
+    let ids = semua_id.join(',')
+    $("#button-export-terpilih").prop('disabled',true)
+    $("#form-export-terpilih [name='ids']").val(ids)
+    $("#form-export-terpilih").submit()
+    // $.ajax({
+    //   url:"{{url('')}}/karyawan/export_terpilih",
+    //   method:'POST',
+    //   data:{ids:semua_id},
+    //   success:function(res){
+    //     console.log(res)
+    //     $("#button-export-terpilih").prop('disabled',false)
+    //   }
+    // })
+  }
 </script>
 @stop

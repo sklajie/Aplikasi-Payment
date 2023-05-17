@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="/users/create">Edit Pengguna</a>
+                <a href="/users/edit">Edit Pengguna</a>
             </li>
         </ul>
         </div>

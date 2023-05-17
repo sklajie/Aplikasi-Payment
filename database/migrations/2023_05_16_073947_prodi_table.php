@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attribute_pembayaran', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name', 30);
-            $table->string('value', 20);
-            $table->timestamps();
-        });
+        //
     }
 
     /**
@@ -24,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attribute_pembayaran');
+        //
     }
 };

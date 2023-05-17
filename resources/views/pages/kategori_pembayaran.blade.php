@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title' , 'Pengguna' , 'active')
+@section('title' , 'Kategori Pembayaran' , 'active')
 
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -8,7 +8,7 @@
 		<div class="main-panel">
 				<div class="page-inner">
 					<div class="page-header">
-						<h4 class="page-title" style="padding-top: 10px;">Data Pengguna</h4>
+						<h4 class="page-title" style="padding-top: 10px;">Data Kategori</h4>
 					</div>
                     <div>
 						<ul class="breadcrumbs">
@@ -22,7 +22,7 @@
 							</li>
 						
 							<li class="nav-item">
-								<a href="/users">Data Pengguna</a>
+								<a href="/kategori_pemabayaran">Kategori Pembayaran</a>
 							</li>
 						</ul>
                         </div>
@@ -32,8 +32,8 @@
 							<div class="card">
 								<div class="card-header">
 									<div class="d-flex align-items-center">
-										<h4 class="card-title"><b>Data Pengguna</b></h4>
-										<a href="{{route('users.create')}}" class="btn btn-primary btn-round ml-auto" >
+										<h4 class="card-title"><b>Kategori Pembayaran</b></h4>
+										<a href="{{route('kategori_pembayaran.create')}}" class="btn btn-primary btn-round ml-auto" >
 											<i class="fa fa-plus"></i>
 											&NonBreakingSpace;Tambahkan
 										</a>
@@ -47,33 +47,25 @@
 											<thead>
 												<tr>
 													<th>No</th>
-													<th>Nama</th>
-													<th>Username</th>
-													<th>Email</th>
-													<th>No Handphone</th>
-													<th>Role</th>
+													<th>Kategori</th>
 													<th>Action</th>
 												</tr>
 											</thead>
 											
 											<tbody>	
-												@foreach ($user as $data)	
+												@foreach ($kategori_pembayaran as $data)	
 												<tr>
 													<td>{{$loop->iteration}}</td>
-													<td>{{$data->name}}</td>
-													<td>{{$data->username}}</td>
-													<td>{{$data->email}}</td>
-													<td>{{$data->no_hp}}</td>
-													<td>{{$data->level['nama_level']}}</td>
-													
+													<td>{{$data->kategori_pembayaran}}</td>
 													<td>
 														
 														
-														<form action="{{ route('users.destroy', $data->id )}}" method="POST">
+														<form action="{{ route('kategori_pembayaran.destroy', $data->id )}}" method="POST">
 															@csrf
 															@method('delete')
 													
-															<a href="{{ route('users.edit', $data->id )}}" class="btn btn-primary btn-xs"><i class="fa fa-print">&NonBreakingSpace; Edit</i></a>
+															<a href="{{ route('kategori_pembayaran.edit', $data->id )}}" class="btn btn-primary btn-xs"><i class="fa fa-print">&NonBreakingSpace; Edit</i></a>
+															
 															<!-- Button trigger modal -->
 															<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModalCenter">
 																<i class="fa fa-trash">&NonBreakingSpace;</i>Hapus
@@ -89,11 +81,12 @@
 																		<span aria-hidden="true">&times;</span>
 																	</button>
 																	</div>
-																	
 																	<div class="modal-body">
-																		Yakin Untuk Menghapus Pengguna Ini?
+																	Jika Menghapus Kategori Ini, Maka Semua Data Yang Berkaitan Dengan Kategori Akan Terhapus
 																	</div>
-
+																	<div class="modal-body">
+																		Yakin Untuk Tetap Menghapus Kategori Ini?
+																	</div>
 																	<div class="modal-footer">
 																	<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
 																	<button type="submit" class="btn btn-danger">Hapus</button>
@@ -101,7 +94,8 @@
 																</div>
 																</div>
 															</div>
-														
+
+
 														</form>
 													</td>
 												</tr>

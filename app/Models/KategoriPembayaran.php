@@ -4,21 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use App\Traits\Uuid;
-use Illuminate\Support\Str;
+use Illuminate\Support\str;
 
-class Pembayaran extends Model
+class KategoriPembayaran extends Model
 {
-    public $table = 'pembayaran';
-    protected $guarded = [''];
+    use HasFactory;
+    protected $table = 'kategori_pembayaran';
+    protected $fillable = [
+        'kategori_pembayaran'
+    ];
 
-    
-     /**
-     * Kita override boot method
-     *
-     * Mengisi primary key secara otomatis dengan UUID ketika membuat record
-     */
     protected static function boot()
     {
         parent::boot();
@@ -49,6 +44,7 @@ class Pembayaran extends Model
         return 'string';
     }
 
-    
+    public function pembayaran(){
+        return $this->hasMany(pembayaran::class);
+    }
 }
-    

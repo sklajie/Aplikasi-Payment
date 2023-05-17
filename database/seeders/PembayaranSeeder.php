@@ -33,10 +33,11 @@ class PembayaranSeeder extends Seeder
             'prodi' => 'Teknik Informatika',
             'va' => '2103012',
             'amount' => '5000000',
-            'openPayment' => true,
+            'status' => true,
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),
+            'attribute_pembayaran_id' => fake()->randomElement($attribute_id),
             'item_pembayaran_id' => fake()->randomElement($item_id)
         ]);
 
@@ -53,11 +54,13 @@ class PembayaranSeeder extends Seeder
             'prodi' => 'Teknik Informatika',
             'va' => '2103007',
             'amount' => '5000000',
-            'openPayment' => true,
+            'status' => true,
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),
+            'attribute_pembayaran_id' => fake()->randomElement($attribute_id),
             'item_pembayaran_id' => fake()->randomElement($item_id)
+            
         ]);
         
         DB::table('pembayaran')->insert([
@@ -73,10 +76,11 @@ class PembayaranSeeder extends Seeder
             'prodi' => 'Teknik Informatika',
             'va' => '2103014',
             'amount' => '4000000',
-            'openPayment' => true,
+            'status' => true,
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),
+            'attribute_pembayaran_id' => fake()->randomElement($attribute_id),
             'item_pembayaran_id' => fake()->randomElement($item_id)
         ]);
     }

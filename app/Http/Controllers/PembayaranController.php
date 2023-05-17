@@ -6,9 +6,8 @@ use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
-use App\Imports\KaryawanImport;
-use App\Exports\KaryawanExport;
-use App\Exports\TesExport;
+use App\Imports\pembayaranImport;
+use App\Exports\PembayaranExport;
 use Illuminate\Support\Facades\Http;
 
 class PembayaranController extends Controller
@@ -22,11 +21,16 @@ class PembayaranController extends Controller
     public function aktifasi(Request $request){
 
         $data = [
-            ['name' => $request->names, 'email' => 'johndoe@example.com', 'password' => 'password123'],
+            ['name' => $request->names, 'email' => 'johndoe@example.com', '' => 'password123'],
         ];
         
         foreach ($data as $pembayaran) {
-            $response =Http::withHeaders('')->post('https://billing-bpi-dev.maja.id/api/v2/invoice', $pembayaran);
+            $response =Http::withHeaders([
+                'ClientID' => 'BPI3764',
+                'SecretKey' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
+                'username' => '3764',
+                'password' => '3764' 
+            ])->post('https://billing-bpi-dev.maja.id/api/v2/invoice', $pembayaran);
         }
         
     }
@@ -34,12 +38,12 @@ class PembayaranController extends Controller
     public function data(Request $request)
     {
     	$orderBy = 'pembayaran.nim';
-        switch($request->input('order.1.column')){
+        switch($request->input('order.0.column')){
             case "1":
                 $orderBy = 'pembayaran.id';
                 break;
             case "2":
-                $orderBy = 'pembayaran.kategori_pembayaran';
+                $orderBy = 'pembayaran.kategori_pembayaran_id';
                 break;
             case "3":
                 $orderBy = 'pembayaran.nama';
@@ -77,155 +81,59 @@ class PembayaranController extends Controller
         }
 
         $data = Pembayaran::select([
-            'pembayaran.*'
-        ]);
-        // ->where('status')
-        // ->join('organisasi','organisasi.id','=','karyawan.organisasi_id')
-        // ;
+            'pembayaran.*',
+            'kategori_pembayaran.kategori_pembayaran as nama_kategori'
+        ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
 
-        // if($request->input('search.value')!=null){
-        //     $data = $data->where(function($q)use($request){
-        //         $q->whereRaw('LOWER(karyawan.nik) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(karyawan.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(karyawan.nomor_ktp) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(karyawan.telp) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(karyawan.status) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(karyawan.status) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(organisasi.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ;
-        //     });
-        // }
-
-        // if($request->input('organisasi')!=null){
-        //     $data = $data->where('organisasi_id',$request->organisasi);
-        // }
-        // if($request->input('bpjs_kesehatan')!=null){
-        //     if($request->input('bpjs_kesehatan')==1){
-        //         $data = $data->whereNotNull('nomor_bpjs_kesehatan');
-        //     }else if($request->input('bpjs_kesehatan')==0){
-        //         $data = $data->whereNull('nomor_bpjs_kesehatan');
-        //     }
-        // }
-        // if($request->input('bpjs_ketenagakerjaan')!=null){
-        //     if($request->input('bpjs_ketenagakerjaan')==1){
-        //         $data = $data->whereNotNull('nomor_bpjs_ketenagakerjaan');
-        //     }else if($request->input('bpjs_ketenagakerjaan')==0){
-        //         $data = $data->whereNull('nomor_bpjs_ketenagakerjaan');
-        //     }
-        // }
+        //filter berdasarkan status
+        if($request->input('openPayment')!=null){
+            if($request->input('openPayment')== 1){
+                $data = $data->where('openPayment', $request->openPayment);
+            }else{
+                $data = $data->where('openPayment', $request->openPayment);
+            }
+        }
 
         $recordsFiltered = $data->get()->count();
         if($request->input('length')!=-1) $data = $data->skip($request->input('start'))->take($request->input('length'));
+        $data = $data->orderBy($orderBy,$request->input('order.0.dir'))->get();
+        $recordsTotal = $data->count();
         return response()->json([
             'draw'=>$request->input('draw'),
+            'recordsTotal'=>$recordsTotal,
             'recordsFiltered'=>$recordsFiltered,
             'data'=>$data
         ]);
     }
 
-    // public function create(Request $request)
-    // {
-    //     #AMBIL SEMUA REQUEST KECUALI TOKEN DAN FOTO. SOALNYA FOTO = FILE BUKAN TEKS
-    //     $will_insert = $request->except(['foto','_token']);
+    public function importDataMahasiswa(Request $request)
+    {
+        $file = $request->file('Tagihan');
+        Excel::import(new pembayaranImport , $file);
+        return redirect()->back();
 
-    //     #JIKA USER UPLOAD FOTO
-    //     if($request->hasFile('foto')){
-    //         $extension = $request->file('foto')->getClientOriginalExtension();#AMBIL EXTENSION
-    //         #STORE KE SOTRAGE
-    //         $path_foto = $request->file('foto')->storeAs(
-    //             'foto', $request->input('nik').'.'.$extension
-    //         );
-    //         #SET KE VARIABLE YANG AKAN DI INSERT KE KARYAWAN TABLE
-    //         $will_insert['foto'] = $path_foto;
-    //     }
+    }
 
-    //     Pembayaran::create($will_insert);
-    //     // return redirect('/Pembayaran/aktif');
-    //     return response()->json(true);
-    // }
+    public function exportData(Request $request)
+    {
+        return Excel::download(new PembayaranExport, 'Pembayaran.xlsx');
+    }
 
-    // public function edit(Request $request)
-    // {
-    //     $will_update = $request->except(['foto','_token','_method']);
-    //     #JIKA USER UPLOAD FOTO
-    //     if($request->hasFile('foto')){
-    //         $extension = $request->file('foto')->getClientOriginalExtension();#AMBIL EXTENSION
-    //         #STORE KE SOTRAGE
-    //         $path_foto = $request->file('foto')->storeAs(
-    //             'foto', $request->input('nik').'.'.$extension
-    //         );
-    //         #SET KE VARIABLE YANG AKAN DI INSERT KE Pembayaran TABLE
-    //         $will_update['foto'] = $path_foto;
-    //     }
-    //     Pembayaran::where('id',$request->input('id'))->update($will_update);
+    public function downloadPdf(Request $request, $id){
 
-    //     return response()->json(true);
-    // }
-
-    // public function updateStatus(Request $request)
-    // {
-    //     $karyawan = Pembayaran::find($request->input('id'));
-    //     $karyawan->status = $request->status;
-    //     $karyawan->save();
-    //     return response()->json(true);
-    // }
-
-    // public function importDataKaryawan(Request $request)
-    // {
-    //     $file = $request->file('excel-karyawan');
-    //     Excel::import(new KaryawanImport,$file);
-    //     return redirect()->back();
-
-    // }
-
-    // public function exportData(Request $request)
-    // {
-    //     return Excel::download(new KaryawanExport, 'karyawan.xlsx');
-    // }
-
-    // public function exportDataTerpilih(Request $request)
-    // {
-    //     $ids = explode(',', $request->ids);
-    //     return Excel::download(new KaryawanExport($ids), 'karyawan.xlsx');
-    // }
-
-    // public function tesExport(Request $request)
-    // {
-    //     return Excel::download(new TesExport, 'tes.xlsx');
-    // }
-
-    // public function nonAktifkanBanyak(Request $request)
-    // {
-    //     Pembayaran::whereIn('id',$request->ids)->update(['status'=>'non aktif']);
-    //     return response()->json(true);
-    // }
-
-    // public function aktifkanBanyak(Request $request)
-    // {
-    //     Pembayaran::whereIn('id',$request->ids)->update(['status'=>'aktif']);
-    //     return response()->json(true);
-    // }    
-
-    // public function downloadPdf(Request $request, $id){
-    //     $data['karyawan'] = Pembayaran::select([
-    //                 'karyawan.*',
-    //                 'organisasi.nama as nama_organisasi'
-    //     ])->join('organisasi','organisasi.id','=','karyawan.organisasi_id')->find($id);
-
-    //     $pdf = PDF::loadView('pdf.karyawan', $data);
-    //     return $pdf->stream('karyawan.pdf');
-    // }
-
-    // public function getFoto(Request $request,$id)
-    // {
-    //     $karyawan = Pembayaran::whereNotNull('foto')->find($id);
-    //     if($karyawan == null) abort(404);
-    //     $path = storage_path('app/'.$karyawan->foto);
-    //     // $file = \Storage::get($path);
-    //     // $type = \Storage::mimeType($path);
-    //     // $response = \Response::make($file, 200)->header("Content-Type", $type);
-    //     // return $response;
-    //     return response()->file($path);
-    // }
+    /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+        $data['pembayaran'] = Pembayaran::select([
+        'pembayaran.*',
+        'kategori_pembayaran.kategori_pembayaran as nama_kategori'
+        ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
+        
+        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        return $pdf->download('pembayaran.pdf');
+    }
 
 }

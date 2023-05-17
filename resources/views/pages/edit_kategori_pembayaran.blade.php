@@ -42,7 +42,7 @@
                     @csrf
                     @method('patch')
                     <div class="mb-3">
-                        <label for="kategori_pembayaran" class="form-label">Nama Lengkap</label>
+                        <label for="kategori_pembayaran" class="form-label">Nama Kategori</label>
                         <input id="kategori_pembayaran" type="text" class="form-control @error('kategori_pembayaran') is-invalid @enderror" value="{{$kategori_pembayaran->kategori_pembayaran}}" name="kategori_pembayaran" required autocomplete="kategori_pembayaran" autofocus>
 
                                 @error('kategori_pembayaran')

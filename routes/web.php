@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PembayaranController;
+use App\Services\BillingApi;
+
+use App\Http\Controllers\TransaksiPmbController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,3 +37,4 @@ Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::
 Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);
 Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranController::class )->middleware(['auth', 'adminkeuangan']);
 
+Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->name('bsi-callback');

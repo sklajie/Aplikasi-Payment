@@ -215,4 +215,11 @@ return [
         'PDF'=>\Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 
+
+    'bsi_api' => [
+        'base_uri' => env('BSI_API_ENDPOINT'),
+        'client_id' => env('BSI_API_CLIENT_ID'),
+        'client_secret' => env('BSI_API_CLIENT_SECRET'),
+    ],
+
 ];

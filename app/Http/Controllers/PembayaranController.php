@@ -85,12 +85,51 @@ class PembayaranController extends Controller
             'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
 
+
+        if($request->input('search.value')!=null){
+            $data = $data->where(function($q)use($request){
+                $q->whereRaw('LOWER(pembayaran.nim) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.openPayment) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.date) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.prodi) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.semester) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(kategori_pembayaran.kategori_pembayaran) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ;
+            });
+        }
+
+        if($request->input('prodi')!=null){
+            $data = $data->where('prodi_id',$request->prodi);
+        }
+
         //filter berdasarkan status
         if($request->input('openPayment')!=null){
             if($request->input('openPayment')== 1){
                 $data = $data->where('openPayment', $request->openPayment);
-            }else{
+            }else if($request->input('openPayment')== 0){
                 $data = $data->where('openPayment', $request->openPayment);
+            }
+        }
+
+        //filter berdasarkan semester
+        if($request->input('semester')!=null){
+            if($request->input('semester')== 1){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 2){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 3){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 4){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 5){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 6){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 7){
+                $data = $data->where('semester', $request->semester);
+            }else if($request->input('semester')== 8){
+                $data = $data->where('semester', $request->semester);
             }
         }
 
@@ -132,8 +171,10 @@ class PembayaranController extends Controller
         'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
         
-        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
-        return $pdf->download('pembayaran.pdf');
+            return view('pdf.invoice_pembayaran_ukt', $data);
+
+        // $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        // return $pdf->download('pembayaran.pdf');
     }
 
 }

@@ -19,8 +19,8 @@
             <h2 style="padding:20px; float:left;"><img src="{{ url('') }}/assets/img/logo_polindra.png" width="60px" alt="" > Politeknik Negeri Indramayu</h2>
         </div>
         <div style="width: 30%; float:right;" class="kiri">
-            <p style="padding: 20px;">Jl. Raya Lohbener Lama, Kecamatan Lohbener, Kabupaten Indramayu, Jawa Barat 45252
-                (0234) 5746464
+            <p style="padding: 20px;">Jl. Raya Lohbener Lama, Kecamatan Lohbener, Kabupaten Indramayu, Jawa Barat 45252 <br>
+                (0234) 5746464 <br>
 
                 www.polindra.ac.id</p>
         </div>
@@ -54,14 +54,15 @@
                     <td>{{$pembayaran->phone}}</td>
                 </tr>
             </table>
+            <br>
         </div>
         <div>
             <table class="display table table-striped table-hover">
-                <thead>
+                <thead style="background-color: aquamarine">
                     <tr>
                         <th>jenis pembayaran</th>
                         <th>tanggal bayar</th>
-                        <th>jumlah</th>
+                        <th>Tagihan</th>
                         <th>status</th>
                     </tr>
                 </thead>
@@ -84,11 +85,12 @@
                 </div>
                 <div style="width: 20%; float:right;">
                     <div>
-                        <p>tanggal</p>
+                        <p><span id="tanggalwaktu"></span></p>
                     </div>
-                    <div class="ttd" style="height:100px; border-bottom: 1px solid #212121;">
-                        <p>(_______________________)</p>
+                    <div class="ttd" style="height:80px;">
+                        
                     </div>
+                    <p>(_______________________)</p>
                 </div>
             </div>
         </center>
@@ -96,4 +98,23 @@
 
     
 </body>
+
+<script>
+    window.print();
+</script>
+
+<script>
+    var tw = new Date();
+    if (tw.getTimezoneOffset() == 0) (a=tw.getTime() + ( 7 *60*60*1000))
+    else (a=tw.getTime());
+    tw.setTime(a);
+    var tahun= tw.getFullYear ();
+    var hari= tw.getDay ();
+    var bulan= tw.getMonth ();
+    var tanggal= tw.getDate ();
+    var hariarray=new Array("Minggu,","Senin,","Selasa,","Rabu,","Kamis,","Jum'at,","Sabtu,");
+    var bulanarray=new Array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");
+    document.getElementById("tanggalwaktu").innerHTML = hariarray[hari]+" "+tanggal+" "+bulanarray[bulan]+" "+tahun;
+    </script>
+
 </html>

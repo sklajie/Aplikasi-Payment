@@ -85,7 +85,7 @@
                     <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> NIM
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="5" checked="true"> E-mail
+                    <input type="checkbox" class="tampilan" data-kolom="5"> E-mail
                   </label>
                   <label>
                     <input type="checkbox" class="tampilan" data-kolom="6"> Handphone
@@ -130,30 +130,33 @@
                 <div class="col-md-12">
                   <h4>Filter Data</h4>
                 </div>
-                {{-- <div class="col-md-4">
-                  <label>Semester</label>
-                  <select id="filter-organisasi" class="form-control filter">
-                    <option value="">pilih semester</option>
-                    <option value="">Genap</option>
+                <div class="col-md-4">
+                  <label>Prodi</label>
+                  <select id="filter-prodi" class="form-control filter">
+                    <option value="">Semua</option>
+                    {{-- @foreach($list_organisasi as $organisasi)
                     <option value=""></option>
-                    @foreach($list_organisasi as $organisasi)
-                    <option value=""></option>
-                    @endforeach
+                    @endforeach --}}
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <label>Prodi</label>
-                  <select id="filter-bpjs-kesehatan" class="form-control filter">
-                    <option value="">Pilih prodi</option>
-                    <option value="1">Teknik Mesin</option>
-                    <option value="2">Teknik Informatika</option>
-                    <option value="3">Teknik Pendingin dan Tata udara</option>
+                  <label>Semester</label>
+                  <select id="filter-semester" class="form-control filter">
+                    <option value="">semua</option>
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                    <option value="7">Semester 7</option>
+                    <option value="8">Semester 8</option>
                   </select>
-                </div> --}}
+                </div>
                 <div class="col-md-4">
                   <label>Status</label>
                   <select id="filter-open-payment" class="form-control filter">
-                    <option value="" hidden>Status</option>
+                    <option value="">semua</option>
                     <option value="1">Lunas</option>
                     <option value="0">Belum lunas</option>
                   </select>
@@ -384,9 +387,9 @@
 @section('js')
 <script type="text/javascript">
   let list_pembayaran = [];
-  // let organisasi = $("#filter-organisasi").val()
-  // ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
   let openPayment = $("#filter-open-payment").val()
+  ,semester = $("#filter-semester").val()
+  ,prodi = $("#filter-prodi").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -403,6 +406,7 @@
       type: "POST",
       data:function(d){
         d.openPayment = openPayment;
+        d.semester = semester;
         return d
       }
     },
@@ -722,6 +726,7 @@
 
   $(".filter").on('change',function(){
     openPayment = $("#filter-open-payment").val()
+    semester = $("#filter-semester").val()
     table.ajax.reload(null,false)
   })
 

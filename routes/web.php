@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PembayaranController;
-use App\Http\Controllers\UserController;
 use App\Services\BillingApi;
 
 use App\Http\Controllers\TransaksiPmbController;
@@ -33,16 +32,10 @@ Route::get('/pembayaran/export','App\Http\Controllers\PembayaranController@expor
 
 Route::get('/pembayaran/download_pdf/{id}','App\Http\Controllers\PembayaranController@downloadPdf')->middleware(['auth', 'adminkeuangan']);
 Route::put('/pembayaran/import-excel','App\Http\Controllers\PembayaranController@importDataMahasiswa')->middleware(['auth', 'adminkeuangan']);
+Route::post('/pembayaran/export_data_terpilih','App\Http\Controllers\PembayaranController@exportDataTerpilih')->middleware(['auth', 'adminkeuangan']);
 
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
 Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);
 Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranController::class )->middleware(['auth', 'adminkeuangan']);
 
 Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->name('bsi-callback');
-
-route::get('/api', function(){
-    $title = 'api';
-    return view('pages.api_keys', compact('title'));
-});
-
-Route::get('/profil', [UserController::class, 'profil']);

@@ -15,10 +15,13 @@ class PembayaranController extends Controller
     public function index(Request $request)
     {
         $title = 'Data Pembayaran';
-        return view('pages.pembayaran' , compact('title'));
+        $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
+        $dataprodi = Pembayaran::distinct()->pluck('prodi');
+        return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi'));
     }
 
     public function aktifasi(Request $request){
+
 
         $data = [
             ['name' => $request->names, 'email' => 'johndoe@example.com', '' => 'password123'],
@@ -85,7 +88,10 @@ class PembayaranController extends Controller
             'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
 
+        $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 
+
+        // search
         if($request->input('search.value')!=null){
             $data = $data->where(function($q)use($request){
                 $q->whereRaw('LOWER(pembayaran.nim) like ? ',['%'.strtolower($request->input('search.value')).'%'])
@@ -99,8 +105,14 @@ class PembayaranController extends Controller
             });
         }
 
+        //filter tahun berdasarkan prodi
         if($request->input('prodi')!=null){
-            $data = $data->where('prodi_id',$request->prodi);
+            $data = $data->where('prodi',$request->prodi);
+        }
+
+        //filter tahun berdasarkan tahun akademik
+        if($request->input('tahun_akademik')!=null){
+            $data = $data->where('tahun_akademik',$request->tahun_akademik);
         }
 
         //filter berdasarkan status
@@ -151,6 +163,12 @@ class PembayaranController extends Controller
         Excel::import(new pembayaranImport , $file);
         return redirect()->back();
 
+    }
+
+    public function exportDataTerpilih(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        return Excel::download(new PembayaranExport($ids), 'Pembayaran-terpilih.xlsx');
     }
 
     public function exportData(Request $request)

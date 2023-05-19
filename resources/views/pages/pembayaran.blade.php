@@ -130,16 +130,25 @@
                 <div class="col-md-12">
                   <h4>Filter Data</h4>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <label>Tahun Akademik</label>
+                  <select id="filter-tahun-akademik" class="form-control filter">
+                    <option value="">Semua</option>
+                    @foreach($datatahunakademik as $tahunakademik)
+                    <option value="{{ $tahunakademik }}">{{ $tahunakademik }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-md-3">
                   <label>Prodi</label>
                   <select id="filter-prodi" class="form-control filter">
                     <option value="">Semua</option>
-                    {{-- @foreach($list_organisasi as $organisasi)
-                    <option value=""></option>
-                    @endforeach --}}
+                    @foreach($dataprodi as $prodi)
+                    <option value="{{ $prodi }}">{{ $prodi }}</option>
+                    @endforeach
                   </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label>Semester</label>
                   <select id="filter-semester" class="form-control filter">
                     <option value="">semua</option>
@@ -153,7 +162,7 @@
                     <option value="8">Semester 8</option>
                   </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label>Status</label>
                   <select id="filter-open-payment" class="form-control filter">
                     <option value="">semua</option>
@@ -375,7 +384,7 @@
     </div>
   </div>
 
-  <form action="{{url('')}}/karyawan/export_terpilih" method="post" id="form-export-terpilih" class="hidden">
+  <form action="{{url('')}}/pembayaran/export_data_terpilih" method="post" id="form-export-terpilih" class="hidden">
     <input type="hidden" name="ids">
     <button class="hidden" style="display: none;" type="submit">S</button>
   </form> 
@@ -390,6 +399,7 @@
   let openPayment = $("#filter-open-payment").val()
   ,semester = $("#filter-semester").val()
   ,prodi = $("#filter-prodi").val()
+  ,tahun_akademik = $("#filter-tahun-akademik").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -407,6 +417,8 @@
       data:function(d){
         d.openPayment = openPayment;
         d.semester = semester;
+        d.prodi = prodi;
+        d.tahun_akademik = tahun_akademik;
         return d
       }
     },
@@ -727,6 +739,8 @@
   $(".filter").on('change',function(){
     openPayment = $("#filter-open-payment").val()
     semester = $("#filter-semester").val()
+    prodi = $("#filter-prodi").val()
+    tahun_akademik = $("#filter-tahun-akademik").val()
     table.ajax.reload(null,false)
   })
 

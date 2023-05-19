@@ -60,6 +60,7 @@
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
           <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportKaryawanTerpilih()">Export Karyawan Terpilih</button>
+          <button disabled type="button" class="btn btn-info" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-aktivasi" onclick="aktivasi()" id="button-aktivasi">Aktivasi</button>
           
           <div class="card">
             <div class="card-header">
@@ -177,7 +178,7 @@
                   <thead>
                   <tr>
                     <th  style="width: 2%">
-                      <input type="checkbox" id="head-cb">
+                      <input type="checkbox" id="head-cb" >
                     </th>
                     <th>ID</th>
                     <th>Kategori Pembayaran</th>
@@ -268,6 +269,41 @@
             </div>
             <div class="col-md-12" style="margin-top: 4px;">
               <input type="file" name="foto" accept="image/*">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modal-aktivasi">
+    <div class="modal-dialog modal-lg">
+      <form method="post" id="form-aktivasi" action="{{ url('') }}/pembayaran/aktivasi_va" enctype="multipart/form-data" class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Aktivasi VA</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{csrf_field()}}
+          <div class="row">
+            <div class="col-md-12">
+              <input type="text" name="ids" hidden>
+              <p>Jumlah data terpilih: <span id="selected-count">0</span></p>
+            </div>
+            <div class="col-md-12">
+              <label>Active date <small class="text-danger">*</small></label>
+              <input type="date" name="activeDate" class="form-control" required>
+            </div>
+            <div class="col-md-12">
+              <label>Inactive date <small class="text-danger">*</small></label>
+              <input type="date" name="inactiveDate" class="form-control" required>
             </div>
           </div>
         </div>
@@ -383,6 +419,8 @@
       </form>
     </div>
   </div>
+
+
 
   <form action="{{url('')}}/pembayaran/export_data_terpilih" method="post" id="form-export-terpilih" class="hidden">
     <input type="hidden" name="ids">
@@ -575,6 +613,16 @@
     table.column(kolom).visible(is_checked)
   })
 
+  $('#table tbody').on('change', 'input[type="checkbox"]', function() {
+        var selectedCount = table.column(0).nodes().to$().find(':checkbox:checked').length;
+        $('#selected-count').text(selectedCount);
+    });
+
+  $('#table thead').on('change', 'input[type="checkbox"]', function() {
+        var selectedCount = table.column(0).nodes().to$().find(':checkbox:checked').length;
+        $('#selected-count').text(selectedCount);
+  });
+
   function filterTampilan(){
     let all_columns = $("#view-tampilan div label input")
     
@@ -659,8 +707,8 @@
   $("#head-cb").on('click',function(){
     var isChecked = $("#head-cb").prop('checked')
     $(".cb-child").prop('checked',isChecked)
-    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
+    $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!isChecked)
+    $("#button-aktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!isChecked)
   })
 
   $("#table tbody").on('click','.cb-child',function(){
@@ -671,8 +719,10 @@
     let semua_checkbox = $("#table tbody .cb-child:checked")
     let button_non_aktif_status = (semua_checkbox.length>0)
     let button_export_terpilih_status = button_non_aktif_status;
-    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
+    let button_aktivasi_status = button_non_aktif_status;
+
+    $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!button_non_aktif_status)
+    $("#button-aktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!button_non_aktif_status)
   })
 
   // function nonAktifkanTerpilih () {
@@ -743,6 +793,26 @@
     tahun_akademik = $("#filter-tahun-akademik").val()
     table.ajax.reload(null,false)
   })
+
+  function aktivasi() {
+    let checkbox_terpilih = $("#table tbody .cb-child:checked")
+    let semua_id = []
+    $.each(checkbox_terpilih,function(index,elm){
+      semua_id.push(elm.value)
+    })
+    let ids = semua_id.join(',')
+    $("#form-aktivasi [name='ids']").val(ids)
+    
+    // $.ajax({
+    //   url:"{{url('')}}/karyawan/export_terpilih",
+    //   method:'POST',
+    //   data:{ids:semua_id},
+    //   success:function(res){
+    //     console.log(res)
+    //     $("#button-export-terpilih").prop('disabled',false)
+    //   }
+    // })
+  }
 
   function exportKaryawanTerpilih() {
     let checkbox_terpilih = $("#table tbody .cb-child:checked")

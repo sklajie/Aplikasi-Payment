@@ -20,22 +20,35 @@ class PembayaranController extends Controller
         return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi'));
     }
 
-    public function aktifasi(Request $request){
+    public function aktivasiVA(Request $request){
 
+        $ids = explode(',', $request->ids);
 
-        $data = [
-            ['name' => $request->names, 'email' => 'johndoe@example.com', '' => 'password123'],
+        $data_mahasiswa = [
+            $ids,
+            $request->activeDate,
+            $request->inactiveDate
         ];
+
+        dd($data_mahasiswa);
+
+        foreach ($data_mahasiswa as $data) {
+            $response = Http::withHeaders()->get('https://api.example.com/endpoint/', [
+                "data_aktivasi" => [
+                    $data,
+                    $request->activeDate,
+                    $request->inactiveDate
+                ]
+            ]
+            
+
+        );
         
-        foreach ($data as $pembayaran) {
-            $response =Http::withHeaders([
-                'ClientID' => 'BPI3764',
-                'SecretKey' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
-                'username' => '3764',
-                'password' => '3764' 
-            ])->post('https://billing-bpi-dev.maja.id/api/v2/invoice', $pembayaran);
+            // Lakukan pemrosesan atau manipulasi data respons sesuai kebutuhan Anda
+            // Misalnya, simpan data respons ke dalam database atau lakukan tindakan lainnya
+            // ...
         }
-        
+
     }
 
     public function data(Request $request)

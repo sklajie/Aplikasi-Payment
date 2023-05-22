@@ -6,6 +6,8 @@
     display: block;
   }
 </style>
+
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 @stop
 
 @section('content')
@@ -36,30 +38,17 @@
                 </li>
             </ul>
             </div>
-	{{-- <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Karyawan</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Karyawan</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid --> --}}
+
   </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button>
-          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Mahasiswa Excel</button>
-          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Pembayaran Excel</a>
+          {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
+          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
+          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
-          <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportKaryawanTerpilih()">Export Karyawan Terpilih</button>
+          <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportDataTerpilih()">Export Data Terpilih</button>
           <button disabled type="button" class="btn btn-info" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-aktivasi" onclick="aktivasi()" id="button-aktivasi">Aktivasi</button>
           
           <div class="card">
@@ -193,7 +182,7 @@
                     <th>Tahun Akademik</th>
                     <th>Amount</th>
                     <th>Tanggal Bayar</th>
-                    <th>Status VA</th>
+                    <th>Status</th>
                     {{-- <th>Status Pembayaran</th> --}}
                     <th>###</th>
                   </tr>
@@ -206,80 +195,6 @@
         </div>
       </div>
     </div>
-
- <div class="modal fade" id="modal-create">
-    <div class="modal-dialog modal-lg">
-      <form method="post" id="form-create" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Data Karyawan Baru</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{csrf_field()}}
-          <div class="row">
-            <div class="col-md-12">
-              <label>Nama <small class="text-danger">*</small></label>
-              <input type="text" name="nama" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor KTP <small class="text-danger">*</small></label>
-              <input type="text" name="nomor_ktp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>NIK <small class="text-danger">*</small></label>
-              <input type="text" name="nik" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Telp <small class="text-danger">*</small></label>
-              <input type="text" name="telp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Email</label>
-              <input type="email" name="email" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Detail Alamat</label>
-              <textarea class="form-control" name="detail_alamat"></textarea>
-            </div>
-            <div class="col-md-12">
-              <label>Status</label>
-              <select name="status" class="form-control" required>
-                <option value="aktif">Aktif</option>
-                <option value="non aktif">Non Aktif</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Kesehatan</label>
-              <input type="text" name="nomor_bpjs_kesehatan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Ketenagakerjaan</label>
-              <input type="text" name="nomor_bpjs_ketenagakerjaan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Organisasi</label>
-              <select name="organisasi_id" class="form-control" required>
-                <option value="">Pilih Organisasi</option>
-                {{-- @foreach($list_organisasi as $organisasi)
-                <option value="{{$organisasi->id}}">{{$organisasi->nama}}</option>
-                @endforeach --}}
-              </select>
-            </div>
-            <div class="col-md-12" style="margin-top: 4px;">
-              <input type="file" name="foto" accept="image/*">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
 
   <div class="modal fade" id="modal-aktivasi">
     <div class="modal-dialog modal-lg">
@@ -309,86 +224,11 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogAktivasi()">Aktivasi</button>
         </div>
       </form>
     </div>
   </div>
- {{-- 
-  <div class="modal fade" id="modal-edit">
-    <div class="modal-dialog modal-lg">
-      <form method="post" id="form-edit" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Data Karyawan Baru</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{csrf_field()}}
-          <input type="hidden" name="id">
-          {{method_field('PATCH')}}
-          <div class="row">
-            <div class="col-md-12">
-              <label>Nama <small class="text-danger">*</small></label>
-              <input type="text" name="nama" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor KTP <small class="text-danger">*</small></label>
-              <input type="text" name="nomor_ktp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>NIK <small class="text-danger">*</small></label>
-              <input type="text" name="nik" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Telp <small class="text-danger">*</small></label>
-              <input type="text" name="telp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Email</label>
-              <input type="email" name="email" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Detail Alamat</label>
-              <textarea class="form-control" name="detail_alamat"></textarea>
-            </div>
-            <div class="col-md-12">
-              <label>Status</label>
-              <select name="status" class="form-control" required>
-                <option value="aktif">Aktif</option>
-                <option value="non aktif">Non Aktif</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Kesehatan</label>
-              <input type="text" name="nomor_bpjs_kesehatan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Ketenagakerjaan</label>
-              <input type="text" name="nomor_bpjs_ketenagakerjaan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Organisasi</label>
-              <select name="organisasi_id" class="form-control" required>
-                <option value="">Pilih Organisasi</option>
-                @foreach($list_organisasi as $organisasi)
-                <option value="{{$organisasi->id}}">{{$organisasi->nama}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-md-12" style="margin-top: 4px;">
-              <input type="file" name="foto" accept="image/*">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div> --}}
 
   <div class="modal fade" id="modal-import">
     <div class="modal-dialog modal-lg">
@@ -404,7 +244,7 @@
           {{csrf_field()}}
           <div class="row">
             <div class="col-md-12">
-              <p>Import data Mahasiswa sesuai format contoh berikut.<br/><a href="{{url('')}}/Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
+              <p>Import data Mahasiswa sesuai format contoh berikut.<br/><a href="{{url('')}}/assets/Contoh_Format_Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
             </div>
             <div class="col-md-12">
               <label>File Excel Mahasiswa</label>
@@ -447,7 +287,7 @@
     "bInfo": true,
     "processing":true,
     "bServerSide": true,
-    "order": [[ 1, "desc" ]],
+    "order": [[ 1, "asc" ]],
     "autoWidth": false,
     "ajax":{
       url: "{{url('')}}/pembayaran/data",
@@ -577,7 +417,11 @@
         "targets": 14,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.openPayment;
+          if (row.openPayment === 1) {
+                  return '<span style="color: blue;">Dibayar</span>';
+              } else {
+                  return  '<span style="color: red;">Belum Dibayar</span>';
+              }
         }
       },
       // {
@@ -592,13 +436,13 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block">Cetak Invoice</a>
+            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Cetak Invoice</a>
             `;
-          if(row.status=='aktif'){
-            tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
-          }else{
-            tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-success btn-block">Aktifkan</button>`
-          }
+          // if(row.status=='aktif'){
+          //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
+          // }else{
+          //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-success btn-block">Aktifkan</button>`
+          // }
           return tampilan;
         }
       }
@@ -627,24 +471,6 @@
     let all_columns = $("#view-tampilan div label input")
     
   }
-
-  // $("#form-create").on('submit',function(e){
-  //   e.preventDefault()
-    
-
-  //   $("#form-create").ajaxSubmit({
-  //     success:function(res){
-  //       table.ajax.reload(null,false)
-  //       // SET SEMUA KE DEFAULT
-  //       $("#form-create input:not([name='_token'])").val('')
-  //       $("#form-create textarea").val('')
-  //       $("#form-create select:not([name='status'])").val('')
-
-
-  //       $("#modal-create").modal('hide')
-  //     }
-  //   })
-  // })
 
   // function showDetailKaryawan(id) {
   //   const karyawan = list_pembayaran[id]
@@ -814,7 +640,7 @@
     // })
   }
 
-  function exportKaryawanTerpilih() {
+  function exportDataTerpilih() {
     let checkbox_terpilih = $("#table tbody .cb-child:checked")
     let semua_id = []
     $.each(checkbox_terpilih,function(index,elm){
@@ -834,5 +660,25 @@
     //   }
     // })
   }
+
+  function showConfirmDialogAktivasi() {
+
+    Swal.fire({
+      title: 'Confirm',
+      text: "Apakah anda yakin ingin mengaktivasi VA",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'aktivasi'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $("#form-aktivasi").submit()
+      }
+    });
+  }
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 @stop

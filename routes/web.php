@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\DokumentasiController;
 use App\Services\BillingApi;
 
 use App\Http\Controllers\TransaksiPmbController;
@@ -40,3 +41,15 @@ Route::resource('/users', App\Http\Controllers\UserController::class )->middlewa
 Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranController::class )->middleware(['auth', 'adminkeuangan']);
 
 Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->name('bsi-callback');
+
+Route::get('/api', function(){
+    $title = 'api';
+    return view('pages.api_keys',compact('title'));
+});
+
+Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
+
+Route::group(['prefix' => 'dokumentasi'], function () {
+    Route::get('/', [DokumentasiController::class, 'index'] );
+    Route::get('/request', [DokumentasiController::class, 'request'])->name('request');
+});

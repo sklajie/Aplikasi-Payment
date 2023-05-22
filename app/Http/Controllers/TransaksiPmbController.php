@@ -12,10 +12,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
-
-
 class TransaksiPmbController extends Controller
 {
+    private $apiToken;
+    private $bsiApiClient;
+
+    public function __construct(BsiApiClient $bsiApiClient)
+    {
+        $this->bsiApiClient = $bsiApiClient; // Mendapatkan token saat inisialisasi
+    }
+
     public function createTransaction(Request $request)
     {
         // Mendapatkan data dari permintaan
@@ -31,14 +37,12 @@ class TransaksiPmbController extends Controller
             $transaction->save();
         }
 
-        return response()->json([
-            'timestamp' => date('m/d/Y, h:i:s A'),
-            'code' => '00',
-            'message' => 'success',
-            'success' => true,
-        ]);
+        // Kirim permintaan ke API Bank BSI dengan menggunakan token
+        $response = $this->sendApiRequest('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
+        
+        return response()->json($response);
     }
-    
+
     public function requestVa(Request $request)
     {
         // Ambil data yang diperlukan dari permintaan
@@ -60,7 +64,9 @@ class TransaksiPmbController extends Controller
         $transaction->save();
 
         // Memanggil fungsi createVa untuk membuat VA
-        $response = $this->createVa($request);
+        $response = $this->createVa($request, $token);
+
+        $response = $this->sendApiRequest('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
 
         // Menyiapkan respons yang sesuai
         $responseBody = [
@@ -100,9 +106,9 @@ class TransaksiPmbController extends Controller
         }
 
         // Mengirim permintaan ke Bank BSI untuk membuat VA
-        $response = Http::post('https://billing-bpi-dev.maja.id/api/v2/register', [
+        $response = $this->sendApiRequest('https://billing-bpi-dev.maja.id/api/v2/register', [
             'va' => $request->input('va'),
-        ]);
+        ]);        
 
         // Memeriksa status respons dari Bank BSI
         if ($response->successful()) {
@@ -165,6 +171,16 @@ class TransaksiPmbController extends Controller
         }
     }
 
+    public function getApiToken()
+    {
+        return $this->bsiApiClient->getToken();
+    }
+
+    private function sendApiRequest($url, $requestData)
+    {
+        return $this->bsiApiClient->sendRequest($url, $data);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -217,8 +233,8 @@ class TransaksiPmbController extends Controller
             
             DB::beginTransaction();
 
-            // Kirim permintaan ke Bank BSI
-            $response = Http::post('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
+            // Kirim permintaan ke Bank BSI 
+            $response = $this->sendApiRequest('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', $requestData);
 
             // Simpan data histori respons ke dalam tabel HistoriRespons
             $historiRespons = HistoriRespons::create([
@@ -236,8 +252,6 @@ class TransaksiPmbController extends Controller
                 $response = Http::post('https://billing-bpi-dev.maja.id/api/v2/register', [
                     'data' => $data,
                 ]);
-
-                dd($response);
 
                 // Periksa status respons dari Bank BSI
                 if ($response->successful()) {

@@ -9,9 +9,19 @@ use PDF;
 use App\Imports\pembayaranImport;
 use App\Exports\PembayaranExport;
 use Illuminate\Support\Facades\Http;
+use App\Services\BsiApiService;
 
 class PembayaranController extends Controller
 {
+
+    protected $bsiApiService;
+
+    public function __construct(BsiApiService $bsiApiService)
+    {
+        $this->bsiApiService = $bsiApiService;
+    }
+
+
     public function index(Request $request)
     {
         $title = 'Data Pembayaran';
@@ -23,37 +33,68 @@ class PembayaranController extends Controller
     public function aktivasiVA(Request $request){
 
         $ids = explode(',', $request->ids);
+        $active_date = $request->activeDate;
+        $inactive_date = $request->inactiveDate;
 
-        $data_mahasiswa = [
-            $ids,
-            $request->activeDate,
-            $request->inactiveDate
-        ];
+        $pembayarans = Pembayaran::whereIn('id', $ids)->get();
 
-        dd($data_mahasiswa);
+        foreach ($pembayarans as $pembayaran) {
+            $pembayaran->activeDate = $active_date;
+            $pembayaran->inactiveDate = $inactive_date;
+            $pembayaran->save();
+        }
 
-        foreach ($data_mahasiswa as $data) {
-            $response = Http::withHeaders()->get('https://api.example.com/endpoint/', [
-                "data_aktivasi" => [
-                    $data,
-                    $request->activeDate,
-                    $request->inactiveDate
-                ]
-            ]
+        $data = $pembayarans->map(function ($pembayaran) {
+
+            return [
+                'id' => $pembayaran->id,
+                'nama' => $pembayaran->nama,
+                'nim' => $pembayaran->nim,
+                'activeDate' => $pembayaran->activeDate,
+                'inactiveDate' => $pembayaran->inactiveDate,
+                'va' => $pembayaran->nim,
+                'amount' => $pembayaran->amount,
+            ];
+        });
+
+        dd($data);
+
+        // foreach ($ids as $data) {
+        //     $response = Http::withHeaders()->get('https://api.example.com/endpoint/', [
+        //         "data_aktivasi" => [
+
+        //             $request->activeDate,
+        //             $request->inactiveDate
+        //         ]
+        //     ]
             
 
-        );
-        
-            // Lakukan pemrosesan atau manipulasi data respons sesuai kebutuhan Anda
-            // Misalnya, simpan data respons ke dalam database atau lakukan tindakan lainnya
-            // ...
-        }
+        // );
+        // }
+
+        // $vaNumber = '123456789012345';
+        // $amount = 100000;
+        // $transactionDate = date('Y-m-d');
+
+        // $activasi = $this->bsiApiService->createTransaction([
+        //     'va_number' => $vaNumber,
+        //     'amount' => $amount,
+        //     'transaction_date' => $transactionDate,
+        // ]);
+
+        // $transaction = response()->json($activasi);
+
+        // $paid = $transaction['paid'];
+        // $pembayaran = Pembayaran::find($ids);
+        // $pembayaran->paid = $paid;
+        // $pembayaran->save();
 
     }
 
     public function data(Request $request)
     {
-    	$orderBy = 'pembayaran.nim';
+    	// $orderBy = 'pembayaran.nim';
+        
         switch($request->input('order.0.column')){
             case "1":
                 $orderBy = 'pembayaran.id';
@@ -94,12 +135,15 @@ class PembayaranController extends Controller
             case "13":
                 $orderBy = 'pembayaran.openPayment';
                 break;
+            default:
+                $orderBy = 'pembayaran.nim';
+                break;
         }
 
         $data = Pembayaran::select([
             'pembayaran.*',
             'kategori_pembayaran.kategori_pembayaran as nama_kategori'
-        ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
+        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('kategori_pembayaran_id' , '70c516d2-65b1-4e0f-900d-79ba516b10fe')->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 

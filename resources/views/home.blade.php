@@ -2,7 +2,8 @@
 
 @section('title' , 'Dashboard' , 'active')
 
-@section('content')           
+@section('content')   
+
             <div class="main-panel">
 				<div class="panel-header">
 					<div class="page-inner">
@@ -82,91 +83,5 @@
 			
 		</div>
 
-		<script>
-
-			var multipleBarChart = document.getElementById('multipleBarChart').getContext('2d'),
-			pieChart = document.getElementById('pieChart').getContext('2d')
-	
-			var myMultipleBarChart = new Chart(multipleBarChart, {
-				type: 'bar',
-				data: {
-					labels: ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"],
-					datasets : [{
-						label: "Sudah Bayar",
-						backgroundColor: '#59d05d',
-						borderColor: '#59d05d',
-						data: '$pieChart',
-					},{
-						label: "Belum Bayar",
-						backgroundColor: 'red',
-						borderColor: '#fdaf4b',
-						data: '$pieChart'
-					}],
-				},
-				options: {
-					responsive: true, 
-					maintainAspectRatio: false,
-					legend: {
-						position : 'bottom'
-					},
-					title: {
-						display: true,
-						text: 'Traffic Stats'
-					},
-					tooltips: {
-						mode: 'index',
-						intersect: false
-					},
-					responsive: true,
-					scales: {
-						xAxes: [{
-							stacked: true,
-						}],
-						yAxes: [{
-							stacked: true
-						}]
-					}
-				}
-			});
-	
-	
-			var myPieChart = new Chart(pieChart, {
-				type: 'pie',
-				data: {
-					datasets: [{
-						data: [50, 35],
-						backgroundColor :["#59d05d","red"],
-						borderWidth: 0
-					}],
-					labels: ['Sudah Lunas', 'Belum Lunas'] 
-				},
-				options : {
-					responsive: true, 
-					maintainAspectRatio: false,
-					legend: {
-						position : 'bottom',
-						labels : {
-							fontColor: 'rgb(154, 154, 154)',
-							fontSize: 11,
-							usePointStyle : true,
-							padding: 20
-						}
-					},
-					pieceLabel: {
-						render: 'percentage',
-						fontColor: 'white',
-						fontSize: 14,
-					},
-					tooltips: false,
-					layout: {
-						padding: {
-							left: 20,
-							right: 20,
-							top: 20,
-							bottom: 20
-						}
-					}
-				}
-			})
-		</script>
+		
 @endsection

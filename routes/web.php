@@ -42,11 +42,7 @@ Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranC
 
 Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->name('bsi-callback');
 
-Route::get('/api', function(){
-    $title = 'api';
-    return view('pages.api_keys',compact('title'));
-});
+Route::resource('/api',App\Http\Controllers\ApiController::class);
 
 Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
 Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
-

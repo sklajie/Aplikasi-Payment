@@ -21,6 +21,6 @@ class DashboardController extends Controller
         // }
         // $piechart = $data;
 
-        return view('home', compact('title','result'));
+        return view('home', compact('title'));
     }
 }

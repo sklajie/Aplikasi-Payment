@@ -181,103 +181,8 @@
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
 					
+				@if ( Auth::user()->level['nama_level'] == 'Admin Apps')
 
-						@if ( Auth::user()->level['nama_level'] == 'Super Admin')
-							<div class="user">
-								<div class="avatar-sm float-left mr-2 mt-1">
-									<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
-								</div>
-								<div class="info">
-									<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-										<span>
-											{{ Auth::user()->name }}
-											<span class="user-level">{{ Auth::user()->level['nama_level'] }}</span>
-											
-										</span>
-									</a>
-									<div class="clearfix"></div>
-		
-									<div class="collapse in" id="collapseExample">
-										<ul class="nav">
-											<li>
-												<a href="/profil">
-													<span class="link-collapse">My Profile</span>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>							
-							
-						<ul class="nav nav-primary">
-
-						<li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">Navigation</h4>
-						</li>
-
-						<li class="nav-item {{$title === "Dashboard" ? 'active' : '' }}">
-							<a href="/">
-								<i class="fas fa-home"></i>
-								<p>Dashboard</p>
-							</a>
-						</li>
-
-						<li class="nav-item {{ $title === "Users" ? 'active' : '' }}">
-							<a href="/users">
-								<i class="fas fa-layer-group"></i>
-								<p>Users</p>
-								
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="/histori_pembayaran">
-								<i class="fas fa-file-invoice-dollar"></i>
-								<p>Histori Pembayaran</p>
-							</a>
-						</li>
-
-						<li class="nav-item  {{ $title === "Data Pembayaran" ? 'active' : '' }}">
-							<a href="/pembayaran">
-								<i class="fas fa-th-list"></i>
-								<p>Data Pembayaran</p>
-							</a>
-						</li>		
-
-						<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
-							<a href="/pebayaran/lainnya">
-								<i class="far fa-list-alt"></i>
-								<p>Pembayaran Lainnya</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="/kategori_pembayaran">
-								<i class="fas fa-layer-group"></i>
-								<p>Kategori Pembayaran</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="/api">
-								<i class="fas fa-key"></i>
-								<p>API Keys</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="/dokumentasi">
-								<i class="fas fa-swatchbook"></i>
-								<p>Dokumentasi</p>
-							</a>
-						</li>
-						
-					</ul>
-				@elseif ( Auth::user()->level['nama_level'] == 'Admin Keuangan')
-				
 				<div class="user">
 					<div class="avatar-sm float-left mr-2 mt-1">
 						<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
@@ -303,52 +208,70 @@
 						</div>
 					</div>
 				</div>	
-
-				<ul class="nav nav-primary">
-
-					<li class="nav-section">
-						<span class="sidebar-mini-icon">
-							<i class="fa fa-ellipsis-h"></i>
-						</span>
-						<h4 class="text-section">Navigation</h4>
-					</li>
-
-					<li class="nav-item {{$title === "Dashboard" ? 'active' : '' }}">
-						<a href="/">
-							<i class="fas fa-home"></i>
-							<p>Dashboard</p>
-						</a>
-					</li>
-
-					<li class="nav-item">
-						<a href="/pembayaran/histori_pembayaran">
-							<i class="fas fa-file-invoice-dollar"></i>
-							<p>Histori Pembayaran</p>
-						</a>
-					</li>
-
-					<li class="nav-item  {{ $title === "Data Pembayaran" ? 'active' : '' }}">
-						<a href="/pembayaran">
-							<i class="fas fa-th-list"></i>
-							<p>Data Pembayaran</p>
-						</a>
-					</li>		
-
-					<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
-						<a href="/pembayaran/lainnya">
-							<i class="far fa-list-alt"></i>
-							<p>Pembayaran Lainnya</p>
-						</a>
-					</li>
-
-					<li class="nav-item">
-						<a href="/kategori_pembayaran">
-							<i class="fas fa-layer-group"></i>
-							<p>Kategori Pembayaran</p>
-						</a>
-					</li>
+				
+				<center>
+				<ul class="nav nav-tabs ro-doc-tabs">
+					<li><a style=" width:200px;" class="btn btn-outline-secondary active" data-toggle="tab" href="#production">Production</a></li>
+					<br>
+					<li><a style=" width:200px;" class="btn btn-outline-secondary " data-toggle="tab" href="#sandbox">Sandbox</a></li>
+					<br>
 				</ul>
+				</center>
+				
+			
+				<div class="tab-content">
+					<div class="tab-pane active" id="production">
+						<ul class="nav nav-primary ">
 
+							<li class="nav-section">
+								<span class="sidebar-mini-icon">
+									<i class="fa fa-ellipsis-h"></i>
+								</span>
+								<h4 class="text-section">Navigation</h4>
+							</li>
+	
+							<li class="nav-item">
+								<a href="/api">
+									<i class="fas fa-key"></i>
+									<p>API Keys</p>
+								</a>
+							</li>
+	
+							<li class="nav-item">
+								<a href="/dokumentasi">
+									<i class="fas fa-swatchbook"></i>
+									<p>Dokumentasi</p>
+								</a>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="tab-pane fade" id="sandbox">
+						<ul class="nav nav-primary">
+
+							<li class="nav-section">
+								<span class="sidebar-mini-icon">
+									<i class="fa fa-ellipsis-h"></i>
+								</span>
+								<h4 class="text-section">Navigation</h4>
+							</li>
+	
+							<li class="nav-item">
+								<a href="/apa">
+									<i class="fas fa-key"></i>
+									<p>API Keys</p>
+								</a>
+							</li>
+	
+							<li class="nav-item">
+								<a href="/dokumentasi">
+									<i class="fas fa-swatchbook"></i>
+									<p>Dokumentasi</p>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 
 				@endif
 						
@@ -519,7 +442,7 @@
 
 	<!-- Chart Circle -->
 	{{-- <script src="../assets/js/plugin/chart-circle/circles.min.js"></script> --}}
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 	<!-- Datatables -->
@@ -541,95 +464,7 @@
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
 	<script src="{{ url('') }}/assets/js/setting-demo.js"></script>
 	<script src="../assets/js/demo.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-	
-	<script>
 
-		var multipleBarChart = document.getElementById('multipleBarChart').getContext('2d'),
-		pieChart = document.getElementById('pieChart').getContext('2d')
-
-		var myMultipleBarChart = new Chart(multipleBarChart, {
-			type: 'bar',
-			data: {
-				labels: ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"],
-				datasets : [{
-					label: "Sudah Bayar",
-					backgroundColor: '#59d05d',
-					borderColor: '#59d05d',
-					data: [23,34,34,54,34,344,22,12]
-				},{
-					label: "Belum Bayar",
-					backgroundColor: 'red',
-					borderColor: '#fdaf4b',
-					data: [23,34,34,54,34,344,22,12]
-				}],
-			},
-			options: {
-				responsive: true, 
-				maintainAspectRatio: false,
-				legend: {
-					position : 'bottom'
-				},
-				title: {
-					display: true,
-					text: 'Traffic Stats'
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false
-				},
-				responsive: true,
-				scales: {
-					xAxes: [{
-						stacked: true,
-					}],
-					yAxes: [{
-						stacked: true
-					}]
-				}
-			}
-		});
-
-
-		var myPieChart = new Chart(pieChart, {
-			type: 'pie',
-			data: {
-				datasets: [{
-					data: [20,20],
-					backgroundColor :["#59d05d","red"],
-					borderWidth: 0
-				}],
-				labels: ['Sudah Lunas', 'Belum Lunas'] 
-			},
-			options : {
-				responsive: true, 
-				maintainAspectRatio: false,
-				legend: {
-					position : 'bottom',
-					labels : {
-						fontColor: 'rgb(154, 154, 154)',
-						fontSize: 11,
-						usePointStyle : true,
-						padding: 20
-					}
-				},
-				pieceLabel: {
-					render: 'percentage',
-					fontColor: 'white',
-					fontSize: 14,
-				},
-				tooltips: false,
-				layout: {
-					padding: {
-						left: 20,
-						right: 20,
-						top: 20,
-						bottom: 20
-					}
-				}
-			}
-		})
-	</script>
 
 </body>
 

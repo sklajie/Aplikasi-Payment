@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app3')
 
-@section('title' , 'Edit Pengguna' , 'active')
+@section('title' , 'Tambah Endpoint' , 'active')
 
 @section('content')
 <br>

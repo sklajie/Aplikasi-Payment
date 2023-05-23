@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app3')
 
-@section('title', 'Dokumentasi')
+@section('title', 'Dokumentasi', 'active')
 
 @section('content')
 

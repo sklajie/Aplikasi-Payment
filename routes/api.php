@@ -12,6 +12,12 @@ Route::prefix('v1')->group(function () {
     Route::post('/transactions', [TransaksiPmbController::class, 'store']);
 });
 
+// Route::prefix('v1')->group(function () {
+//     Route::post('/Pmb', [PmbController::class, 'store']);
+// });
+
+Route::post('/Pmb', [PmbController::class, 'store']);
+
 Route::post('/create-va', [TransaksiPmbController::class, 'createVa']);
 
 Route::get('/pendaftaran', [PendaftaranController::class, 'index']);

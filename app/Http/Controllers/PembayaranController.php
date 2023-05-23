@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use GuzzleHttp\Client;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use PDF;
-use App\Imports\pembayaranImport;
-use App\Exports\PembayaranExport;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Carbon;
 use App\Services\BsiApiService;
-use GuzzleHttp\Client;
+use App\Exports\PembayaranExport;
+use App\Imports\pembayaranImport;
+use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp\Exception\GuzzleException;
 
 class PembayaranController extends Controller
@@ -39,11 +40,7 @@ class PembayaranController extends Controller
         try {
             $response = $client->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'form_params' => [
-                    'grant_type' => 'password',
-                    'client_id' => 'BPI3764',
-                    'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
-                    'username' => '3764',
-                    'password' => '3764',
+                    
                 ],
             ]);
 
@@ -62,90 +59,68 @@ class PembayaranController extends Controller
 
     public function aktivasiVA(Request $request){
 
-        // $ids = explode(',', $request->ids);
-        // $active_date = $request->activeDate;
-        // $inactive_date = $request->inactiveDate;
+        $ids = explode(',', $request->ids);
+        $active_date = $request->activeDate;
+        $inactive_date = $request->inactiveDate;
 
-        // $pembayarans = Pembayaran::whereIn('id', $ids)->get();
+        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->join('item_pembayaran','item_pembayaran.id','=','pembayaran.item_pembayaran_id')->get();
 
-        // foreach ($pembayarans as $pembayaran) {
-        //     $pembayaran->activeDate = $active_date;
-        //     $pembayaran->inactiveDate = $inactive_date;
-        //     $pembayaran->save();
-        // }
+        foreach ($pembayarans as $pembayaran) {
+            $pembayaran->activeDate = $active_date;
+            $pembayaran->inactiveDate = $inactive_date;
+            $pembayaran->save();
+        }
 
-        // $data = $pembayarans->map(function ($pembayaran) {
+        $data = $pembayarans->map(function ($pembayaran) {
 
-        //     return [
-        //         'id' => $pembayaran->id,
-        //         'nama' => $pembayaran->nama,
-        //         'nim' => $pembayaran->nim,
-        //         'activeDate' => $pembayaran->activeDate,
-        //         'inactiveDate' => $pembayaran->inactiveDate,
-        //         'va' => $pembayaran->nim,
-        //         'amount' => $pembayaran->amount,
-        //     ];
-        // });
+            return [
 
-        // dd($data);
+                'date' => date("Y-m-d"),
+                'amount'=>  $pembayaran->amount,
+                'name' => $pembayaran->nama,
+                'email'=> $pembayaran->email,
+                'address'=>$pembayaran->address,
+                'va'=>$pembayaran->va,
+                'number'=>$pembayaran->phone,
+                'activeDate'=> $pembayaran->activeDate,
+                'inactiveDate'=> $pembayaran->inactiveDate,
+                'items' => [
+                    [
+                        'description'=>'Pembayaran UKT',
+                        'unitPrice' =>  $pembayaran->unitPrice,
+                        'qty'=>  $pembayaran->qty,
+                        'amount'=>  $pembayaran->amount
+                    ]
+                ],
+                'attributes' => []
+            ];
+        });
 
 
+        foreach($data as $datas){
 
-
-
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJLYXBxMHhYSjdFUkxtck0tVGVxRXpjUnhJb1k2M0ZHNVZXZkt1TmxSMGhNIn0.eyJleHAiOjE2ODQyOTY1NDQsImlhdCI6MTY4NDI5NDc0NCwianRpIjoiOGJlMDMyYWUtYWYwNS00MzY1LTg4YzYtNGY3MTNlNGNmNDgyIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50Lm1ha2FyYW1hcy5jb20vYXV0aC9yZWFsbXMvYnBpLWRldiIsImF1ZCI6WyJiYWNrZW5kIiwiYWNjb3VudCJdLCJzdWIiOiJiNGM5ZWI3Zi0wZDhhLTQwMjUtOTRjNy02MjdiMjFmYzQwY2EiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJCUEkzNzY0Iiwic2Vzc2lvbl9zdGF0ZSI6ImZhZWVjZjA5LTc4OTItNDIzNC05YTFlLTU5ZmNlMWQyM2U1YSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImJhY2tlbmQiOnsicm9sZXMiOlsibWVyY2hhbnQiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImZhZWVjZjA5LTc4OTItNDIzNC05YTFlLTU5ZmNlMWQyM2U1YSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJjb2RlIjoiMzc2NCIsIm5hbWUiOiJQT0xJVEVLTklLIE5FR0VSSSBJTkRSQU1BWVUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiIzNzY0IiwiZ2l2ZW5fbmFtZSI6IlBPTElURUtOSUsgTkVHRVJJIElORFJBTUFZVSIsImZhbWlseV9uYW1lIjoiIiwiZW1haWwiOiJtaWdyYXNpMzc2NEBnbWFpbC5jb20ifQ.IHSGlSj3FYEsHwTwXKdOyaShsYyS2-slW07gGkUA_1kyLWODTkWcJ9p0mKFl3B7aMsGpJemADAhay6CpPYEvNyptgVQ_rPXHXDw2zkbU9jMtdPriVJLUO99TajSC6nfmqGqPwVcto5leHjK3_Dnbu870p0TvYkh74dgRH0YDqm6t4Z4LamggMWbhVJF-63FT32nhksHHczSx0yLs-X7ht332HmZFsNUZC6QyK2IyyIkl4c0DjkLC8w5gWCVf8u3xpLU-mYT5FOPgHNgKfWrh6kOvZ0G9pYG0ERJlF0kysB_2BOxwUelymx-nUWY8XCpc9Y74JRvvGQlLl4eZOSmz4w',
-            'grant_type' => 'password',
-            'client_id' => 'BPI3764',
-            'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
-            'username' => '3764',
-            'password' => '3764',
-        ])->post('https://billing-bpi-dev.maja.id/api/v2/register', [
-            'date' => '2022-04-23',
-            'amount'=> '50000',
-            'name' => 'Budi',
-            'email'=>'agungmeiprasetyo@gmail.com',
-            'address'=>'Depok',
-            'va'=>'1234567890',
-            'number'=>'SM012',
-            'attribute1'=>'IPS',
-            'attribute2'=>'Kelas 5',
-            'sequenceNumber'=>'3',
-            'items' => [
-                    'description'=>'Uang Seragam',
-                    'unitPrice' => '50000',
-                    'qty'=> '1',
-                    'amount'=> '50000'
-            ],
-            'attributes' => []
-        ]);
-    
-
-        dd($response);
-
-        // foreach ($ids as $data) {
-        //     $response = Http::withHeaders()->get('https://api.example.com/endpoint/', [
-        //         "data_aktivasi" => [
-
-        //             $request->activeDate,
-        //             $request->inactiveDate
-        //         ]
-        //     ]
+            $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
+                'grant_type' => 'password',
+                'client_id' => 'BPI3764',
+                'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
+                'username' => '3764',
+                'password' => '3764',
+            ]);
             
+            $accessToken = $response['access_token'];
 
-        // );
-        // }
+            $responseapi = Http::withHeaders([
+                'Authorization' => 'Bearer '. $accessToken,
+                ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $datas);
 
-        // $vaNumber = '123456789012345';
-        // $amount = 100000;
-        // $transactionDate = date('Y-m-d');
+            $response_aktivasi = [$responseapi->json()];  
 
-        // $activasi = $this->bsiApiService->createTransaction([
-        //     'va_number' => $vaNumber,
-        //     'amount' => $amount,
-        //     'transaction_date' => $transactionDate,
-        // ]);
+                
+        }
+
+        $hasil = [$response_aktivasi];
+
+        dd($hasil);
 
         // $transaction = response()->json($activasi);
 

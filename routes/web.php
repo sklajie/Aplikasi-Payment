@@ -49,3 +49,4 @@ Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
 
 Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');
 Route::any('/log_transaksi/data', 'App\Http\Controllers\PembayaranLainnyaController@data');
+Route::any('/log_transaksi/detail/{id}', 'App\Http\Controllers\PembayaranLainnyaController@showDetail');

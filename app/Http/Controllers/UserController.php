@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Level;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -49,6 +50,8 @@ class UserController extends Controller
             'no_hp' => 'required|min:10|',
             'level_id' => 'required',
             'password' => 'required',
+            'api_token' => 'required',
+
         ]);
 
         $user = new User;
@@ -58,6 +61,7 @@ class UserController extends Controller
         $user->no_hp = $request->no_hp;
         $user->level_id = $request->level_id;
         $user->password = Hash::make($request->password);
+        $user->api_token = Str::random(50);
         $user->save();
 
         return to_route('users.index')->with('Success', 'Data Berhasil Ditambahkan');
@@ -108,7 +112,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        
         $user = User::find($id);
         $user->delete();
 

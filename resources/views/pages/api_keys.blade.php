@@ -28,30 +28,19 @@
     </div>
 
     <div class="container">
-    <div class="card">
-<table class="table borderless no-bg">
-<tbody><tr>
-<td class="bold">ID Merchant</td>
-<td>
-<input class="config-info-input" interaction="click-select" readonly="" type="text" value="G351147367">
-</td>
-</tr>
-<tr>
-<td class="bold">Client Key</td>
-<td>
-<input class="config-info-input" interaction="click-select" readonly="" type="text" value="Mid-client-UuW6WUx2LBKoFbl3">
-</td>
-</tr>
-<tr>
-    <td class="bold">
-        Server Key
-    </td>
-
-    <td>
-        <input class="config-info-input" interaction="click-select" readonly="" type="text" value="Mid-server-4fDJsQVMqfeNHR2Ax1lmjajI">
-    </td>
-</tr>
-</tbody></table>
+    <div class="alert alert-info">
+        <center>
+        <div class="" style="padding-top: 50px; padding-bottom:50px;">
+            <code class="api_token" style="font-size: 20px; ">{{auth()->user()->api_token}}</code>
+            <br>
+            <br>
+            <p class="text-warning">
+                <small>
+                    <strong>Peringatan:</strong> API key Anda berfungsi layaknya username dan password. Jaga baik-baik API key Anda!
+                </small>
+            </p>
+        </div>
+        </center>
 </div>
     <div class="alert alert-info">
         <p>Key ini di-generate otomatis oleh sistem. Apabila anda perlu mengganti key anda karena alasan tertentu silahkan hubungi <a data-tjr-open-modal="contact-info-modal" href="#open-info-dialog-modal">kontak support</a></p>

@@ -17,6 +17,7 @@ class HistoriRespons extends Model
         'amount',
         'user_id',
         'created_date',
+        'respons',
     ];
 
     // Generate UUID saat menyimpan model

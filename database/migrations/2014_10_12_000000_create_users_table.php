@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string('username', 50)->unique();
             $table->string('email', 50)->unique();
             $table->string('no_hp', 20);
-            $table->string('mode', 15)->nullable();
             $table->string('password');
+            $table->string('api_token', 80)
+                        ->unique()
+                        ->nullable()
+                        ->default(null);
             $table->timestamps();
         });
     }

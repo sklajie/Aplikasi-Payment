@@ -183,7 +183,7 @@ class PembayaranController extends Controller
         $data = Pembayaran::select([
             'pembayaran.*',
             'kategori_pembayaran.kategori_pembayaran as nama_kategori'
-        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('kategori_pembayaran_id' , '70c516d2-65b1-4e0f-900d-79ba516b10fe')->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
+        ])->orderBy($orderBy, $request->input('order.0.dir'))->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id');
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 

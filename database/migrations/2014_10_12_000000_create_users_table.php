@@ -22,6 +22,10 @@ return new class extends Migration
                         ->unique()
                         ->nullable()
                         ->default(null);
+            $table->string('endpoint')
+                        ->unique()
+                        ->nullable()
+                        ->default(null);
             $table->timestamps();
         });
     }

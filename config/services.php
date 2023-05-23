@@ -31,14 +31,4 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'bsi' => [
-        'client_id' => 'BPI3764',
-        'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
-        'username' => '3764',
-        'password' => '3764',
-        'redirect' => '/bsi-callback', // URL callback yang Anda tentukan
-        'openid_connect' => true, // Aktifkan mode OpenID Connect
-    ],
-    
-
 ];

@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'level_id' => fake()->randomElement($level_id),
             'no_hp' => '08523643626',
-            'mode' => 'prod',
+            'api_token' => Str::random(50),
             'password' => Hash::make('superadmin123'),
         ]);
         
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
             'email' => 'adminkeuangan@gmail.com',
             'level_id' => fake()->randomElement($level_id),
             'no_hp' => '08534523678',
-            'mode' => 'prod',
+            'api_token' => Str::random(50),
             'password' => Hash::make('adminkeuangan123'),
         ]);
 
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
             'email' => 'adminapps@gmail.com',
             'level_id' => fake()->randomElement($level_id),
             'no_hp' => '085674834534',
-            'mode' => 'prod',
+            'api_token' => Str::random(50),
             'password' => Hash::make('adminapps123'),
         ]);
 

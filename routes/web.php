@@ -48,8 +48,5 @@ Route::get('/api', function(){
 });
 
 Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
+Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
 
-Route::group(['prefix' => 'dokumentasi'], function () {
-    Route::get('/', [DokumentasiController::class, 'index'] );
-    Route::get('/request', [DokumentasiController::class, 'request'])->name('request');
-});

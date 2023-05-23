@@ -154,7 +154,7 @@
                 </div>
                 <div class="col-md-3">
                   <label>Status</label>
-                  <select id="filter-open-payment" class="form-control filter">
+                  <select id="filter-status" class="form-control filter">
                     <option value="">semua</option>
                     <option value="1">Lunas</option>
                     <option value="0">Belum lunas</option>
@@ -274,7 +274,7 @@
 @section('js')
 <script type="text/javascript">
   let list_pembayaran = [];
-  let openPayment = $("#filter-open-payment").val()
+  let status = $("#filter-status").val()
   ,semester = $("#filter-semester").val()
   ,prodi = $("#filter-prodi").val()
   ,tahun_akademik = $("#filter-tahun-akademik").val()
@@ -293,7 +293,7 @@
       url: "{{url('')}}/pembayaran/data",
       type: "POST",
       data:function(d){
-        d.openPayment = openPayment;
+        d.status = status;
         d.semester = semester;
         d.prodi = prodi;
         d.tahun_akademik = tahun_akademik;
@@ -417,7 +417,7 @@
         "targets": 14,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          if (row.openPayment === 1) {
+          if (row.status === 1) {
                   return '<span style="color: blue;">Dibayar</span>';
               } else {
                   return  '<span style="color: red;">Belum Dibayar</span>';
@@ -613,7 +613,7 @@
   // });
 
   $(".filter").on('change',function(){
-    openPayment = $("#filter-open-payment").val()
+    status = $("#filter-status").val()
     semester = $("#filter-semester").val()
     prodi = $("#filter-prodi").val()
     tahun_akademik = $("#filter-tahun-akademik").val()

@@ -14,6 +14,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/pembayaran/data',
         '/pembayaran',
+        '/log_transaksi/data',
+        '/log_transaksi',
         '/pembayaran/export_data_terpilih',
     ];
 }

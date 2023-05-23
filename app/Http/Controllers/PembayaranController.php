@@ -173,7 +173,7 @@ class PembayaranController extends Controller
                 $orderBy = 'pembayaran.date';
                 break;
             case "13":
-                $orderBy = 'pembayaran.openPayment';
+                $orderBy = 'pembayaran.status';
                 break;
             default:
                 $orderBy = 'pembayaran.nim';
@@ -193,7 +193,7 @@ class PembayaranController extends Controller
             $data = $data->where(function($q)use($request){
                 $q->whereRaw('LOWER(pembayaran.nim) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-                ->orWhereRaw('LOWER(pembayaran.openPayment) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.status) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.date) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.prodi) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.semester) like ? ',['%'.strtolower($request->input('search.value')).'%'])
@@ -213,11 +213,11 @@ class PembayaranController extends Controller
         }
 
         //filter berdasarkan status
-        if($request->input('openPayment')!=null){
-            if($request->input('openPayment')== 1){
-                $data = $data->where('openPayment', $request->openPayment);
-            }else if($request->input('openPayment')== 0){
-                $data = $data->where('openPayment', $request->openPayment);
+        if($request->input('status')!=null){
+            if($request->input('status')== 1){
+                $data = $data->where('status', $request->status);
+            }else if($request->input('status')== 0){
+                $data = $data->where('status', $request->status);
             }
         }
 

@@ -30,7 +30,7 @@ class pembayaranImport implements ToModel, WithHeadingRow
             'prodi'=> $row['prodi'],
             'va'=> $row['va'],
             'amount'=> $row['amount'],
-            'openPayment'=> '0',
+            'status'=> '0',
             'activeDate'=> '2023-6-17',
             'inactiveDate'=> '2023-6-29',
             'date'=>$now,

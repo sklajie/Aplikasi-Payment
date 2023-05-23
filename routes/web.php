@@ -22,7 +22,7 @@ use App\Http\Controllers\TransaksiPmbController;
 Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth','adminapps']);
 
 route::get('/cek', function(){
-    return view('pdf.invoice_pembayaran_ukt');
+    return view('pages/log_transaksi');
 });
 
 Auth::routes();
@@ -49,4 +49,7 @@ Route::get('/api', function(){
 
 Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
 Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
+
+Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');
+Route::any('/log_transaksi/data', 'App\Http\Controllers\PembayaranLainnyaController@data');
 

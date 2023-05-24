@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\DokumentasiController;
 use App\Services\BillingApi;
 
 use App\Http\Controllers\TransaksiPmbController;
@@ -41,14 +42,11 @@ Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranC
 
 Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->name('bsi-callback');
 
-Route::resource('/api/production',App\Http\Controllers\ProductionController::class);
-Route::get('/api/sandbox',[App\Http\Controllers\SandboxController::class, 'index']);
-Route::get('/dokumentasi/production', [App\Http\Controllers\ProductionController::class, 'dokumentasi'] );
-Route::get('/dokumentasi/sandbox', [App\Http\Controllers\SandboxController::class, 'dokumentasi'] );
+Route::resource('/api',App\Http\Controllers\ApiController::class);
 
 Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
-
+Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
 
 Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');
 Route::any('/log_transaksi/data', 'App\Http\Controllers\PembayaranLainnyaController@data');
-Route::any('/log_transaksi/detail/{id}', 'App\Http\Controllers\PembayaranLainnyaController@showDetail');
+Route::any('/log_transaksi/detail/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaController@showDetail');

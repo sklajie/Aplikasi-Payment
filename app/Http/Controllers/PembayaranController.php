@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use TCPDF;
 use GuzzleHttp\Client;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Libraries\PdfGenerator;
 use App\Services\BsiApiService;
 use App\Exports\PembayaranExport;
 use App\Imports\pembayaranImport;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -256,16 +259,34 @@ class PembayaranController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 
      */
+
+     
         $data['pembayaran'] = Pembayaran::select([
         'pembayaran.*',
         'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
         
-            return view('pdf.invoice_pembayaran_ukt', $data);
+            // return view('pdf.invoice_pembayaran_ukt', $data);
 
-        // $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
-        // return $pdf->download('pembayaran.pdf');
+        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        return $pdf->download('pembayaran.pdf');
+
+    // $filename = 'pembayaran.pdf';
+
+    // $view = view('pdf.invoice_pembayaran_ukt', $data)->render();
+    
+    // $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8');
+    // $pdf->SetTitle('Hello World');
+    // $pdf->AddPage();
+    // $pdf->writeHTML($view);
+    
+    // $pdf->Output(public_path($filename), 'F');
+    
+    // return response()->download(public_path($filename));
+    
+
     }
 
 }

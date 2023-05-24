@@ -184,14 +184,14 @@
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
           list_pembayaran[row.id] = row;
-          return row.id;
+          return row.pembayaran_id;
         }
       },
       {
         "targets": 1,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.name;
+          return row.nama;
         }
       },
       {
@@ -205,14 +205,14 @@
         "targets": 3,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.amount;
+          return row.regis_number;
         }
       },
       {
         "targets": 4,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.regis_number;
+          return row.amount;
         }
       },
       {
@@ -238,7 +238,7 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a href="{{url('')}}/log_transaksi/detail/${row.id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
+            <a href="{{url('')}}/log_transaksi/detail/${row.pembayaran_id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
             `;
           // if(row.status=='aktif'){
           //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`

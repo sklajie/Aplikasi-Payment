@@ -4,12 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PendaftaranController;
 use App\Http\Controllers\BsiApiController;
-
+use App\Http\Controllers\PembayaranLainnyaController;
 use App\Http\Controllers\TransaksiPmbController;
 
 
 Route::prefix('v1')->group(function () {
     Route::post('/transactions', [TransaksiPmbController::class, 'store']);
+    Route::get('/DataTransactions', [PembayaranLainnyaController::class, 'DataTransaction']);
+    Route::get('/DataDetailTransactions/{regis_number}', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
 });
 
 // Route::prefix('v1')->group(function () {

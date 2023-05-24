@@ -65,9 +65,6 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
         </section>
         <br>
 @foreach ($histori as $item)
-    
-
-
         <section id="request">
             <h3>Log</h3>
 
@@ -97,16 +94,52 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                         </tbody>
                     </table>
                 </div>
+                <style>
+                    .json-container {
+                        padding: 10px;
+                        height: 200px;
+                        background-color: #f1f1f1;
+                        border: 1px solid #ccc;
+                        overflow-x: auto;
+                        font-family: 'Courier New', Courier, monospace;
+                    }
+                </style>
+                
                 <div class="tab-pane fade" id="request-api{{ $item->id }}">
-                  <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
+                    <div class="json-container">
+                        <pre><code>{{ json_encode($item->request_body, JSON_PRETTY_PRINT) }}</code></pre>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="response-api{{ $item->id }}">
-                  <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
+                    <div class="json-container">
+                        <pre>{{ json_encode($item->respons, JSON_PRETTY_PRINT) }}</pre>
+                    </div>
                 </div>
+                
+
             </div>
         </section>
         <br>
     </div>
+
+    {{-- <script>
+    // Contoh data JSON
+    var jsonDataRequest = {!! $item->request !!};
+    var jsonDataResponse = {!! $item->response !!};
+
+    // Mengambil elemen kontainer di HTML
+    var containerRequest = document.getElementById("request-api{{ $item->id }}");
+    var containerResponse = document.getElementById("response-api{{ $item->id }}");
+
+    // Membuat tampilan teks JSON
+    var jsonTextRequest = JSON.stringify(jsonDataRequest, null, 2);
+    var jsonTextResponse = JSON.stringify(jsonDataResponse, null, 2);
+
+    // Menambahkan tampilan teks JSON ke dalam elemen kontainer
+    containerRequest.innerHTML = "<pre>" + jsonTextRequest + "</pre>";
+    containerResponse.innerHTML = "<pre>" + jsonTextResponse + "</pre>";
+
+    </script> --}}
 @endforeach
 
 <br>

@@ -6,15 +6,20 @@ use App\Http\Controllers\API\PendaftaranController;
 use App\Http\Controllers\BsiApiController;
 
 use App\Http\Controllers\TransaksiPmbController;
+use App\Http\Controllers\NotificationController;
 
 
 Route::prefix('v1')->group(function () {
     Route::post('/transactions', [TransaksiPmbController::class, 'store']);
 });
 
-// Route::prefix('v1')->group(function () {
-//     Route::post('/Pmb', [PmbController::class, 'store']);
-// });
+Route::prefix('v1')->group(function () {
+    Route::post('/notification', [TransaksiPmbController::class, 'receiveBpiNotification']);
+});
+
+//test
+Route::post('/webhook', [NotificationController::class, 'receiveNotification']);
+//test
 
 Route::post('/Pmb', [PmbController::class, 'store']);
 

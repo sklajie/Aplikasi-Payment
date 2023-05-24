@@ -63,6 +63,12 @@ class PembayaranLainnya extends Model
     // Definisikan relasi dengan model Histori
     public function histori()
     {
-        return $this->hasMany(Histori::class);
+        return $this->hasOne(Histori::class, 'pembayaran_lainnya_id');
     }
+
+    public function user()
+    {
+        return $this->hasOneThrough(User::class, Histori::class, 'pembayaran_lainnya_id', 'id', 'id', 'user_id');
+    }
+
 }

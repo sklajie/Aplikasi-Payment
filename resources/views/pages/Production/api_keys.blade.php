@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
     <div class="alert alert-info">
         <center>
         <div class="" style="padding-top: 50px; padding-bottom:50px;">

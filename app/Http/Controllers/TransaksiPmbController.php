@@ -201,7 +201,7 @@ class TransaksiPmbController extends Controller
                 'user_id' => 'required',
             ]);
 
-            // DB::beginTransaction();
+            DB::beginTransaction();
 
             // Simpan data pembayaran_lainnya
             $pembayaranLainnya = PembayaranLainnya::create([
@@ -257,7 +257,7 @@ class TransaksiPmbController extends Controller
             
             $historiUserId = $histori->user_id;
 
-            // DB::commit();
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -265,7 +265,7 @@ class TransaksiPmbController extends Controller
                 'data' => $histori,
             ], 201); // Gunakan status HTTP 201 Created
         } catch (\Exception $e) {
-            // DB::rollback();
+            DB::rollback();
 
             return response()->json([
                 'success' => false,

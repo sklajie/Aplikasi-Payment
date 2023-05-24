@@ -50,7 +50,6 @@ class UserController extends Controller
             'no_hp' => 'required|min:10|',
             'level_id' => 'required',
             'password' => 'required',
-            'api_token' => 'required',
 
         ]);
 

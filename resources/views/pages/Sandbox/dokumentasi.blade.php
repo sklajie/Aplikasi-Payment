@@ -1,4 +1,4 @@
-@extends('layouts.app3')
+@extends('layouts.app4')
 
 @section('title', 'Dokumentasi', 'active')
 
@@ -41,7 +41,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
             <h4>Request</h4>
             <ul class="nav nav-tabs ro-doc-tabs">
                 <li><a class="btn btn-outline-primary active" data-toggle="tab" href="#request-url">URL</a></li>
-                <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#request-parameter">Parameter</a></li>
+                <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#request-parameter">Post Data</a></li>
                 <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#request-example">Contoh request</a></li>
             </ul>
             <br>
@@ -56,7 +56,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                         </thead>
                         <tbody>
                             <tr>
-                                <td>GET</td>
+                                <td>POST</td>
                                 <td>http://localhost:8000/api/v1/transactions</td>
                             </tr>
                         </tbody>
@@ -66,53 +66,42 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <td>Method</td>
-                                <td>Parameter</td>
-                                <td>Wajib</td>
-                                <td>Tipe</td>
-                                <td>Keterangan</td>
+                                <td>Field</td>
+                                <td>Required</td>
+                                <td>Type</td>
+                                <td>Description</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>GET/HEAD</td>
-                                <td>key</td>
-                                <td>Ya</td>
-                                <td>String</td>
-                                <td>API Key</td>
+                                <td>amount</td>
+                                <td>Yes</td>
+                                <td>Double</td>
+                                <td>Invoice amount</td>
                             </tr>
                             <tr>
-                                <td>GET/HEAD</td>
-                                <td>android-key</td>
-                                <td>Tidak</td>
+                                <td>name</td>
+                                <td>Yes</td>
                                 <td>String</td>
-                                <td>Identitas aplikasi Android</td>
+                                <td>Customer name</td>
                             </tr>
                             <tr>
-                                <td>GET/HEAD</td>
-                                <td>ios-key</td>
-                                <td>Tidak</td>
+                                <td>email</td>
+                                <td>Yes</td>
                                 <td>String</td>
-                                <td>Identitas aplikasi iOS</td>
+                                <td>Customer email</td>
                             </tr>
                             <tr>
-                                <td>GET</td>
-                                <td>id</td>
-                                <td>Tidak</td>
+                                <td>regis_number</td>
+                                <td>Yes</td>
                                 <td>String</td>
-                                <td>ID propinsi</td>
+                                <td>Registration Virtual Account</td>
                             </tr>
                         </tbody>
                     </table>
-                    <p><strong>Catatan:</strong></p>
-                    <ul>
-                        <li>p</li>
-                        <li>P</li>
-                        <li>P</li>
-                    </ul>
                 </div>
                 <div class="tab-pane fade" id="request-example">
-                  <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
+                  <script src="https://gist.github.com/sklajie/8b6e8baffb2d44aebf18bd5904eac4a3.js"></script>
                 </div>
             </div>
         </section>
@@ -127,7 +116,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
             <br>
             <div class="tab-content">
                 <div class="tab-pane active" id="response-sukses">
-                    <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
+                    <script src="https://gist.github.com/sklajie/5988180675ac8b4fe5b9389324aca954.js"></script>
                 </div>
                 <div class="tab-pane fade" id="response-gagal">
                     <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
@@ -136,50 +125,55 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <td>Method</td>
-                                <td>Parameter</td>
-                                <td>Wajib</td>
-                                <td>Tipe</td>
-                                <td>Keterangan</td>
+                                <td>Field</td>
+                                <td>Type</td>
+                                <td>Description</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>GET/HEAD</td>
-                                <td>key</td>
-                                <td>Ya</td>
+                                <td>pembayaran_lainnya_id</td>
                                 <td>String</td>
-                                <td>API Key</td>
+                                <td>Id request customer </td>
                             </tr>
                             <tr>
-                                <td>GET/HEAD</td>
-                                <td>android-key</td>
-                                <td>Tidak</td>
+                                <td>method</td>
                                 <td>String</td>
-                                <td>Identitas aplikasi Android</td>
+                                <td>Payment ustomer</td>
                             </tr>
                             <tr>
-                                <td>GET/HEAD</td>
-                                <td>ios-key</td>
-                                <td>Tidak</td>
+                                <td>request_body</td>
                                 <td>String</td>
-                                <td>Identitas aplikasi iOS</td>
+                                <td>Request data customer</td>
                             </tr>
                             <tr>
-                                <td>GET</td>
+                                <td>respons</td>
+                                <td>String</td>
+                                <td>Response BSI</td>
+                            </tr>
+                            <tr>
+                                <td>user_id</td>
+                                <td>String</td>
+                                <td>Id User Apps</td>
+                            </tr>
+                            <tr>
                                 <td>id</td>
-                                <td>Tidak</td>
                                 <td>String</td>
-                                <td>ID propinsi</td>
+                                <td>ID response</td>
                             </tr>
+                            <tr>
+                                <td>updated_at</td>
+                                <td>Date</td>
+                                <td>Update Date</td>
+                            </tr>
+                            <tr>
+                                <td>created_at</td>
+                                <td>Date</td>
+                                <td>Created Date</td>
+                            </tr>
+                            
                         </tbody>
                     </table>
-                    <p><strong>Catatan:</strong></p>
-                    <ul>
-                        <li>p</li>
-                        <li>P</li>
-                        <li>P</li>
-                    </ul>
                 </div>
             </div>
         </section>

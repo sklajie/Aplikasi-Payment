@@ -1,4 +1,4 @@
-@extends('layouts.app3')
+@extends('layouts.app4')
 
 @section('title' , 'API Keys' , 'active')
 
@@ -48,11 +48,14 @@
     <center>
     <div class="" style="padding-top: 50px; padding-bottom:50px;">
         <h1 class="text-center mb-4">Endpoint Anda</h1>
+        <br>
         <code class="api_token" style="font-size: 20px; ">{{auth()->user()->endpoint}}</code>
         <br>
         <br>
         <br>
-        <a href="{{route('api.edit',auth()->user()->id)}}" class="btn btn-warning">Tambahkan atau Edit Endpoint Anda</a>
+        <p class="text-warning" style="font-size:17px;">
+            Endpoint ini adalah endpoint aplikasi anda untuk menerima notifikasi atau update response dari kami            
+        </p>
     </div>
     </center>
 </div>

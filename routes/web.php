@@ -46,7 +46,7 @@ Route::get('/api/sandbox',[App\Http\Controllers\SandboxController::class, 'index
 Route::get('/dokumentasi/production', [App\Http\Controllers\ProductionController::class, 'dokumentasi'] );
 Route::get('/dokumentasi/sandbox', [App\Http\Controllers\SandboxController::class, 'dokumentasi'] );
 
-Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
+Route::resource('/profil', 'App\Http\Controllers\ProfilController')->middleware(['auth']);
 
 
 Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');

@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use PDF;
 use GuzzleHttp\Client;
 use App\Models\PembayaranLainnya;
+use App\Models\Histori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Services\BsiApiService;
 use App\Exports\PembayaranExport;
 use App\Imports\pembayaranImport;
+use App\Models\Pembayaran;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp\Exception\GuzzleException;
@@ -33,14 +35,14 @@ class PembayaranLainnyaController extends Controller
 
     public function data(Request $request)
     {
-    	$orderBy = 'pembayaran_lainnya.regis_number';
+    	$orderBy = 'pembayaran_lainnya.id';
         
         switch($request->input('order.0.column')){
             case "1":
                 $orderBy = 'pembayaran_lainnya.id';
                 break;
             case "2":
-                $orderBy = 'pembayaran_lainnya.nama';
+                $orderBy = 'pembayaran_lainnya.name';
                 break;
             case "3":
                 $orderBy = 'pembayaran_lainnya.email';
@@ -55,7 +57,7 @@ class PembayaranLainnyaController extends Controller
                 $orderBy = 'pembayaran_lainnya.paid';
                 break;
             case "7":
-                $orderBy = 'pembayaran_lainnya.paidDate';
+                $orderBy = 'pembayaran_lainnya.paid_date';
                 break;
             default:
                 $orderBy = 'pembayaran_lainnya.regis_number';
@@ -63,15 +65,17 @@ class PembayaranLainnyaController extends Controller
         }
 
         $data = PembayaranLainnya::select([
-            'pembayaran_lainnya.*'
-        ])->orderBy($orderBy, $request->input('order.0.dir'));
+            'pembayaran_lainnya.*',
+        ]);
+
+
 
 
 
         // search
         if($request->input('search.value')!=null){
             $data = $data->where(function($q)use($request){
-                $q->whereRaw('LOWER(pembayaran_lainnya.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                $q->whereRaw('LOWER(pembayaran_lainnya.name) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran_lainnya.email) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran_lainnya.regis_number) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran_lainnya.amount) like ? ',['%'.strtolower($request->input('search.value')).'%'])
@@ -133,17 +137,39 @@ class PembayaranLainnyaController extends Controller
 
     public function showDetail(Request $request, $id){
         $title = 'detail';
-        $data = PembayaranLainnya::find($id);
-        return view('pages.LogTransaksi.detailLog_transaksi', compact('title','data'));
+        $data = PembayaranLainnya::select([
+            'pembayaran_lainnya.*',
+            'histori.method as methode',
+            'histori.id as histori_id',
+        ])->join('histori','histori.pembayaran_lainnya_id','=','pembayaran_lainnya.id')->find($id);
+
+        if ($data) {
+            // Mengambil data histori dengan id_pembayaran_lainnya yang sama
+            $histori = Histori::where('pembayaran_lainnya_id', $data->id)->get();
+
+        }else {
+            echo "Data pembayaran tidak ditemukan.";
+        } 
+
+
+        return view('pages.LogTransaksi.detailLog_transaksi', compact('title','data', 'histori'));
     }
 
     public function PaymentNotification(Request $request){
-        $data = $request->validate([
-            'va' => 'required',
-            'amount' => 'required|numeric',
-            'paid' => 'required',
-            'paidDate' => 'required',
-        ]);
+
+        $va = $request->va;
+        $amount = $request->amount;
+        $paid = $request->paid;
+        $paidDate = $request->paidDate;
+
+        $pembayaran_lainnya = PembayaranLainnya::whereIn('pembayaran_lainnya.va', $va)->get();
+
+        $pembayaran_lainnya->paid = $paid;
+        $pembayaran_lainnya->paidDate = $paidDate;
+        $pembayaran_lainnya->save();
+
+
+        
 
         // try {
         //     $data = $request->validate([
@@ -167,8 +193,8 @@ class PembayaranLainnyaController extends Controller
             
         // Simpan data histori request ke dalam tabel HistoriRequest
         $historiRequest = HistoriRequest::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'va' => $data['name'],
+            'amount' => $data['email'],
             'regis_number' => $data['regis_number'],
             'amount' => (int)$data['amount'],
             'user_id' => '133759c4-c0d0-4396-bfa4-fe4851c9c303',

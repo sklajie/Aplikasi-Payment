@@ -38,7 +38,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                             </tr>
                             <tr>
                                 <td style="width: 20%">Nama</td>
-                                <th>{{ $data->nama  }}</th>
+                                <th>{{ $data->name }}</th>
                             </tr>
                             <tr>
                                 <td style="width: 20%">Email</td>
@@ -54,7 +54,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                             </tr>
                             <tr>
                                 <td style="width: 20%">tanggal Pembayaran</td>
-                                <th>{{ $data->paidDate  }}</th>
+                                <th>{{ $data->paid_date  }}</th>
                             </tr>
                             <tr>
                                 <td style="width: 20%">Status Pembayaran</td>
@@ -63,89 +63,53 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                         </tbody>
                     </table>
         </section>
-<br><br>
+        <br>
+@foreach ($histori as $item)
+    
+
+
         <section id="request">
             <h3>Log</h3>
+
             <ul class="nav nav-tabs ro-doc-tabs">
-                <li><a class="btn btn-outline-primary active" data-toggle="tab" href="#request-url">URL</a></li>
-                <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#request-parameter">Parameter</a></li>
-                <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#request-example">Contoh request</a></li>
+                <li><a class="btn btn-outline-primary active" data-toggle="tab" href="#request-url{{ $item->id }}">URL</a></li>
+                <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#request-api{{ $item->id }}">request</a></li>
+                <li>&nbsp;<a class="btn btn-outline-primary" data-toggle="tab" href="#response-api{{ $item->id }}">response</a></li>
             </ul>
             <br>
             <div class="tab-content">
-                <div class="tab-pane active" id="request-url">
+                <div class="tab-pane active" id="request-url{{ $item->id }}">
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <td>log ID</td>
                                 <td>Method</td>
                                 <td>URL</td>
+                                
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>GET</td>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->method }}</td>
                                 <td>http://localhost:8000/api/v1/transactions</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="request-parameter">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <td>Method</td>
-                                <td>Parameter</td>
-                                <td>Wajib</td>
-                                <td>Tipe</td>
-                                <td>Keterangan</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GET/HEAD</td>
-                                <td>key</td>
-                                <td>Ya</td>
-                                <td>String</td>
-                                <td>API Key</td>
-                            </tr>
-                            <tr>
-                                <td>GET/HEAD</td>
-                                <td>android-key</td>
-                                <td>Tidak</td>
-                                <td>String</td>
-                                <td>Identitas aplikasi Android</td>
-                            </tr>
-                            <tr>
-                                <td>GET/HEAD</td>
-                                <td>ios-key</td>
-                                <td>Tidak</td>
-                                <td>String</td>
-                                <td>Identitas aplikasi iOS</td>
-                            </tr>
-                            <tr>
-                                <td>GET</td>
-                                <td>id</td>
-                                <td>Tidak</td>
-                                <td>String</td>
-                                <td>ID propinsi</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p><strong>Catatan:</strong></p>
-                    <ul>
-                        <li>p</li>
-                        <li>P</li>
-                        <li>P</li>
-                    </ul>
+                <div class="tab-pane fade" id="request-api{{ $item->id }}">
+                  <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
                 </div>
-                <div class="tab-pane fade" id="request-example">
+                <div class="tab-pane fade" id="response-api{{ $item->id }}">
                   <script src="https://gist.github.com/sklajie/0f3e8e7294a0c3beede43f9647f5d4f1.js"></script>
                 </div>
             </div>
         </section>
         <br>
     </div>
-<br><br><br>
+@endforeach
+
+<br>
         <div class="alert alert-info">
             <p>Jika ada yang ingi di konfirmasi silahkan hubungi <a data-tjr-open-modal="contact-info-modal" href="#open-info-dialog-modal">kontak support</a></p>
         </div>

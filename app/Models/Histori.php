@@ -12,10 +12,9 @@ class Histori extends Model
     use HasFactory;
 
     protected $table = 'histori';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'pembayaran_lainnya_id',
         'method',
         'request_body',

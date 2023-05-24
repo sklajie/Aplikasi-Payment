@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
-class PembayaranLainnya extends Model
+class Histori extends Model
 {
     use HasFactory;
 
-    protected $table = 'pembayaran_lainnya';
+    protected $table = 'histori';
     protected $primaryKey = 'id';
     public $incrementing = false;
 
     protected $fillable = [
-        'id',
-        'name',
-        'email',
-        'regis_number',
-        'amount',
+        'pembayaran_lainnya_id',
+        'method',
+        'request_body',
+        'respons',
+        'user_id',
     ];
-
+    
     // Generate UUID saat menyimpan model
     protected static function boot()
     {
@@ -44,8 +44,9 @@ class PembayaranLainnya extends Model
         return $this->response;
     }
 
-    // Definisikan relasi dengan model Histori
-    public function histori(){
-        return $this->hasMany(Histori::class);
+    // Definisikan relasi dengan model PembayaranLainnya
+    public function pembayaranLainnya()
+    {
+        return $this->belongsTo(PembayaranLainnya::class, 'pembayaran_lainnya_id', 'id');
     }
 }

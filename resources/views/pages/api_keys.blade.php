@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app3')
 
-@section('title' , 'Access Key' , 'active')
+@section('title' , 'API Keys' , 'active')
 
 @section('content')
 <br>

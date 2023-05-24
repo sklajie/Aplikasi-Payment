@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\Uuid;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PembayaranLainnya extends Model
 {
     use HasFactory;
+
     protected $table = 'pembayaran_lainnya';
     protected $guarded = [''];
 
@@ -47,5 +48,21 @@ class PembayaranLainnya extends Model
     public function getKeyType()
     {
         return 'string';
+    }
+
+    public function setResponse($response)
+    {
+        $this->response = $response;
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    // Definisikan relasi dengan model Histori
+    public function histori()
+    {
+        return $this->hasMany(Histori::class);
     }
 }

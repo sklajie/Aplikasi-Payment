@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title' , 'Tambah Pengguna' , 'active')
+@section('title' , 'Edit Password' , 'active')
 
 @section('content')
 <br>
 <div class="main-panel">
     <div class="page-inner">
-        <h1 class="text-center mb-4">Tambah Pengguna</h1>
+        <h1 class="text-center mb-4">Edit Password</h1>
     <div>
         <ul class="breadcrumbs">
 
@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="/users/create">Tambah Pengguna</a>
+                <a href="/users/edit">Edit Password</a>
             </li>
         </ul>
         </div>
@@ -38,63 +38,11 @@
         <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('users.store') }}" method="POST"  >
+                <form action="{{ route('profil.update',$user->id) }}" method="POST"  >
                     @csrf
+                    @method('patch')
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nama Lengkap</label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name">
-                    
-                        @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username">
-
-                        @error('username')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email">
-                    
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="no_hp" class="form-label">No Handphone</label>
-                        <input id="no_hp" type="number" class="form-control @error('no_hp') is-invalid @enderror" name="no_hp">
-                    
-                        @error('no_hp')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="level_id" class="form-label">Status</label>
-                        <select id="level_id" class="form-control" name="level_id">
-                            <option value="" hidden></option>
-                            @foreach ($level as $levels)55
-                                <option value="{{$levels->id}}">{{$levels->nama_level}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <label for="password" class="form-label text-md-end">Password</label>
+                        <label for="password" class="form-label text-md-end">Password Baru</label>
                     <div class="input-group">
 
                         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password">
@@ -121,15 +69,15 @@
                     </div>
                     </div>
                     <br>
-                    <br>
-
-                    <button type="submit" class="btn btn-primary float" style="width: 100px;">Tambah</button>   
+                    <button type="submit" class="btn btn-primary float" style="width: 100px;">Edit</button>   
                     <a href="/users" class="btn btn-danger" style="width: 100px;">Kembali</a>
-                </form> 
+                </form>
+                
         </div>
     </div>
 </div>
 </div>
+
 <script>
     // membuat fungsi change
     function change() {

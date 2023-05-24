@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app3')
 
 @section('css')
 <style type="text/css">
@@ -191,7 +191,7 @@
         "targets": 1,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama;
+          return row.name;
         }
       },
       {
@@ -219,7 +219,7 @@
         "targets": 5,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.paidDate;
+          return row.paid_date;
         }
       },
       {

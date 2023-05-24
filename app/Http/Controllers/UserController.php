@@ -8,6 +8,7 @@ use App\Models\Level;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -50,7 +51,6 @@ class UserController extends Controller
             'no_hp' => 'required|min:10|',
             'level_id' => 'required',
             'password' => 'required',
-            'api_token' => 'required',
 
         ]);
 
@@ -117,15 +117,6 @@ class UserController extends Controller
 
 
         return back()->with('Success','Berhasil Hapus Data');
-    }
-
-    public function profil(Request $request){
-
-        $title = 'Profile';
-        $level = Level::all();
-        return view('pages.users.profil', compact('level', 'title'))->with([
-            'user' => user::all()
-        ]);
     }
 
 }

@@ -260,20 +260,6 @@
 								<p>Kategori Pembayaran</p>
 							</a>
 						</li>
-
-						<li class="nav-item">
-							<a href="/api">
-								<i class="fas fa-key"></i>
-								<p>API Keys</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="/dokumentasi">
-								<i class="fas fa-swatchbook"></i>
-								<p>Dokumentasi</p>
-							</a>
-						</li>
 						
 					</ul>
 				@elseif ( Auth::user()->level['nama_level'] == 'Admin Keuangan')

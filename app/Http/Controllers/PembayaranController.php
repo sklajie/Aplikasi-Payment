@@ -32,31 +32,7 @@ class PembayaranController extends Controller
         $dataprodi = Pembayaran::distinct()->pluck('prodi');
         return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi'));
     }
-
-    public function getToken()
-    {
-        $client = new Client();
-
-        try {
-            $response = $client->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
-                'form_params' => [
-                    
-                ],
-            ]);
-
-            $responseData = json_decode($response->getBody(), true);
-
-            return dd($responseData['access_token']);
-
-            
-        } catch (GuzzleException $e) {
-            // Handle exception
-            return null;
-        }
-    }
-
     
-
     public function aktivasiVA(Request $request){
 
         $ids = explode(',', $request->ids);

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->date('activeDate');
             $table->date('inactiveDate');
             $table->date('date');
+            $table->timestamps();
         });
     }
 

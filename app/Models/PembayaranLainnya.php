@@ -3,36 +3,52 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use App\Traits\Uuid;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Ramsey\Uuid\Uuid;
 
 class PembayaranLainnya extends Model
 {
     use HasFactory;
 
     protected $table = 'pembayaran_lainnya';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
+    protected $guarded = [''];
 
-    protected $fillable = [
-        'id',
-        'name',
-        'email',
-        'regis_number',
-        'amount',
-    ];
-
-    // Generate UUID saat menyimpan model
+      /**
+     * Kita override boot method
+     *
+     * Mengisi primary key secara otomatis dengan UUID ketika membuat record
+     */
     protected static function boot()
     {
         parent::boot();
-
-        self::creating(function ($model) {
-            $model->id = Uuid::uuid4()->toString();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
+            }
         });
     }
 
-    protected $response = []; // property untuk menyimpan seluruh data response dari API
+    /**
+     * Kita override getIncrementing method
+     *
+     * Menonaktifkan auto increment
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    /**
+     * Kita override getKeyType method
+     *
+     * Memberi tahu laravel bahwa model ini menggunakan primary key bertipe string
+     */
+    public function getKeyType()
+    {
+        return 'string';
+    }
 
     public function setResponse($response)
     {
@@ -45,7 +61,8 @@ class PembayaranLainnya extends Model
     }
 
     // Definisikan relasi dengan model Histori
-    public function histori(){
+    public function histori()
+    {
         return $this->hasMany(Histori::class);
     }
 }

@@ -66,7 +66,7 @@ class PembayaranLainnyaController extends Controller
 
         $data = PembayaranLainnya::select([
             'pembayaran_lainnya.*',
-        ]);
+        ])->where('pembayaran_lainnya' , '=' , Auth()->user()->id );
 
 
 

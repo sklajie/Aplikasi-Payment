@@ -49,43 +49,10 @@
             </div>
            <div class="card-body">
               <div class="row">
-                <div class="col-md-12">
-                  <h4>Filter Data</h4>
+                <div class="col-md-10">
                 </div>
-                <div class="col-md-3">
-                  <label>Tahun Akademik</label>
-                  <select id="filter-tahun-akademik" class="form-control filter">
-                    <option value="">Semua</option>
-                    {{-- @foreach($datatahunakademik as $tahunakademik)
-                    <option value="{{ $tahunakademik }}">{{ $tahunakademik }}</option>
-                    @endforeach --}}
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label>Prodi</label>
-                  <select id="filter-prodi" class="form-control filter">
-                    <option value="">Semua</option>
-                    {{-- @foreach($dataprodi as $prodi)
-                    <option value="{{ $prodi }}">{{ $prodi }}</option>
-                    @endforeach --}}
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label>Semester</label>
-                  <select id="filter-semester" class="form-control filter">
-                    <option value="">semua</option>
-                    <option value="1">Semester 1</option>
-                    <option value="2">Semester 2</option>
-                    <option value="3">Semester 3</option>
-                    <option value="4">Semester 4</option>
-                    <option value="5">Semester 5</option>
-                    <option value="6">Semester 6</option>
-                    <option value="7">Semester 7</option>
-                    <option value="8">Semester 8</option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label>Status</label>
+                <div class="col-md-2">
+                  <label>Filter - Status</label>
                   <select id="filter-open-payment" class="form-control filter">
                     <option value="">semua</option>
                     <option value="1">Lunas</option>
@@ -271,7 +238,7 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
+            <a href="{{url('')}}/log_transaksi/detail/${row.id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
             `;
           // if(row.status=='aktif'){
           //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`

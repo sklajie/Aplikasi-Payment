@@ -28,7 +28,7 @@ class PembayaranLainnyaController extends Controller
     public function index(Request $request)
     {
         $title = 'Log Transaksi';
-        return view('pages.log_transaksi' , compact('title'));
+        return view('pages.LogTransaksi.log_transaksi' , compact('title'));
     }
 
     public function data(Request $request)
@@ -68,19 +68,16 @@ class PembayaranLainnyaController extends Controller
 
 
 
-        // // search
-        // if($request->input('search.value')!=null){
-        //     $data = $data->where(function($q)use($request){
-        //         $q->whereRaw('LOWER(pembayaran_lainnya.nim) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(pembayaran_lainnya.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(pembayaran_lainnya.openPayment) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(pembayaran_lainnya.date) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(pembayaran_lainnya.prodi) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(pembayaran_lainnya.semester) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ->orWhereRaw('LOWER(kategori_pembayaran_lainnya.kategori_pembayaran_lainnya) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-        //         ;
-        //     });
-        // }
+        // search
+        if($request->input('search.value')!=null){
+            $data = $data->where(function($q)use($request){
+                $q->whereRaw('LOWER(pembayaran_lainnya.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran_lainnya.email) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran_lainnya.regis_number) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran_lainnya.amount) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ;
+            });
+        }
 
         // //filter tahun berdasarkan prodi
         // if($request->input('prodi')!=null){
@@ -92,14 +89,14 @@ class PembayaranLainnyaController extends Controller
         //     $data = $data->where('tahun_akademik',$request->tahun_akademik);
         // }
 
-        // //filter berdasarkan status
-        // if($request->input('openPayment')!=null){
-        //     if($request->input('openPayment')== 1){
-        //         $data = $data->where('openPayment', $request->openPayment);
-        //     }else if($request->input('openPayment')== 0){
-        //         $data = $data->where('openPayment', $request->openPayment);
-        //     }
-        // }
+        //filter berdasarkan status
+        if($request->input('openPayment')!=null){
+            if($request->input('openPayment')== 1){
+                $data = $data->where('openPayment', $request->openPayment);
+            }else if($request->input('openPayment')== 0){
+                $data = $data->where('openPayment', $request->openPayment);
+            }
+        }
 
         // //filter berdasarkan semester
         // if($request->input('semester')!=null){
@@ -132,6 +129,137 @@ class PembayaranLainnyaController extends Controller
             'recordsFiltered'=>$recordsFiltered,
             'data'=>$data
         ]);
+    }
+
+    public function showDetail(Request $request, $id){
+        $title = 'detail';
+        $data = PembayaranLainnya::find($id);
+        return view('pages.LogTransaksi.detailLog_transaksi', compact('title','data'));
+    }
+
+    public function PaymentNotification(Request $request){
+        $data = $request->validate([
+            'va' => 'required',
+            'amount' => 'required|numeric',
+            'paid' => 'required',
+            'paidDate' => 'required',
+        ]);
+
+        // try {
+        //     $data = $request->validate([
+        //         'name' => 'required',
+        //         'email' => 'required|email',
+        //         'va' => 'required',
+        //         'user_id' => 'required',
+        //         'amount' => 'required|numeric',
+        //         'date' => 'required|date',
+        //         // 'attribute1' => 'nullable',
+        //         // 'attribute2' => 'nullable',
+        //         'items' => 'required|array',
+        //         'items.*.description' => 'required',
+        //         'items.*.unitPrice' => 'required|numeric',
+        //         'items.*.qty' => 'required|integer',
+        //         'items.*.amount' => 'required|numeric',
+        //         'attributes' => 'nullable|array',
+        //     ]);
+            
+        //     DB::beginTransaction();
+            
+        // Simpan data histori request ke dalam tabel HistoriRequest
+        $historiRequest = HistoriRequest::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'regis_number' => $data['regis_number'],
+            'amount' => (int)$data['amount'],
+            'user_id' => '133759c4-c0d0-4396-bfa4-fe4851c9c303',
+            'created_date' => now(), // Tanggal dibuat (sekarang)
+        ]);
+        
+        // Buat data untuk dikirim ke Bank BSI
+        $requestData = [
+            'date' => date('Y-m-d'), 
+            'amount' => (int)$data['amount'],
+            'va' => $data['regis_number'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'items' => [
+                [
+                    'description'=>'Pembayaran PMB',
+                    'unitPrice' => (int)$data['amount'],
+                    'qty'=> 1,
+                    'amount'=> (int)$data['amount']
+                ]
+            ],
+            'attributes' => [],
+        ];
+
+        // Kirim permintaan ke Bank BSI 
+        $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
+            'grant_type' => 'password',
+            'client_id' => 'BPI3764',
+            'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
+            'username' => '3764',
+            'password' => '3764',
+        ]);
+        
+        $accessToken = $response->json('access_token');
+        
+        $responseApi = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
+    
+        // Simpan data histori respons ke dalam tabel HistoriRespons
+        $historiRespons = HistoriRespons::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'regis_number' => $data['regis_number'],
+            'amount' => $data['amount'],
+            'created_date' => date('Y-m-d'),
+            'respons' => json_encode($responseApi->json()),
+        ]);
+
+        //     // Periksa apakah data histori request berhasil disimpan
+        //     if ($historiRequest) {
+        //         // Periksa status respons dari Bank BSI
+        //         if ($response->successful()) {
+        //             // Simpan data respons ke tabel HistoriRespons
+        //             $historiRespons->save();
+    
+        //             // Hubungkan data histori respons dengan histori request
+        //             $historiRequest->historiRespons()->save($historiRespons);
+    
+        //             DB::commit();
+    
+        //             return response()->json([
+        //                 'success' => true,
+        //                 'message' => 'Data histori request berhasil disimpan dan permintaan ke Bank BSI berhasil dikirim',
+        //                 'data' => $historiRequest,
+        //             ], 201); // Gunakan status HTTP 201 Created
+        //         } else {
+        //             DB::rollback();
+    
+        //             return response()->json([
+        //                 'success' => false,
+        //                 'message' => 'Data histori request berhasil disimpan tetapi terjadi kesalahan saat mengirim permintaan ke Bank BSI',
+        //             ], 500); // Gunakan status HTTP 500 Internal Server Error
+        //         }
+        //     } else {
+        //         DB::rollback();
+    
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => 'Data histori request gagal disimpan',
+        //         ], 400); // Gunakan status HTTP 400 Bad Request
+        //     }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+    
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Terjadi kesalahan saat menyimpan data histori request atau mengirim permintaan ke Bank BSI',
+        //         'error' => $e->getMessage(),
+        //     ], 500);
+        // }
     }
 
     // public function importDataMahasiswa(Request $request)

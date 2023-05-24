@@ -209,13 +209,9 @@ class TransaksiPmbController extends Controller
                 'email' => $data['email'],
                 'regis_number' => $data['regis_number'],
                 'amount' => (int) $data['amount'],
-                'user_id' => $data['user_id'],
             ]);
             
             $pembayaranLainnyaId = $pembayaranLainnya->id;
-            $pembayaranLainnyaUserId = $pembayaranLainnya->user_id;
-
-            dd($pembayaranLainnyaUserId);
 
             // Buat data untuk dikirim ke Bank BSI
             $requestData = [
@@ -256,8 +252,10 @@ class TransaksiPmbController extends Controller
                 'method' => 'Metode Pembayaran',
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
-                'user_id' => $pembayaranLainnyaUserId,
+                'user_id' => $data['user_id'],
             ]);
+            
+            $historiUserId = $histori->user_id;
 
             // DB::commit();
 

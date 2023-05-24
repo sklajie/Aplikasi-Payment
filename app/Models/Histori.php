@@ -47,6 +47,12 @@ class Histori extends Model
     // Definisikan relasi dengan model PembayaranLainnya
     public function pembayaranLainnya()
     {
-        return $this->belongsTo(PembayaranLainnya::class, 'pembayaran_lainnya_id', 'id');
+        return $this->belongsTo(PembayaranLainnya::class, 'pembayaran_lainnya_id');
+    }
+
+    // Definisikan relasi dengan model User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

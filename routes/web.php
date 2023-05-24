@@ -44,8 +44,13 @@ Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->na
 
 Route::resource('/api',App\Http\Controllers\ApiController::class);
 
+<<<<<<< HEAD
 Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
 Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
+=======
+Route::resource('/profil', 'App\Http\Controllers\ProfilController')->middleware(['auth']);
+
+>>>>>>> 12cf3fc926eb0edafdcd0cb73c526f641ec507fc
 
 Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');
 Route::any('/log_transaksi/data', 'App\Http\Controllers\PembayaranLainnyaController@data');

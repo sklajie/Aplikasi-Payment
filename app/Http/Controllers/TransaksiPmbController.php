@@ -8,11 +8,14 @@ use App\Models\HistoriRequest;
 use App\Models\HistoriRespons;
 use App\Models\Histori;
 use App\Models\PembayaranLainnya;
+use App\Models\Notification;
 use App\Http\Clients\BsiApiClient;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+
+use GuzzleHttp\Client;
 
 class TransaksiPmbController extends Controller
 {
@@ -185,11 +188,6 @@ class TransaksiPmbController extends Controller
         return view('akses');
     }
 
-    public function update()
-    {
-        
-    }
-
     public function store(Request $request)
     {
         try {
@@ -275,6 +273,68 @@ class TransaksiPmbController extends Controller
         }
     }
 
+    public function receiveBpiNotification(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'va' => 'required',
+                'date' => 'required',
+                'message' => 'required',
+                'amount' => 'required',
+            ]);
+    
+            // Dapatkan data va dari notifikasi
+            $va = $data['va'];
+    
+            // Cari entri pembayaran_lainnya yang sesuai dengan regis_number yang cocok dengan va
+            $pembayaranLainnya = PembayaranLainnya::where('regis_number', $va)->first();
+    
+            if (!$pembayaranLainnya) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid virtual account.',
+                ]);
+            }
+    
+            // Simpan notifikasi dalam tabel notifications
+            $notification = Notification::create([
+                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                'message' => $data['message'],
+                'data' => json_encode($request->except(['va', 'message'])),
+            ]);
+    
+            // Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya
+            $user = $pembayaranLainnya->histori->user;
+            $endpoint = $user->endpoint;
+    
+            // Kirim notifikasi ke endpoint
+            // Formatkan data notifikasi sesuai dengan kebutuhan endpoint
+            $data = [
+                'message' => $notification->message,
+                'data' => json_decode($notification->data, true),
+            ];
+
+            dd($data);
+
+            // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
+            $client = new Client();
+            $response = $client->post($endpoint, [
+                'json' => $data,
+            ]);
+    
+            // Mengirim respons
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification received and processed successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses notifikasi.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     
     public function add(Request $request, $trx_id, $trx_status, $va_status, $va)
     {

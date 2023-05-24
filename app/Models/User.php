@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Level::class, 'level_id', 'id');
     }
+    
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

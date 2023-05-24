@@ -35,7 +35,8 @@ background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 1
                         <br>
                         <h5>{{auth()->user()->name}}</h5>
                         <p>{{auth()->user()->level['nama_level']}}</p>
-                        <i class="far fa-edit mb-5"></i>
+                        <br><br>
+                        <i ><a class="far fa-edit mb-5" href="{{route('profil.edit',auth()->user()->id)}}" style="color: white;">&nbsp;Ganti Password</a></i>
                       </div>
                       <div class="col-md-8">
                         <div class="card-body p-4">

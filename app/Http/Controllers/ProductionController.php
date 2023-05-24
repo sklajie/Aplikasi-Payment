@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class ApiController extends Controller
+class ProductionController extends Controller
 {
     public function index()
     {
         $title = 'Api Keys';
-        return view('pages.api_keys', compact('title'))->with([
+        return view('pages.production.api_keys', compact('title'))->with([
             'user' => User::all(),
         ]); 
     }
@@ -18,7 +18,7 @@ class ApiController extends Controller
     public function edit($id)
     {
         $title = 'Api Keys';
-        return view('pages.users.edit_endpoint', compact('title'))->with([
+        return view('pages.production.edit_endpoint', compact('title'))->with([
             'user' => User::find($id),
         ]); 
     }
@@ -33,6 +33,12 @@ class ApiController extends Controller
         $user->endpoint = $request->endpoint;
         $user->save();
 
-        return to_route('api.index')->with('Success.', 'Data Berhasil Diedit');
+        return to_route('production.index')->with('Success.', 'Data Berhasil Diedit');
+    }
+
+    public function dokumentasi()
+    {
+        $title = 'dokumentasi';
+        return view('pages.production.dokumentasi', compact('title'));
     }
 }

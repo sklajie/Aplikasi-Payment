@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="/users/editEndpoint">Tambahkan Endpoint</a>
+                <a href="/production/editEndpoint">Tambahkan Endpoint</a>
             </li>
         </ul>
         </div>
@@ -38,7 +38,7 @@
         <div class="container">
         <div class="card">
             <div class="card-body">
-                <form action="{{route('api.update',$user->id)}}" method="POST"  >
+                <form action="{{route('production.update',$user->id)}}" method="POST"  >
                     @csrf
                     @method('patch')
                     <div class="mb-3">

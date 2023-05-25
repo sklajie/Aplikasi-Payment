@@ -243,6 +243,18 @@ class TransaksiPmbController extends Controller
             $responseApi = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
             ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
+    
+            // Mendapatkan invoice number dari respons
+            $invoiceNumber = $responseApi->json('data.number');
+    
+            // Simpan data pembayaran_lainnya dengan invoice number
+            $pembayaranLainnya = PembayaranLainnya::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'regis_number' => $data['regis_number'],
+                'amount' => (int) $data['amount'],
+                'invoice_number' => $invoiceNumber,
+            ]);
 
             // Simpan data histori respons ke dalam tabel Histori
             $histori = Histori::create([
@@ -260,6 +272,7 @@ class TransaksiPmbController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data histori request berhasil disimpan dan permintaan ke Bank BSI berhasil dikirim',
+                'invoice_number' => $invoiceNumber,
                 'data' => $histori,
             ], 201); // Gunakan status HTTP 201 Created
         } catch (\Exception $e) {
@@ -271,6 +284,99 @@ class TransaksiPmbController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function update(Request $request, $invoiceNumber)
+    {
+        // // Validasi input dari request jika diperlukan
+        // $validatedData = $request->validate([
+        //     'name' => 'required|string',
+        //     'email' => 'required|email',
+        //     'va' => 'required|string',
+        //     'amount' => 'required|numeric',
+        // ]);
+
+        // Mengisi data dari tabel pembayaran_lainnya ke dalam variabel
+        $name = $request->name;
+        $email = $request->email;
+        $regisNumber = $request->va;
+        $amount = $request->amount;
+
+        // Memperbarui data pembayaran_lainnya
+        $pembayaranLainnya = PembayaranLainnya::where('invoice_number', $invoiceNumber)->first();
+
+        if (!$pembayaranLainnya) {
+            // Jika invoice number tidak ditemukan, berikan respons error atau lakukan tindakan yang sesuai
+            return response()->json(['message' => 'Invoice number not found'], 404);
+        }
+
+        // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
+        $pembayaranLainnyaUpdated = PembayaranLainnya::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'amount' => $request->amount,
+            'regis_number' => $regisNumber, // Jika regis_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'invoice_number' => $pembayaranLainnya->invoice_number, // Jika invoice_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'created_at' => $pembayaranLainnya->created_at, // Jika created_at tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'updated_at' => now(),
+            'paid_date' => $pembayaranLainnya->paid_date, // Jika paid_date tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'paid' => $pembayaranLainnya->paid // Jika paid tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        ]);
+
+        // Menyimpan perubahan pada objek $pembayaranLainnyaUpdated
+        $pembayaranLainnyaUpdated->save();
+
+        // Membuat data request untuk dikirim ke endpoint update
+        $requestData = [
+            'name' => $name, // Menggunakan data name dari tabel pembayaran_lainnya
+            'va' => $regisNumber, // Menggunakan data regis_number dari tabel pembayaran_lainnya
+            'amount' => $amount, // Menggunakan data amount dari tabel pembayaran_lainnya
+            'date' => now()->toDateString(), // Menggunakan tanggal saat ini
+            'items' => [
+                [
+                    'description' => 'Pembayaran PMB',
+                    'unitPrice' => (int)$amount,
+                    'qty' => 1,
+                    'amount' => (int)$amount
+                ]
+            ],
+            'attributes' => [],
+            'number' => $invoiceNumber, // Menggunakan invoice number dari parameter
+        ];
+
+        $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
+            'grant_type' => 'password',
+            'client_id' => 'BPI3764',
+            'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
+            'username' => '3764',
+            'password' => '3764',
+        ]);
+
+        $accessToken = $response->json('access_token');
+
+        // Mengirim permintaan ke endpoint update dengan menggunakan access token
+        $responseApi = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->post('https://billing-bpi-dev.maja.id/api/v2/update/' . $invoiceNumber, $requestData);
+
+        if ($responseApi->successful()) {
+            // Jika permintaan sukses, perbarui data respons dan waktu update di tabel histori
+            $histori = new Histori();
+            $histori->pembayaran_lainnya_id = $pembayaranLainnya->id;
+            $histori->method = 'update';
+            $histori->request_body = json_encode($requestData);
+            $histori->respons = json_encode($responseApi->json());
+            $histori->updated_at = now();
+            // set user_id jika ada
+
+            $histori->save();
+        } else {
+            // Jika permintaan gagal, berikan respons error atau lakukan tindakan yang sesuai
+            return response()->json(['message' => 'Failed to update invoice'], 500);
+        }
+
+        // Berikan respons sukses
+        return response()->json(['message' => 'Invoice updated successfully']);
     }
 
     public function receiveBpiNotification(Request $request)
@@ -313,8 +419,6 @@ class TransaksiPmbController extends Controller
                 'message' => $notification->message,
                 'data' => json_decode($notification->data, true),
             ];
-
-            dd($data);
 
             // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
             $client = new Client();

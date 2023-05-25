@@ -15,7 +15,19 @@ class PembayaranLainnya extends Model
     protected $table = 'pembayaran_lainnya';
     protected $guarded = [''];
 
-      /**
+    protected $fillable = [
+        'name',
+        'email',
+        'amount',
+        'regis_number',
+        'invoice_number',
+        'created_at',
+        'updated_at',
+        'paid_date',
+        'paid',
+    ];
+
+    /**
      * Kita override boot method
      *
      * Mengisi primary key secara otomatis dengan UUID ketika membuat record

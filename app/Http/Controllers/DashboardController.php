@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Dashboard;
+use App\Models\Pembayaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,9 @@ class DashboardController extends Controller
         //     $data ="$value->status";
         // }
         // $piechart = $data;
+        $pembayaran = Pembayaran::select('status',DB::raw("COUNT(id) as count"))
+                    ->groupBy('status')->get();
 
-        return view('home', compact('title'));
+        return view('home', compact('title', 'pembayaran'));
     }
 }

@@ -34,7 +34,7 @@
 							</div>
 							<div class="card-body">
 								<div class="chart-container">
-									<canvas id="pieChart" style="width: 50%; height: 50%"></canvas>
+									<div id="pieChart"></div>
 								</div>
 							</div>
 						</div>
@@ -83,5 +83,51 @@
 			
 		</div>
 
-		
+		<script type="text/javascript" src="{{ url('https://code.highcharts.com/highcharts.js')}}"></script>
+	<script type="text/javascript" src="{{ url('https://code.highcharts.com/modules/exporting.js')}}"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var pembayaran = <?php echo json_encode($pembayaran); ?>;
+			var options = {
+				chart : {
+					renderTo : 'pieChart',
+					plotBackgroundColor : null,
+					plotBorderWidth : null,
+					plotShadow : null,
+				},
+				title:{
+					text : 'Presentasi Pembayaran'
+				},
+				tooltip : {
+					pointFormat : '{series.name}: <b>{point.percentage}%</b>',
+					PrecentageDecimals:1,
+				},
+				plotOptions : {
+					pie:{
+						allowPointSelect : true,
+						cursor: 'pointer',
+						dataLabels : {
+							enabled : true,
+							color : '#000000',
+							connectColor : '#000000',
+							formatter:function (){
+								return '<b>' + this.point.name + '</b>: ' + this.precentage + '%';
+							}
+						}
+					}
+				},
+				series : [{
+					type:'pie',
+					name:'Pembayaran'
+				}]
+			}
+			myarray = [];
+			$.each(pembayaran, function(index,val){
+				myarray[index] = [val.status,val.count];
+			});
+			options.series[0].data = myarray;
+			chart = new Highcharts.Chart(options);
+		});
+	</script>
+
 @endsection

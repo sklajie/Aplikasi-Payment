@@ -19,13 +19,6 @@ use GuzzleHttp\Exception\GuzzleException;
 class PembayaranLainnyaController extends Controller
 {
 
-    protected $bsiApiService;
-
-    public function __construct(BsiApiService $bsiApiService)
-    {
-        $this->bsiApiService = $bsiApiService;
-    }
-
 
     public function index(Request $request)
     {
@@ -185,7 +178,11 @@ class PembayaranLainnyaController extends Controller
 
     }
 
-    public function DataDetailTransaction(Request $request, $id){
+    public function DataDetailTransaction(Request $request){
+
+        $id = $request->validate([
+            'id' => 'required',
+        ]);
 
         $data = Histori::select([
             'histori.id',
@@ -198,9 +195,16 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
         ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->find($id);
-        return response()->json([
-            'data' => $data,
-        ]);
+
+        if ($data) {
+            return response()->json([
+                'data' => $data
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Data not found'
+            ], 404);
+        }
 
     }
 

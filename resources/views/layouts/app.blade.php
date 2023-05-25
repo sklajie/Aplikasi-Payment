@@ -529,93 +529,94 @@
 	<script src="../assets/js/demo.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 	
-	<script>
+	
+	{{-- <script>
 
-		var multipleBarChart = document.getElementById('multipleBarChart').getContext('2d'),
-		pieChart = document.getElementById('pieChart').getContext('2d')
+	// 	var multipleBarChart = document.getElementById('multipleBarChart').getContext('2d'),
+	// 	pieChart = document.getElementById('pieChart').getContext('2d')
 
-		var myMultipleBarChart = new Chart(multipleBarChart, {
-			type: 'bar',
-			data: {
-				labels: ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"],
-				datasets : [{
-					label: "Sudah Bayar",
-					backgroundColor: '#59d05d',
-					borderColor: '#59d05d',
-					data: [23,34,34,54,34,344,22,12]
-				},{
-					label: "Belum Bayar",
-					backgroundColor: 'red',
-					borderColor: '#fdaf4b',
-					data: [23,34,34,54,34,344,22,12]
-				}],
-			},
-			options: {
-				responsive: true, 
-				maintainAspectRatio: false,
-				legend: {
-					position : 'bottom'
-				},
-				title: {
-					display: true,
-					text: 'Traffic Stats'
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false
-				},
-				responsive: true,
-				scales: {
-					xAxes: [{
-						stacked: true,
-					}],
-					yAxes: [{
-						stacked: true
-					}]
-				}
-			}
-		});
+	// 	var myMultipleBarChart = new Chart(multipleBarChart, {
+	// 		type: 'bar',
+	// 		data: {
+	// 			labels: ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"],
+	// 			datasets : [{
+	// 				label: "Sudah Bayar",
+	// 				backgroundColor: '#59d05d',
+	// 				borderColor: '#59d05d',
+	// 				data: [23,34,34,54,34,344,22,12]
+	// 			},{
+	// 				label: "Belum Bayar",
+	// 				backgroundColor: 'red',
+	// 				borderColor: '#fdaf4b',
+	// 				data: [23,34,34,54,34,344,22,12]
+	// 			}],
+	// 		},
+	// 		options: {
+	// 			responsive: true, 
+	// 			maintainAspectRatio: false,
+	// 			legend: {
+	// 				position : 'bottom'
+	// 			},
+	// 			title: {
+	// 				display: true,
+	// 				text: 'Traffic Stats'
+	// 			},
+	// 			tooltips: {
+	// 				mode: 'index',
+	// 				intersect: false
+	// 			},
+	// 			responsive: true,
+	// 			scales: {
+	// 				xAxes: [{
+	// 					stacked: true,
+	// 				}],
+	// 				yAxes: [{
+	// 					stacked: true
+	// 				}]
+	// 			}
+	// 		}
+	// 	});
 
 
-		var myPieChart = new Chart(pieChart, {
-			type: 'pie',
-			data: {
-				datasets: [{
-					data: [20,20],
-					backgroundColor :["#59d05d","red"],
-					borderWidth: 0
-				}],
-				labels: ['Sudah Lunas', 'Belum Lunas'] 
-			},
-			options : {
-				responsive: true, 
-				maintainAspectRatio: false,
-				legend: {
-					position : 'bottom',
-					labels : {
-						fontColor: 'rgb(154, 154, 154)',
-						fontSize: 11,
-						usePointStyle : true,
-						padding: 20
-					}
-				},
-				pieceLabel: {
-					render: 'percentage',
-					fontColor: 'white',
-					fontSize: 14,
-				},
-				tooltips: false,
-				layout: {
-					padding: {
-						left: 20,
-						right: 20,
-						top: 20,
-						bottom: 20
-					}
-				}
-			}
-		})
-	</script>
+	// 	var myPieChart = new Chart(pieChart, {
+	// 		type: 'pie',
+	// 		data: {
+	// 			datasets: [{
+	// 				data: [20,20],
+	// 				backgroundColor :["#59d05d","red"],
+	// 				borderWidth: 0
+	// 			}],
+	// 			labels: ['Sudah Lunas', 'Belum Lunas'] 
+	// 		},
+	// 		options : {
+	// 			responsive: true, 
+	// 			maintainAspectRatio: false,
+	// 			legend: {
+	// 				position : 'bottom',
+	// 				labels : {
+	// 					fontColor: 'rgb(154, 154, 154)',
+	// 					fontSize: 11,
+	// 					usePointStyle : true,
+	// 					padding: 20
+	// 				}
+	// 			},
+	// 			pieceLabel: {
+	// 				render: 'percentage',
+	// 				fontColor: 'white',
+	// 				fontSize: 14,
+	// 			},
+	// 			tooltips: false,
+	// 			layout: {
+	// 				padding: {
+	// 					left: 20,
+	// 					right: 20,
+	// 					top: 20,
+	// 					bottom: 20
+	// 				}
+	// 			}
+	// 		}
+	// 	})
+	// </script> --}}
 
 </body>
 

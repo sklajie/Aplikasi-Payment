@@ -42,15 +42,14 @@ Route::resource('/kategori_pembayaran', App\Http\Controllers\KategoriPembayaranC
 
 Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->name('bsi-callback');
 
-Route::resource('/api',App\Http\Controllers\ApiController::class);
 
-<<<<<<< HEAD
-Route::get('/profil', 'App\Http\Controllers\UserController@profil')->middleware(['auth']);
-Route::get('/dokumentasi', [DokumentasiController::class, 'index'] );
-=======
+
 Route::resource('/profil', 'App\Http\Controllers\ProfilController')->middleware(['auth']);
+Route::resource('/api/production', 'App\Http\Controllers\ProductionController')->middleware(['auth']);
+Route::get('/dokumentasi/production', [App\Http\Controllers\ProductionController::class, 'dokumentasi'])->middleware(['auth']);
+Route::get('/api/sandbox', [App\Http\Controllers\SandboxController::class, 'index'])->middleware(['auth']);
+Route::get('/dokumentasi/sandbox', [App\Http\Controllers\SandboxController::class, 'dokumentasi'])->middleware(['auth']);
 
->>>>>>> 12cf3fc926eb0edafdcd0cb73c526f641ec507fc
 
 Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');
 Route::any('/log_transaksi/data', 'App\Http\Controllers\PembayaranLainnyaController@data');

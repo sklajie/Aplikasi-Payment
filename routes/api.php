@@ -12,7 +12,7 @@ use App\Http\Controllers\NotificationController;
 Route::prefix('v1')->group(function () {
     Route::post('/transactions', [TransaksiPmbController::class, 'store']);
     Route::get('/DataTransactions', [PembayaranLainnyaController::class, 'DataTransaction']);
-    Route::get('/DataDetailTransactions/{id}', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
+    Route::get('/DataDetailTransactions', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
 });
 
 Route::prefix('v1')->group(function () {

@@ -12,11 +12,9 @@
                     }
 	</style>
 </head>
-<body>
+<body style="width: 210mm; height: 297mm">
 
-    <p>coba</p>
-
-    {{-- <div style="width: 100%; height: 200px;">
+    <div style="width: 100%; height: 200px;">
         <div style="width: 70%;">
             <h2 style="padding:20px; float:left;"><img src="{{ url('') }}/assets/img/logo_polindra.png" width="60px" alt="" > Politeknik Negeri Indramayu</h2>
         </div>
@@ -117,6 +115,6 @@
     var hariarray=new Array("Minggu,","Senin,","Selasa,","Rabu,","Kamis,","Jum'at,","Sabtu,");
     var bulanarray=new Array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");
     document.getElementById("tanggalwaktu").innerHTML = hariarray[hari]+" "+tanggal+" "+bulanarray[bulan]+" "+tahun;
-    </script> --}}
+    </script>
 
 </html>

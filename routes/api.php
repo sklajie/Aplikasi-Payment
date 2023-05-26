@@ -11,7 +11,7 @@ use App\Http\Controllers\NotificationController;
 
 Route::prefix('v1')->group(function () {
     Route::post('/transactions', [TransaksiPmbController::class, 'store']);
-    Route::post('/pembayaran_lainnya', [TransaksiPmbController::class, 'update']);
+    Route::put('/pembayaran_lainnya/{invoice_number}', [TransaksiPmbController::class, 'update']);
     Route::get('/DataTransactions', [PembayaranLainnyaController::class, 'DataTransaction']);
     Route::get('/DataDetailTransactions', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
 });

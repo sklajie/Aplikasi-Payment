@@ -288,6 +288,7 @@ class TransaksiPmbController extends Controller
 
     public function update(Request $request, $invoiceNumber)
     {
+
         // // Validasi input dari request jika diperlukan
         // $validatedData = $request->validate([
         //     'name' => 'required|string',
@@ -299,7 +300,7 @@ class TransaksiPmbController extends Controller
         // Mengisi data dari tabel pembayaran_lainnya ke dalam variabel
         $name = $request->name;
         $email = $request->email;
-        $regisNumber = $request->va;
+        $regisNumber = $request->regis_number;
         $amount = $request->amount;
 
         // Memperbarui data pembayaran_lainnya

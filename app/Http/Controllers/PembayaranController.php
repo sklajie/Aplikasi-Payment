@@ -20,14 +20,6 @@ use GuzzleHttp\Exception\GuzzleException;
 class PembayaranController extends Controller
 {
 
-    protected $bsiApiService;
-
-    public function __construct(BsiApiService $bsiApiService)
-    {
-        $this->bsiApiService = $bsiApiService;
-    }
-
-
     public function index(Request $request)
     {
         $title = 'Data Pembayaran';
@@ -42,13 +34,23 @@ class PembayaranController extends Controller
         $active_date = $request->activeDate;
         $inactive_date = $request->inactiveDate;
 
-        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->join('item_pembayaran','item_pembayaran.id','=','pembayaran.item_pembayaran_id')->get();
+        $pembayarans = Pembayaran::whereIn('id', $ids)->get();
 
-        foreach ($pembayarans as $pembayaran) {
+        foreach ($pembayarans as $item) {
+            $pembayaran = Pembayaran::find($item->id);
+
+            if (!$pembayaran) {
+                // Objek pembayaran tidak ditemukan, lakukan penanganan kesalahan atau lanjutkan ke iterasi berikutnya
+                continue;
+            }
+
             $pembayaran->activeDate = $active_date;
             $pembayaran->inactiveDate = $inactive_date;
+            $pembayaran->status = 0;
             $pembayaran->save();
         }
+
+        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->join('item_pembayaran','item_pembayaran.id','=','pembayaran.item_pembayaran_id')->get();
 
         $data = $pembayarans->map(function ($pembayaran) {
 
@@ -78,6 +80,8 @@ class PembayaranController extends Controller
 
         foreach($data as $datas){
 
+            
+
             $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'grant_type' => 'password',
                 'client_id' => 'BPI3764',
@@ -92,21 +96,24 @@ class PembayaranController extends Controller
                 'Authorization' => 'Bearer '. $accessToken,
                 ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $datas);
 
-            $response_aktivasi = [$responseapi->json()];  
+                        // Inisialisasi array kosong
+            
 
-                
+            $dataArray = [];
+
+
+                    $response_pembayaran = [
+                        $responseapi->json()
+                    ];
+
+                    $dataArray[] =  $response_pembayaran;
+
+
         }
 
-        $hasil = [$response_aktivasi];
+        dd($dataArray);
+       
 
-        dd($hasil);
-
-        // $transaction = response()->json($activasi);
-
-        // $paid = $transaction['paid'];
-        // $pembayaran = Pembayaran::find($ids);
-        // $pembayaran->paid = $paid;
-        // $pembayaran->save();
 
     }
 

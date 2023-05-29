@@ -389,6 +389,8 @@ class TransaksiPmbController extends Controller
                 'message' => 'required',
                 'amount' => 'required',
             ]);
+
+            DB::beginTransaction();
     
             // Dapatkan data va dari notifikasi
             $va = $data['va'];
@@ -421,18 +423,20 @@ class TransaksiPmbController extends Controller
                 'data' => json_decode($notification->data, true),
             ];
 
-            // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
+            //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
             $client = new Client();
             $response = $client->post($endpoint, [
                 'json' => $data,
             ]);
-    
+                DB::commit();
             // Mengirim respons
             return response()->json([
                 'success' => true,
                 'message' => 'Notification received and processed successfully.',
             ]);
         } catch (\Exception $e) {
+
+            DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',

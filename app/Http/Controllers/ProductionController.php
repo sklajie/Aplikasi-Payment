@@ -18,7 +18,7 @@ class ProductionController extends Controller
     public function edit($id)
     {
         $title = 'Api Keys';
-        return view('pages.production.edit_endpoint', compact('title'))->with([
+        return view('pages.Production.edit_endpoint', compact('title'))->with([
             'user' => User::find($id),
         ]); 
     }

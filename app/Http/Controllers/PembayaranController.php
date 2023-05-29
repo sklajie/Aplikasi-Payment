@@ -62,7 +62,7 @@ class PembayaranController extends Controller
                 'email'=> $pembayaran->email,
                 'address'=>$pembayaran->address,
                 'va'=>$pembayaran->va,
-                'number'=>$pembayaran->phone,
+                'phone'=>$pembayaran->phone,
                 'activeDate'=> $pembayaran->activeDate,
                 'inactiveDate'=> $pembayaran->inactiveDate,
                 'items' => [
@@ -80,7 +80,7 @@ class PembayaranController extends Controller
 
         foreach($data as $datas){
 
-            
+
 
             $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'grant_type' => 'password',

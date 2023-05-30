@@ -265,7 +265,6 @@ class TransaksiPmbController extends Controller
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
                 'user_id' => $data['token'],
-                'mode' => 'production'
             ]);
             
             $historiUserId = $histori->user_id;
@@ -315,31 +314,21 @@ class TransaksiPmbController extends Controller
             return response()->json(['message' => 'Invoice number not found'], 404);
         }
 
-        // // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
-        // $pembayaranLainnyaUpdated = PembayaranLainnya::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'amount' => $request->amount,
-        //     'regis_number' => $regisNumber, // Jika regis_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
-        //     'invoice_number' => $pembayaranLainnya->invoice_number, // Jika invoice_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
-        //     'created_at' => $pembayaranLainnya->created_at, // Jika created_at tidak berubah, tetap gunakan nilai yang ada sebelumnya
-        //     'updated_at' => now(),
-        //     'paid_date' => $pembayaranLainnya->paid_date, // Jika paid_date tidak berubah, tetap gunakan nilai yang ada sebelumnya
-        //     'paid' => $pembayaranLainnya->paid // Jika paid tidak berubah, tetap gunakan nilai yang ada sebelumnya
-        // ]);
-
-        // // Menyimpan perubahan pada objek $pembayaranLainnyaUpdated
-        // $pembayaranLainnyaUpdated->save();
-
         // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
-        $pembayaranLainnya->name = $request->name;
-        $pembayaranLainnya->email = $request->email;
-        $pembayaranLainnya->regis_number = $request->regis_number;
-        $pembayaranLainnya->amount = $request->amount;
+        $pembayaranLainnyaUpdated = PembayaranLainnya::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'amount' => $request->amount,
+            'regis_number' => $regisNumber, // Jika regis_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'invoice_number' => $pembayaranLainnya->invoice_number, // Jika invoice_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'created_at' => $pembayaranLainnya->created_at, // Jika created_at tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'updated_at' => now(),
+            'paid_date' => $pembayaranLainnya->paid_date, // Jika paid_date tidak berubah, tetap gunakan nilai yang ada sebelumnya
+            'paid' => $pembayaranLainnya->paid // Jika paid tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        ]);
 
-
-        // Menyimpan perubahan pada objek $pembayaranLainnya
-        $pembayaranLainnya->save();
+        // Menyimpan perubahan pada objek $pembayaranLainnyaUpdated
+        $pembayaranLainnyaUpdated->save();
 
         // Membuat data request untuk dikirim ke endpoint update
         $requestData = [
@@ -439,7 +428,7 @@ class TransaksiPmbController extends Controller
             //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
 
             DB::beginTransaction();
-
+            
             $user = $pembayaranLainnya->histori->user;
             $endpoint = $user->endpoint;
     
@@ -451,12 +440,10 @@ class TransaksiPmbController extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-            $response = http::post($endpoint, [
-                'json' => $data,
-            ]);
 
-            dd($data);    
-
+            // $response = $client->post($endpoint, [
+            //     'json' => $data,
+            // ]);
 
             DB::commit();
             // Mengirim respons
@@ -464,16 +451,14 @@ class TransaksiPmbController extends Controller
                 'success' => true,
                 'message' => 'Notification received and processed successfully.',
             ]);
-
         } catch (\Exception $e) {
 
             DB::rollback();
-
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',
                 'error' => $e->getMessage(),
-            ]);
+            ], 500);
         }
     }
     

@@ -265,7 +265,7 @@ class TransaksiPmbControllerDev extends Controller
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
                 'user_id' => $data['token'],
-                'mode' => 'sunbox',
+                'mode' => 'sand',
             ]);
             
             $historiUserId = $histori->user_id;
@@ -362,7 +362,7 @@ class TransaksiPmbControllerDev extends Controller
             $histori = new Histori();
             $histori->pembayaran_lainnya_id = $pembayaranLainnya->id;
             $histori->method = 'update';
-            $histori->mode = 'sunbox';
+            $histori->mode = 'sandbox';
             $histori->request_body = json_encode($requestData);
             $histori->respons = json_encode($responseApi->json());
             $histori->updated_at = now();

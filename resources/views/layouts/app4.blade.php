@@ -211,16 +211,16 @@
 				
 				<center>
 				<ul class="nav nav-tabs ro-doc-tabs">
-					<li><a style=" width:200px;" class="btn btn-outline-secondary " data-toggle="tab" href="#production">Production</a></li>
+					<li><a style=" width:200px;" class="btn btn-outline-secondary " href="/api/production">Production</a></li>
 					<br>
-					<li><a style=" width:200px;" class="btn btn-outline-secondary active" data-toggle="tab" href="#sandbox">Sandbox</a></li>
+					<li><a style=" width:200px;" class="btn btn-outline-secondary active" href="#">Sandbox</a></li>
 					<br>
 				</ul>
 				</center>
 				
 			
 				<div class="tab-content">
-					<div class="tab-pane fade" id="production">
+					<div class="tab-pane active" id="production">
 						<ul class="nav nav-primary ">
 
 							<li class="nav-section">
@@ -245,37 +245,12 @@
 							</li>
 
 							<li class="nav-item {{ $title === "Log Transaksi" ? 'active' : '' }}">
-								<a href="/log_transaksi">
+								<a href="/log_transaksi_dev">
 									<i class="far fa-list-alt"></i>
 									<p>Log Transaksi</p>
 								</a>
 							</li>
 							
-						</ul>
-					</div>
-					<div class="tab-pane active" id="sandbox">
-						<ul class="nav nav-primary">
-
-							<li class="nav-section">
-								<span class="sidebar-mini-icon">
-									<i class="fa fa-ellipsis-h"></i>
-								</span>
-								<h4 class="text-section">Navigation</h4>
-							</li>
-	
-							<li class="nav-item">
-								<a href="/api/sandbox">
-									<i class="fas fa-key"></i>
-									<p>API Keys</p>
-								</a>
-							</li>
-	
-							<li class="nav-item">
-								<a href="/dokumentasi/sandbox">
-									<i class="fas fa-swatchbook"></i>
-									<p>Dokumentasi</p>
-								</a>
-							</li>
 						</ul>
 					</div>
 				</div>

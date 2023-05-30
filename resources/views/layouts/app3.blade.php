@@ -211,9 +211,9 @@
 				
 				<center>
 				<ul class="nav nav-tabs ro-doc-tabs">
-					<li><a style=" width:200px;" class="btn btn-outline-secondary active" data-toggle="tab" href="#production">Production</a></li>
+					<li><a style=" width:200px;" class="btn btn-outline-secondary active" href="#">Production</a></li>
 					<br>
-					<li><a style=" width:200px;" class="btn btn-outline-secondary " data-toggle="tab" href="#sandbox">Sandbox</a></li>
+					<li><a style=" width:200px;" class="btn btn-outline-secondary " href="/api/sandbox">Sandbox</a></li>
 					<br>
 				</ul>
 				</center>

@@ -46,9 +46,19 @@ Route::post('/bsi-callback', [TransaksiPmbController::class, 'bsiCallback'])->na
 Route::resource('/profil', 'App\Http\Controllers\ProfilController')->middleware(['auth']);
 Route::resource('/api/production', 'App\Http\Controllers\ProductionController')->middleware(['auth']);
 Route::get('/dokumentasi/production', [App\Http\Controllers\ProductionController::class, 'dokumentasi'])->middleware(['auth']);
+
+
+
 Route::get('/api/sandbox', [App\Http\Controllers\SandboxController::class, 'index'])->middleware(['auth']);
 Route::get('/dokumentasi/sandbox', [App\Http\Controllers\SandboxController::class, 'dokumentasi'])->middleware(['auth']);
 
+
+//production
 Route::get('/log_transaksi', 'App\Http\Controllers\PembayaranLainnyaController@index');
 Route::any('/log_transaksi/data', 'App\Http\Controllers\PembayaranLainnyaController@data');
 Route::any('/log_transaksi/detail/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaController@showDetail');
+
+//sandbox
+Route::get('/log_transaksi_dev', 'App\Http\Controllers\PembayaranLainnyaDevController@index');
+Route::any('/log_transaksi_dev/data', 'App\Http\Controllers\PembayaranLainnyaDevController@data');
+Route::any('/log_transaksi_dev/detail/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@showDetail');

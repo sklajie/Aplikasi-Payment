@@ -1,4 +1,4 @@
-@extends('layouts.app3')
+@extends('layouts.app4')
 
 @section('css')
 <style type="text/css">
@@ -174,7 +174,7 @@
     "order": [[ 1, "asc" ]],
     "autoWidth": false,
     "ajax":{
-      url: "{{url('')}}/log_transaksi/data",
+      url: "{{url('')}}/log_transaksi_dev/data",
       type: "POST",
     },
     columnDefs: [
@@ -238,7 +238,7 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a href="{{url('')}}/log_transaksi/detail/${row.pembayaran_id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
+            <a href="{{url('')}}/log_transaksi_dev/detail/${row.pembayaran_id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
             `;
           // if(row.status=='aktif'){
           //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`

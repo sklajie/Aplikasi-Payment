@@ -321,7 +321,6 @@ class TransaksiPmbControllerDev extends Controller
         $pembayaranLainnya->regis_number = $request->regis_number;
         $pembayaranLainnya->amount = $request->amount;
 
-
         // Menyimpan perubahan pada objek $pembayaranLainnya
         $pembayaranLainnya->save();
 
@@ -400,6 +399,7 @@ class TransaksiPmbControllerDev extends Controller
             if($data['message'] == 'Payment Sukses'){
                 $updatestatus = PembayaranLainnya::where('regis_number', $va)->first();
                 $updatestatus->paid = '1';
+                $updatestatus->paid_date = now();
                 $updatestatus->save();
             }
 
@@ -418,9 +418,13 @@ class TransaksiPmbControllerDev extends Controller
                 
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
+            DB::commit();
+
     
             //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
 
+            DB::beginTransaction();
+            
             $user = $pembayaranLainnya->histori->user;
             $endpoint = $user->endpoint;
     
@@ -432,12 +436,10 @@ class TransaksiPmbControllerDev extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-            $client = new Client();
-            $response = $client->post($endpoint, [
-                'json' => $data,
-            ]);
 
-            dd($response);
+            // $response = $client->post($endpoint, [
+            //     'json' => $data,
+            // ]);
 
             DB::commit();
             // Mengirim respons

@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'id' => '3',
+            'id' => Str::uuid(),
             'name' => 'Admin Apps',
             'username' => 'adminapps',
             'email' => 'adminapps@gmail.com',

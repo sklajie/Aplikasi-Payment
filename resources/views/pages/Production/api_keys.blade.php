@@ -32,7 +32,7 @@
         <center>
         <div class="" style="padding-top: 50px; padding-bottom:50px;">
             <h1 class="text-center mb-4">Access Key</h1>
-            <code class="api_token" style="font-size: 20px; ">{{auth()->user()->api_token}}</code>
+            <code class="api_token" style="font-size: 20px; ">{{auth()->user()->id}}</code>
             <br>
             <br>
             <p class="text-warning">

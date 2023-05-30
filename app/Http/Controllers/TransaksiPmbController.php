@@ -196,20 +196,20 @@ class TransaksiPmbController extends Controller
                 'email' => 'required|email',
                 'regis_number' => 'required',
                 'amount' => 'required|numeric',
-                'user_id' => 'required',
+                'token' => 'required',
             ]);
 
             DB::beginTransaction();
 
             // Simpan data pembayaran_lainnya
-            $pembayaranLainnya = PembayaranLainnya::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'regis_number' => $data['regis_number'],
-                'amount' => (int) $data['amount'],
-            ]);
+            // $pembayaranLainnya = PembayaranLainnya::create([
+            //     'name' => $data['name'],
+            //     'email' => $data['email'],
+            //     'regis_number' => $data['regis_number'],
+            //     'amount' => (int) $data['amount'],
+            // ]);
             
-            $pembayaranLainnyaId = $pembayaranLainnya->id;
+            // $pembayaranLainnyaId = $pembayaranLainnya->id;
 
             // Buat data untuk dikirim ke Bank BSI
             $requestData = [
@@ -256,13 +256,15 @@ class TransaksiPmbController extends Controller
                 'invoice_number' => $invoiceNumber,
             ]);
 
+            $pembayaranLainnyaId = $pembayaranLainnya->id;
+
             // Simpan data histori respons ke dalam tabel Histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnyaId,
                 'method' => 'Metode Pembayaran',
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
-                'user_id' => $data['user_id'],
+                'user_id' => $data['token'],
             ]);
             
             $historiUserId = $histori->user_id;
@@ -275,6 +277,7 @@ class TransaksiPmbController extends Controller
                 'invoice_number' => $invoiceNumber,
                 'data' => $histori,
             ], 201); // Gunakan status HTTP 201 Created
+
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -397,6 +400,13 @@ class TransaksiPmbController extends Controller
     
             // Cari entri pembayaran_lainnya yang sesuai dengan regis_number yang cocok dengan va
             $pembayaranLainnya = PembayaranLainnya::where('regis_number', $va)->first();
+
+            if($data['message'] == 'Payment Sukses'){
+                $updatestatus = PembayaranLainnya::where('regis_number', $va)->first();
+                $updatestatus->paid = '1';
+                $updatestatus->save();
+            }
+
     
             if (!$pembayaranLainnya) {
                 return response()->json([
@@ -409,10 +419,12 @@ class TransaksiPmbController extends Controller
             $notification = Notification::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                 'message' => $data['message'],
+                
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
     
-            // Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya
+            //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
+
             $user = $pembayaranLainnya->histori->user;
             $endpoint = $user->endpoint;
     
@@ -428,7 +440,10 @@ class TransaksiPmbController extends Controller
             $response = $client->post($endpoint, [
                 'json' => $data,
             ]);
-                DB::commit();
+
+            dd($response);
+
+            DB::commit();
             // Mengirim respons
             return response()->json([
                 'success' => true,

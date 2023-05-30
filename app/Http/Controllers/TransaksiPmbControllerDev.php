@@ -258,10 +258,15 @@ class TransaksiPmbControllerDev extends Controller
 
             $pembayaranLainnyaId = $pembayaranLainnya->id;
 
+            $method = $request->method();
+            $endpointapi = $request->fullUrl();
+            $endpointAPI = strval($endpointapi);
+
             // Simpan data histori respons ke dalam tabel Histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnyaId,
-                'method' => 'Metode Pembayaran',
+                'method' => $method,
+                'endpoint' => $endpointAPI,
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
                 'user_id' => $data['token'],
@@ -307,6 +312,8 @@ class TransaksiPmbControllerDev extends Controller
         $regisNumber = $request->regis_number;
         $amount = $request->amount;
 
+        dd($name);
+
         // Memperbarui data pembayaran_lainnya
         $pembayaranLainnya = PembayaranLainnya::where('invoice_number', $invoiceNumber)->first();
 
@@ -316,10 +323,10 @@ class TransaksiPmbControllerDev extends Controller
         }
 
         // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
-        $pembayaranLainnya->name = $request->name;
-        $pembayaranLainnya->email = $request->email;
-        $pembayaranLainnya->regis_number = $request->regis_number;
-        $pembayaranLainnya->amount = $request->amount;
+        $pembayaranLainnya->name = $name;
+        $pembayaranLainnya->email = $email;
+        $pembayaranLainnya->regis_number = $regisNumber;
+        $pembayaranLainnya->amount = $amount;
 
         // Menyimpan perubahan pada objek $pembayaranLainnya
         $pembayaranLainnya->save();
@@ -357,11 +364,17 @@ class TransaksiPmbControllerDev extends Controller
             'Authorization' => 'Bearer ' . $accessToken,
         ])->post('https://billing-bpi-dev.maja.id/api/v2/update/' . $invoiceNumber, $requestData);
 
+
+        $method = $request->method();
+        $endpointapi = $request->fullUrl();
+        $endpointAPI = strval($endpointapi);
+
         if ($responseApi->successful()) {
             // Jika permintaan sukses, perbarui data respons dan waktu update di tabel histori
             $histori = new Histori();
             $histori->pembayaran_lainnya_id = $pembayaranLainnya->id;
-            $histori->method = 'update';
+            $histori->method = $method;
+            $histori->endpoint = $endpointAPI;
             $histori->mode = 'sandbox';
             $histori->request_body = json_encode($requestData);
             $histori->respons = json_encode($responseApi->json());
@@ -441,10 +454,16 @@ class TransaksiPmbControllerDev extends Controller
                 'json' => $data,
             ]);
 
+            $method = $request->method();
+            $endpointapi = $request->fullUrl();
+            $endpointAPI = strval($endpointapi);
+    
+
             //Menyimpan data notifikasi ke histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
-                'method' => 'Post',
+                'method' => $method,
+                'endpoint' => $endpointAPI ,
                 'mode' => 'sandbox',
                 'request_body' => json_encode($data),
                 'respons' => $response->body(),
@@ -464,10 +483,15 @@ class TransaksiPmbControllerDev extends Controller
 
             DB::rollback();
 
+            $method = $request->method();
+            $endpoint = $request->path();
+    
+
             //Menyimpan data notifikasi ke histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
-                'method' => 'Post',
+                'method' => $method,
+                'endpoint' => $endpoint,
                 'mode' => 'sandbox',
                 'request_body' => json_encode($data),
                 'respons' => $response->body(),

@@ -230,7 +230,7 @@ class TransaksiPmbController extends Controller
             ];
 
             // Kirim permintaan ke Bank BSI
-            $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi/protocol/openid-connect/token', [
+            $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'grant_type' => 'password',
                 'client_id' => 'BPI3764',
                 'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
@@ -242,7 +242,7 @@ class TransaksiPmbController extends Controller
 
             $responseApi = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
-            ])->post('https://billing-bpi-dev.maja.id', $requestData);
+            ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
     
             // Mendapatkan invoice number dari respons
             $invoiceNumber = $responseApi->json('data.number');
@@ -258,14 +258,30 @@ class TransaksiPmbController extends Controller
 
             $pembayaranLainnyaId = $pembayaranLainnya->id;
 
+            // // Simpan data histori respons ke dalam tabel Histori
+            // $histori = Histori::create([
+            //     'pembayaran_lainnya_id' => $pembayaranLainnyaId,
+            //     'method' => 'Metode Pembayaran',
+            //     'request_body' => json_encode($requestData),
+            //     'respons' => json_encode($responseApi->json()),
+            //     'user_id' => $data['token'],
+            // ]);
+
+            $method = $request->method();
+            $endpointapi = $request->fullUrl();
+            $endpointAPI = strval($endpointapi);
+
             // Simpan data histori respons ke dalam tabel Histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnyaId,
-                'method' => 'Metode Pembayaran',
+                'method' => $method,
+                'endpoint' => $endpointAPI,
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
                 'user_id' => $data['token'],
+                'mode' => 'production',
             ]);
+            
             
             $historiUserId = $histori->user_id;
 
@@ -363,11 +379,17 @@ class TransaksiPmbController extends Controller
             'Authorization' => 'Bearer ' . $accessToken,
         ])->post('https://billing-bpi-dev.maja.id/api/v2/update/' . $invoiceNumber, $requestData);
 
+        $method = $request->method();
+        $endpointapi = $request->fullUrl();
+        $endpointAPI = strval($endpointapi);
+
         if ($responseApi->successful()) {
             // Jika permintaan sukses, perbarui data respons dan waktu update di tabel histori
             $histori = new Histori();
             $histori->pembayaran_lainnya_id = $pembayaranLainnya->id;
-            $histori->method = 'update';
+            $histori->method = $method;
+            $histori->endpoint = $endpointAPI;
+            $histori->mode = 'production';
             $histori->request_body = json_encode($requestData);
             $histori->respons = json_encode($responseApi->json());
             $histori->updated_at = now();
@@ -404,6 +426,7 @@ class TransaksiPmbController extends Controller
             if($data['message'] == 'Payment Sukses'){
                 $updatestatus = PembayaranLainnya::where('regis_number', $va)->first();
                 $updatestatus->paid = '1';
+                $updatestatus->paid_date = now();
                 $updatestatus->save();
             }
 
@@ -430,6 +453,7 @@ class TransaksiPmbController extends Controller
             DB::beginTransaction();
             
             $user = $pembayaranLainnya->histori->user;
+            $userId = $user->id;
             $endpoint = $user->endpoint;
     
             // Kirim notifikasi ke endpoint
@@ -445,6 +469,22 @@ class TransaksiPmbController extends Controller
                 'json' => $data,
             ]);
 
+            $method = $request->method();
+            $endpointapi = $request->fullUrl();
+            $endpointAPI = strval($endpointapi);
+    
+
+            //Menyimpan data notifikasi ke histori
+            $histori = Histori::create([
+                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                'method' => $method,
+                'endpoint' => $endpointAPI ,
+                'mode' => 'production',
+                'request_body' => json_encode($data),
+                'respons' => $response->body(),
+                'user_id' => $userId,
+            ]);
+
             DB::commit();
             // Mengirim respons
             return response()->json([
@@ -454,6 +494,24 @@ class TransaksiPmbController extends Controller
         } catch (\Exception $e) {
 
             DB::rollback();
+
+            
+            $method = $request->method();
+            $endpointapi = $request->fullUrl();
+            $endpointAPI = strval($endpointapi);
+    
+
+            //Menyimpan data notifikasi ke histori
+            $histori = Histori::create([
+                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                'method' => $method,
+                'endpoint' => $endpointAPI ,
+                'mode' => 'production',
+                'request_body' => json_encode($data),
+                'respons' => $response->body(),
+                'user_id' => $userId,
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',

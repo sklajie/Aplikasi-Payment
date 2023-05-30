@@ -150,7 +150,7 @@ class PembayaranLainnyaDevController extends Controller
         } 
 
 
-        return view('pages.LogTransaksi.detailLog_transaksi', compact('title','data', 'histori'));
+        return view('pages.Sandbox.LogTransaksi.detailLog_transaksi', compact('title','data', 'histori'));
     }
 
     public function DataTransaction(Request $request){

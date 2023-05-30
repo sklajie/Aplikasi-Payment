@@ -21,6 +21,7 @@ class Histori extends Model
         'request_body',
         'respons',
         'user_id',
+        'endpoint',
     ];
      
      /**

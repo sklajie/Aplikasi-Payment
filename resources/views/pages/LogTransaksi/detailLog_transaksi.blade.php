@@ -66,7 +66,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
         <br>
 @foreach ($histori as $item)
         <section id="request">
-            <h3>Log</h3>
+            <h3>Log {{ $item->id }}</h3>
 
             <ul class="nav nav-tabs ro-doc-tabs">
                 <li><a class="btn btn-outline-primary active" data-toggle="tab" href="#request-url{{ $item->id }}">URL</a></li>
@@ -89,7 +89,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->method }}</td>
-                                <td>http://localhost:8000/api/v1/transactions</td>
+                                <td>{{ $item->endpoint }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -120,6 +120,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
             </div>
         </section>
         <br>
+        @endforeach
     </div>
 
     {{-- <script>
@@ -140,7 +141,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
     containerResponse.innerHTML = "<pre>" + jsonTextResponse + "</pre>";
 
     </script> --}}
-@endforeach
+
 
 <br>
         <div class="alert alert-info">

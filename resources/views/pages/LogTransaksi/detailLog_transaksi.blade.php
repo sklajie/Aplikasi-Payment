@@ -107,12 +107,12 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                 
                 <div class="tab-pane fade" id="request-api{{ $item->id }}">
                     <div class="json-container">
-                        <pre><code>{{ json_encode($item->request_body, JSON_PRETTY_PRINT) }}</code></pre>
+                        <pre>{{ json_encode(json_decode($item->request_body))  }}</pre>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="response-api{{ $item->id }}">
                     <div class="json-container">
-                        <pre>{{ json_encode($item->respons, JSON_PRETTY_PRINT) }}</pre>
+                        <pre>{{ $item->respons }}</pre>
                     </div>
                 </div>
                 

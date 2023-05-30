@@ -14,10 +14,15 @@ Route::prefix('v1')->group(function () {
     Route::put('/pembayaran_lainnya/{invoice_number}', [TransaksiPmbController::class, 'update']);
     Route::get('/DataTransactions', [PembayaranLainnyaController::class, 'DataTransaction']);
     Route::get('/DataDetailTransactions', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
+    Route::post('/notification', [TransaksiPmbController::class, 'receiveBpiNotification']);
 });
 
-Route::prefix('v1')->group(function () {
-    Route::post('/notification', [TransaksiPmbController::class, 'receiveBpiNotification']);
+Route::prefix('v1/dev')->group(function () {
+        Route::post('/transactions', [TransaksiPmbControllerDev::class, 'store']);
+    Route::put('/pembayaran_lainnya/{invoice_number}', [TransaksiPmbControllerDev::class, 'update']);
+    Route::get('/DataTransactions', [PembayaranLainnyaDevController::class, 'DataTransaction']);
+    Route::get('/DataDetailTransactions', [PembayaranLainnyaDevController::class, 'DataDetailTransaction']);
+    Route::post('/notification', [TransaksiPmbControllerDev::class, 'receiveBpiNotification']);
 });
 
 //test

@@ -422,8 +422,12 @@ class TransaksiPmbController extends Controller
                 
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
+            DB::commit();
+
     
             //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
+
+            DB::beginTransaction();
 
             $user = $pembayaranLainnya->histori->user;
             $endpoint = $user->endpoint;
@@ -436,12 +440,12 @@ class TransaksiPmbController extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-            $client = new Client();
-            $response = $client->post($endpoint, [
+            $response = http::post($endpoint, [
                 'json' => $data,
             ]);
 
-            dd($response);
+            dd($data);    
+
 
             DB::commit();
             // Mengirim respons
@@ -449,14 +453,16 @@ class TransaksiPmbController extends Controller
                 'success' => true,
                 'message' => 'Notification received and processed successfully.',
             ]);
+
         } catch (\Exception $e) {
 
             DB::rollback();
+
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',
                 'error' => $e->getMessage(),
-            ], 500);
+            ]);
         }
     }
     

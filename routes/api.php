@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PendaftaranController;
 use App\Http\Controllers\BsiApiController;
 use App\Http\Controllers\PembayaranLainnyaController;
+use App\Http\Controllers\PembayaranLainnyaDevController;
 use App\Http\Controllers\TransaksiPmbController;
 use App\Http\Controllers\TransaksiPmbControllerDev;
 use App\Http\Controllers\NotificationController;

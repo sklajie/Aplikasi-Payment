@@ -57,7 +57,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                         <tbody>
                             <tr>
                                 <td>POST</td>
-                                <td>http://localhost:8000/api/v1/transactions</td>
+                                <td>http://payment-gateway.polindra.ac.id/api/v1/dev/transactions</td>
                             </tr>
                         </tbody>
                     </table>
@@ -96,6 +96,12 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                                 <td>Yes</td>
                                 <td>String</td>
                                 <td>Registration Virtual Account</td>
+                            </tr>
+                            <tr>
+                                <td>token</td>
+                                <td>Yes</td>
+                                <td>String</td>
+                                <td>Access Key</td>
                             </tr>
                         </tbody>
                     </table>

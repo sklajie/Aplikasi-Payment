@@ -57,7 +57,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                         <tbody>
                             <tr>
                                 <td>POST</td>
-                                <td>http://localhost:8000/api/v1/transactions</td>
+                                <td>http://payment-gateway.polindra.ac.id/api/v1/transactions</td>
                             </tr>
                         </tbody>
                     </table>

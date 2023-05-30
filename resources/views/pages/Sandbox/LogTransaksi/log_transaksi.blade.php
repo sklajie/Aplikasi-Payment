@@ -14,7 +14,7 @@
 <div class="main-panel">
     <div class="page-inner">
         <div class="page-header">
-            <h4 class="page-title" style="padding-top: 10px;">Log Transaksi</h4>
+            <h4 class="page-title" style="padding-top: 10px;">Log Transaksi - Sandbox</h4>
             
         </div>
         <div>

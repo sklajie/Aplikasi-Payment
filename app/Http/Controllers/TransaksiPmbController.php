@@ -314,21 +314,31 @@ class TransaksiPmbController extends Controller
             return response()->json(['message' => 'Invoice number not found'], 404);
         }
 
-        // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
-        $pembayaranLainnyaUpdated = PembayaranLainnya::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'amount' => $request->amount,
-            'regis_number' => $regisNumber, // Jika regis_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
-            'invoice_number' => $pembayaranLainnya->invoice_number, // Jika invoice_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
-            'created_at' => $pembayaranLainnya->created_at, // Jika created_at tidak berubah, tetap gunakan nilai yang ada sebelumnya
-            'updated_at' => now(),
-            'paid_date' => $pembayaranLainnya->paid_date, // Jika paid_date tidak berubah, tetap gunakan nilai yang ada sebelumnya
-            'paid' => $pembayaranLainnya->paid // Jika paid tidak berubah, tetap gunakan nilai yang ada sebelumnya
-        ]);
+        // // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
+        // $pembayaranLainnyaUpdated = PembayaranLainnya::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'amount' => $request->amount,
+        //     'regis_number' => $regisNumber, // Jika regis_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        //     'invoice_number' => $pembayaranLainnya->invoice_number, // Jika invoice_number tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        //     'created_at' => $pembayaranLainnya->created_at, // Jika created_at tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        //     'updated_at' => now(),
+        //     'paid_date' => $pembayaranLainnya->paid_date, // Jika paid_date tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        //     'paid' => $pembayaranLainnya->paid // Jika paid tidak berubah, tetap gunakan nilai yang ada sebelumnya
+        // ]);
 
-        // Menyimpan perubahan pada objek $pembayaranLainnyaUpdated
-        $pembayaranLainnyaUpdated->save();
+        // // Menyimpan perubahan pada objek $pembayaranLainnyaUpdated
+        // $pembayaranLainnyaUpdated->save();
+
+        // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
+        $pembayaranLainnya->name = $request->name;
+        $pembayaranLainnya->email = $request->email;
+        $pembayaranLainnya->regis_number = $request->regis_number;
+        $pembayaranLainnya->amount = $request->amount;
+
+
+        // Menyimpan perubahan pada objek $pembayaranLainnya
+        $pembayaranLainnya->save();
 
         // Membuat data request untuk dikirim ke endpoint update
         $requestData = [

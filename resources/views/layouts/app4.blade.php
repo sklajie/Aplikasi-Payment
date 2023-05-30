@@ -231,14 +231,14 @@
 							</li>
 	
 							<li class="nav-item">
-								<a href="/api/production">
+								<a href="/api/sandbox">
 									<i class="fas fa-key"></i>
 									<p>API Keys</p>
 								</a>
 							</li>
 	
 							<li class="nav-item">
-								<a href="/dokumentasi/production">
+								<a href="/dokumentasi/sandbox">
 									<i class="fas fa-swatchbook"></i>
 									<p>Dokumentasi</p>
 								</a>

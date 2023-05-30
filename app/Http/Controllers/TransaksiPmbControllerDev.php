@@ -402,6 +402,8 @@ class TransaksiPmbControllerDev extends Controller
                 $updatestatus->paid_date = now();
                 $updatestatus->save();
             }
+
+
     
             if (!$pembayaranLainnya) {
                 return response()->json([
@@ -445,16 +447,18 @@ class TransaksiPmbControllerDev extends Controller
                 'method' => 'Post',
                 'mode' => 'sandbox',
                 'request_body' => json_encode($data),
-                'respons' => 'json_encode($response->json())',
+                'respons' => $response->body(),
                 'user_id' => $userId,
             ]);
+
+            // dd($response->getStatusCode());
 
             DB::commit();
 
             // Mengirim respons
             return response()->json([
-                'success' => true,
-                'message' => 'notifikasi diterima dan proses kirim berhasil.',
+                'success' => $response->getStatusCode() != 200 ? false : true,
+                'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
             ]);
         } catch (\Exception $e) {
 
@@ -466,7 +470,7 @@ class TransaksiPmbControllerDev extends Controller
                 'method' => 'Post',
                 'mode' => 'sandbox',
                 'request_body' => json_encode($data),
-                'respons' => 'json_encode($response->json())',
+                'respons' => $response->body(),
                 'user_id' => $userId,
             ]);
             

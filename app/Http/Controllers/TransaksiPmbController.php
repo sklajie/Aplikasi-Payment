@@ -230,7 +230,7 @@ class TransaksiPmbController extends Controller
             ];
 
             // Kirim permintaan ke Bank BSI
-            $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
+            $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi/protocol/openid-connect/token', [
                 'grant_type' => 'password',
                 'client_id' => 'BPI3764',
                 'client_secret' => 'cJ33C8xjyVbxTNTKCnqgrxoZaCsnvRep',
@@ -242,7 +242,7 @@ class TransaksiPmbController extends Controller
 
             $responseApi = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
-            ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $requestData);
+            ])->post('https://billing-bpi-dev.maja.id', $requestData);
     
             // Mendapatkan invoice number dari respons
             $invoiceNumber = $responseApi->json('data.number');

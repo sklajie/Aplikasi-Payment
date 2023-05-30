@@ -64,7 +64,7 @@ class PembayaranLainnyaDevController extends Controller
                 'pembayaran_lainnya.paid as paid',
                 'pembayaran_lainnya.paid_date as paid_date',
                 'pembayaran_lainnya.regis_number as regis_number',
-            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id)->where('mode' , '=', 'Sandabox');
+            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id)->where('mode' , '=', 'sandabox');
 
 
 

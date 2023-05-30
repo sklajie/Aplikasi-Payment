@@ -16,6 +16,8 @@ class VerifyCsrfToken extends Middleware
         '/pembayaran',
         '/log_transaksi/data',
         '/log_transaksi',
+        '/log_transaksi_dev/data',
+        '/log_transaksi_dev',
         '/pembayaran/export_data_terpilih',
     ];
 }

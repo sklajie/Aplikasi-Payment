@@ -66,7 +66,7 @@ class PembayaranLainnyaController extends Controller
                 'pembayaran_lainnya.paid as paid',
                 'pembayaran_lainnya.paid_date as paid_date',
                 'pembayaran_lainnya.regis_number as regis_number',
-            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id);
+            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id)->where('mode' , '=', 'production');
 
 
 
@@ -145,7 +145,7 @@ class PembayaranLainnyaController extends Controller
 
         if ($data) {
             // Mengambil data histori dengan id_pembayaran_lainnya yang sama
-            $histori = Histori::where('pembayaran_lainnya_id', $data->id)->get();
+            $histori = Histori::where('pembayaran_lainnya_id', $data->id)->where('mode' , '=', 'production')->get();
 
         }else {
             echo "Data pembayaran tidak ditemukan.";
@@ -167,7 +167,7 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->get();
+        ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('mode' , '=', 'production')->get();
 
 
         return response()->json(
@@ -194,7 +194,7 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->find($id);
+        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'production')->find($id);
 
         if ($data) {
             return response()->json([
@@ -220,7 +220,7 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->find($id);
+        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'production')->find($id);
         return response()->json([
             'data' => $data,
         ]);

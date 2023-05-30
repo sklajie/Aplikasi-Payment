@@ -17,6 +17,7 @@ class Histori extends Model
         'id',
         'pembayaran_lainnya_id',
         'method',
+        'mode',
         'request_body',
         'respons',
         'user_id',

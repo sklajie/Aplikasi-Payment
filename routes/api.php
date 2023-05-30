@@ -6,6 +6,7 @@ use App\Http\Controllers\API\PendaftaranController;
 use App\Http\Controllers\BsiApiController;
 use App\Http\Controllers\PembayaranLainnyaController;
 use App\Http\Controllers\TransaksiPmbController;
+use App\Http\Controllers\TransaksiPmbControllerDev;
 use App\Http\Controllers\NotificationController;
 
 
@@ -18,7 +19,7 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::prefix('v1/dev')->group(function () {
-        Route::post('/transactions', [TransaksiPmbControllerDev::class, 'store']);
+    Route::post('/transactions', [TransaksiPmbControllerDev::class, 'store']);
     Route::put('/pembayaran_lainnya/{invoice_number}', [TransaksiPmbControllerDev::class, 'update']);
     Route::get('/DataTransactions', [PembayaranLainnyaDevController::class, 'DataTransaction']);
     Route::get('/DataDetailTransactions', [PembayaranLainnyaDevController::class, 'DataDetailTransaction']);

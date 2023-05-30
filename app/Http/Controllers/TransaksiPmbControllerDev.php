@@ -265,7 +265,7 @@ class TransaksiPmbControllerDev extends Controller
                 'request_body' => json_encode($requestData),
                 'respons' => json_encode($responseApi->json()),
                 'user_id' => $data['token'],
-                'mode' => 'sand',
+                'mode' => 'sandbox',
             ]);
             
             $historiUserId = $histori->user_id;

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('histori', function (Blueprint $table) {
-            $table->longText('respons')->change();
+            $table->longText('respons')->nullable()->change();
         });
     }
 

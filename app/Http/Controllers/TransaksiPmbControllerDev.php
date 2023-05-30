@@ -402,7 +402,6 @@ class TransaksiPmbControllerDev extends Controller
                 $updatestatus->paid_date = now();
                 $updatestatus->save();
             }
-
     
             if (!$pembayaranLainnya) {
                 return response()->json([
@@ -419,13 +418,13 @@ class TransaksiPmbControllerDev extends Controller
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
             DB::commit();
-
     
             //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
 
             DB::beginTransaction();
             
             $user = $pembayaranLainnya->histori->user;
+            $userId = $user->id;
             $endpoint = $user->endpoint;
     
             // Kirim notifikasi ke endpoint
@@ -436,25 +435,46 @@ class TransaksiPmbControllerDev extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
+            $response = http::post($endpoint, [
+                'json' => $data,
+            ]);
 
-            // $response = $client->post($endpoint, [
-            //     'json' => $data,
-            // ]);
+            //Menyimpan data notifikasi ke histori
+            $histori = Histori::create([
+                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                'method' => 'Post',
+                'mode' => 'sandbox',
+                'request_body' => json_encode($data),
+                'respons' => 'json_encode($response->json())',
+                'user_id' => $userId,
+            ]);
 
             DB::commit();
+
             // Mengirim respons
             return response()->json([
                 'success' => true,
-                'message' => 'Notification received and processed successfully.',
+                'message' => 'notifikasi diterima dan proses kirim berhasil.',
             ]);
         } catch (\Exception $e) {
 
             DB::rollback();
+
+            //Menyimpan data notifikasi ke histori
+            $histori = Histori::create([
+                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                'method' => 'Post',
+                'mode' => 'sandbox',
+                'request_body' => json_encode($data),
+                'respons' => 'json_encode($response->json())',
+                'user_id' => $userId,
+            ]);
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',
                 'error' => $e->getMessage(),
-            ], 500);
+            ]);
         }
     }
     

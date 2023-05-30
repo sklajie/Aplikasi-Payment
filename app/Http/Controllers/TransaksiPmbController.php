@@ -441,9 +441,9 @@ class TransaksiPmbController extends Controller
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
 
-            // $response = $client->post($endpoint, [
-            //     'json' => $data,
-            // ]);
+            $response = http::post($endpoint, [
+                'json' => $data,
+            ]);
 
             DB::commit();
             // Mengirim respons

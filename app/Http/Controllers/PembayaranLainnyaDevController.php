@@ -64,7 +64,7 @@ class PembayaranLainnyaDevController extends Controller
                 'pembayaran_lainnya.paid as paid',
                 'pembayaran_lainnya.paid_date as paid_date',
                 'pembayaran_lainnya.regis_number as regis_number',
-            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id)->where('mode' , '=', 'sandabox');
+            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id)->where('mode' , '=', 'sandbox');
 
 
 
@@ -143,7 +143,7 @@ class PembayaranLainnyaDevController extends Controller
 
         if ($data) {
             // Mengambil data histori dengan id_pembayaran_lainnya yang sama
-            $histori = Histori::where('pembayaran_lainnya_id', $data->id)->where('mode' , '=', 'Sandabox')->get();
+            $histori = Histori::where('pembayaran_lainnya_id', $data->id)->where('mode' , '=', 'sandbox')->get();
 
         }else {
             echo "Data pembayaran tidak ditemukan.";
@@ -165,7 +165,7 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('mode' , '=', 'Sandabox')->get();
+        ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('mode' , '=', 'sandbox')->get();
 
 
         return response()->json(
@@ -192,7 +192,7 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'Sandabox')->find($id);
+        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'sandbox')->find($id);
 
         if ($data) {
             return response()->json([
@@ -218,7 +218,7 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'Sandabox')->find($id);
+        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'sandbox')->find($id);
         return response()->json([
             'data' => $data,
         ]);

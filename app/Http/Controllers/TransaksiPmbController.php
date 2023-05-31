@@ -398,7 +398,7 @@ class TransaksiPmbController extends Controller
             $histori->save();
         } else {
             // Jika permintaan gagal, berikan respons error atau lakukan tindakan yang sesuai
-            return response()->json(['message' => 'Failed to update invoice'], 500);
+            return response()->json(['message' => 'Gagal meng-update invoice'], 500);
         }
 
         // Berikan respons sukses

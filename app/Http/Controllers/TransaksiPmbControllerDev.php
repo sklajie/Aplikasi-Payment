@@ -75,7 +75,6 @@ class TransaksiPmbControllerDev extends Controller
         // Menyiapkan respons yang sesuai
         $responseBody = [
             'timestamp' => date('m/d/Y, h:i:s A'),
-            'code' => '00',
             'message' => 'success',
             'success' => true,
             'data' => [
@@ -132,7 +131,6 @@ class TransaksiPmbControllerDev extends Controller
             // Menyiapkan respons yang sesuai
             $responseBody = [
                 'timestamp' => date('m/d/Y, h:i:s A'),
-                'code' => '00',
                 'message' => 'success',
                 'success' => true,
                 'data' => [
@@ -155,7 +153,6 @@ class TransaksiPmbControllerDev extends Controller
             // Menyiapkan respons error
             $responseBody = [
                 'timestamp' => date('m/d/Y, h:i:s A'),
-                'code' => '99',
                 'message' => 'failed',
                 'success' => false,
                 'error' => $errorMessage,
@@ -278,6 +275,7 @@ class TransaksiPmbControllerDev extends Controller
             DB::commit();
 
             return response()->json([
+                'timestamp' => now(),
                 'success' => true,
                 'message' => 'Data histori request berhasil disimpan dan permintaan ke Bank BSI berhasil dikirim',
                 'invoice_number' => $invoiceNumber,
@@ -288,6 +286,7 @@ class TransaksiPmbControllerDev extends Controller
             DB::rollback();
 
             return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat menyimpan data histori request atau mengirim permintaan ke Bank BSI',
                 'error' => $e->getMessage(),
@@ -312,14 +311,16 @@ class TransaksiPmbControllerDev extends Controller
         $regisNumber = $request->regis_number;
         $amount = $request->amount;
 
-        dd($name);
-
         // Memperbarui data pembayaran_lainnya
         $pembayaranLainnya = PembayaranLainnya::where('invoice_number', $invoiceNumber)->first();
 
         if (!$pembayaranLainnya) {
             // Jika invoice number tidak ditemukan, berikan respons error atau lakukan tindakan yang sesuai
-            return response()->json(['message' => 'Invoice number not found'], 404);
+            return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
+                'success' => false,
+                'message' => 'Invoice number tidak ditemukan',
+            ], 404);
         }
 
         // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
@@ -384,11 +385,19 @@ class TransaksiPmbControllerDev extends Controller
             $histori->save();
         } else {
             // Jika permintaan gagal, berikan respons error atau lakukan tindakan yang sesuai
-            return response()->json(['message' => 'Failed to update invoice'], 500);
+            return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
+                'success' => false,
+                'message' => 'Gagal meng-update invoice',
+            ], 500);
         }
 
         // Berikan respons sukses
-        return response()->json(['message' => 'Invoice updated successfully']);
+        return response()->json([
+            'timestamp' => date('m/d/Y, h:i:s A'),
+            'success' => true,
+            'message' => 'Invoice berhasil diupdate',
+        ]);
     }
 
     public function receiveBpiNotification(Request $request)
@@ -415,13 +424,11 @@ class TransaksiPmbControllerDev extends Controller
                 $updatestatus->paid_date = now();
                 $updatestatus->save();
             }
-
-
-    
             if (!$pembayaranLainnya) {
                 return response()->json([
+                    'timestamp' => date('m/d/Y, h:i:s A'),
                     'success' => false,
-                    'message' => 'Invalid virtual account.',
+                    'message' => 'virtual account salah.',
                 ]);
             }
     
@@ -429,7 +436,6 @@ class TransaksiPmbControllerDev extends Controller
             $notification = Notification::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                 'message' => $data['message'],
-                
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
             DB::commit();
@@ -479,30 +485,33 @@ class TransaksiPmbControllerDev extends Controller
                 'success' => $response->getStatusCode() != 200 ? false : true,
                 'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
             ]);
+            
         } catch (\Exception $e) {
 
             DB::rollback();
 
+            
             $method = $request->method();
-            $endpoint = $request->path();
+            $endpointapi = $request->fullUrl();
+            $endpointAPI = strval($endpointapi);
     
 
             //Menyimpan data notifikasi ke histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                 'method' => $method,
-                'endpoint' => $endpoint,
-                'mode' => 'sandbox',
+                'endpoint' => $endpointAPI ,
+                'mode' => 'production',
                 'request_body' => json_encode($data),
                 'respons' => $response->body(),
                 'user_id' => $userId,
             ]);
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',
                 'error' => $e->getMessage(),
-            ]);
+            ], 500);
         }
     }
     
@@ -557,7 +566,6 @@ class TransaksiPmbControllerDev extends Controller
 
         $data = [
             'timestamp' => date('n/j/Y, g:i:s A'),
-            'code' => '00',
             'message' => 'success',
             'success' => true,
             'data' => $transaction->toArray()

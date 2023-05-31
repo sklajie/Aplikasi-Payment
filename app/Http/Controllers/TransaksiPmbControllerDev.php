@@ -275,7 +275,7 @@ class TransaksiPmbControllerDev extends Controller
             DB::commit();
 
             return response()->json([
-                'timestamp' => now(),
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => true,
                 'message' => 'Data histori request berhasil disimpan dan permintaan ke Bank BSI berhasil dikirim',
                 'invoice_number' => $invoiceNumber,
@@ -482,6 +482,7 @@ class TransaksiPmbControllerDev extends Controller
 
             // Mengirim respons
             return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => $response->getStatusCode() != 200 ? false : true,
                 'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
             ]);
@@ -508,6 +509,7 @@ class TransaksiPmbControllerDev extends Controller
             ]);
 
             return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',
                 'error' => $e->getMessage(),

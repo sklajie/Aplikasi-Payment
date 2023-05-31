@@ -75,7 +75,6 @@ class TransaksiPmbController extends Controller
         // Menyiapkan respons yang sesuai
         $responseBody = [
             'timestamp' => date('m/d/Y, h:i:s A'),
-            'code' => '00',
             'message' => 'success',
             'success' => true,
             'data' => [
@@ -132,7 +131,6 @@ class TransaksiPmbController extends Controller
             // Menyiapkan respons yang sesuai
             $responseBody = [
                 'timestamp' => date('m/d/Y, h:i:s A'),
-                'code' => '00',
                 'message' => 'success',
                 'success' => true,
                 'data' => [
@@ -155,7 +153,6 @@ class TransaksiPmbController extends Controller
             // Menyiapkan respons error
             $responseBody = [
                 'timestamp' => date('m/d/Y, h:i:s A'),
-                'code' => '99',
                 'message' => 'failed',
                 'success' => false,
                 'error' => $errorMessage,
@@ -288,6 +285,7 @@ class TransaksiPmbController extends Controller
             DB::commit();
 
             return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => true,
                 'message' => 'Data histori request berhasil disimpan dan permintaan ke Bank BSI berhasil dikirim',
                 'invoice_number' => $invoiceNumber,
@@ -298,6 +296,7 @@ class TransaksiPmbController extends Controller
             DB::rollback();
 
             return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat menyimpan data histori request atau mengirim permintaan ke Bank BSI',
                 'error' => $e->getMessage(),
@@ -327,7 +326,11 @@ class TransaksiPmbController extends Controller
 
         if (!$pembayaranLainnya) {
             // Jika invoice number tidak ditemukan, berikan respons error atau lakukan tindakan yang sesuai
-            return response()->json(['message' => 'Invoice number not found'], 404);
+            return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
+                'success' => false,
+                'message' => 'Invoice number not found',
+            ], 404);
         }
 
         // Memperbarui data pembayaran_lainnya dengan nilai baru dari request
@@ -398,11 +401,19 @@ class TransaksiPmbController extends Controller
             $histori->save();
         } else {
             // Jika permintaan gagal, berikan respons error atau lakukan tindakan yang sesuai
-            return response()->json(['message' => 'Gagal meng-update invoice'], 500);
+            return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
+                'success' => false,
+                'message' => 'Gagal meng-update invoice',
+            ], 500);
         }
 
         // Berikan respons sukses
-        return response()->json(['message' => 'Invoice updated successfully']);
+        return response()->json([
+            'timestamp' => date('m/d/Y, h:i:s A'),
+            'success' => true,
+            'message' => 'Invoice berhasil diupdate',
+        ]);
     }
 
     public function receiveBpiNotification(Request $request)
@@ -433,8 +444,9 @@ class TransaksiPmbController extends Controller
     
             if (!$pembayaranLainnya) {
                 return response()->json([
+                    'timestamp' => date('m/d/Y, h:i:s A'),
                     'success' => false,
-                    'message' => 'Invalid virtual account.',
+                    'message' => 'virtual account salah.',
                 ]);
             }
     
@@ -442,7 +454,6 @@ class TransaksiPmbController extends Controller
             $notification = Notification::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                 'message' => $data['message'],
-                
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
             DB::commit();
@@ -488,8 +499,9 @@ class TransaksiPmbController extends Controller
             DB::commit();
             // Mengirim respons
             return response()->json([
-                'success' => true,
-                'message' => 'Notification received and processed successfully.',
+                'timestamp' => date('m/d/Y, h:i:s A'),
+                'success' => $response->getStatusCode() != 200 ? false : true,
+                'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
             ]);
         } catch (\Exception $e) {
 
@@ -513,6 +525,7 @@ class TransaksiPmbController extends Controller
             ]);
 
             return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses notifikasi.',
                 'error' => $e->getMessage(),
@@ -571,7 +584,6 @@ class TransaksiPmbController extends Controller
 
         $data = [
             'timestamp' => date('n/j/Y, g:i:s A'),
-            'code' => '00',
             'message' => 'success',
             'success' => true,
             'data' => $transaction->toArray()

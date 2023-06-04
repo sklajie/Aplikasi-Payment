@@ -29,11 +29,14 @@ Auth::routes();
 
 Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index')->middleware(['auth', 'adminkeuangan']);
 Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data')->middleware(['auth', 'adminkeuangan']);
+Route::get('/pembayaran_dibayar', 'App\Http\Controllers\PembayaranController@indexDibayar')->middleware(['auth', 'adminkeuangan']);
+Route::any('/pembayaran_dibayar/data_dibayar', 'App\Http\Controllers\PembayaranController@dataDibayar')->middleware(['auth', 'adminkeuangan']);
 Route::get('/pembayaran/export','App\Http\Controllers\PembayaranController@exportData')->middleware(['auth', 'adminkeuangan']);
 Route::get('/pembayaran/download_pdf/{id}','App\Http\Controllers\PembayaranController@downloadPdf')->middleware(['auth', 'adminkeuangan']);
 Route::put('/pembayaran/import-excel','App\Http\Controllers\PembayaranController@importDataMahasiswa')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/export_data_terpilih','App\Http\Controllers\PembayaranController@exportDataTerpilih')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi_va','App\Http\Controllers\PembayaranController@aktivasiVA')->middleware(['auth', 'adminkeuangan']);
+Route::post('/pembayaran/update','App\Http\Controllers\PembayaranController@updateInvoice')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
 
 Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);

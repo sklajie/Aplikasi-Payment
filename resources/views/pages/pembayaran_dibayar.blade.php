@@ -44,13 +44,12 @@
       <div class="row">
         <div class="col-md-12">
           {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
-          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
+          {{-- <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button> --}}
           <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
           <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportDataTerpilih()">Export Data Terpilih</button>
-          <button disabled type="button" class="btn btn-info" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-aktivasi" onclick="aktivasi()" id="button-aktivasi">Aktivasi</button>
-          <button disabled type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-update-va" onclick="updateVA()" id="button-update-va">Update VA</button>
+          {{-- <button disabled type="button" class="btn btn-info" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-aktivasi" onclick="aktivasi()" id="button-aktivasi">Aktivasi</button> --}}
           
           <div class="card">
             <div class="card-header">
@@ -231,40 +230,6 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modal-update-va">
-    <div class="modal-dialog modal-lg">
-      <form method="post" id="form-aktivasi" action="{{ url('') }}/pembayaran/aktivasi_va" enctype="multipart/form-data" class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Update Invoice</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{csrf_field()}}
-          <div class="row">
-            <div class="col-md-12">
-              <input type="text" name="ids" hidden>
-              <p>Jumlah data terpilih: <span id="selected">0</span></p>
-            </div>
-            <div class="col-md-12">
-              <label>Active date <small class="text-danger">*</small></label>
-              <input type="date" name="activeDate" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Inactive date <small class="text-danger">*</small></label>
-              <input type="date" name="inactiveDate" class="form-control" required>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary" onclick="showConfirmDialogAktivasi()">Aktivasi</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <div class="modal fade" id="modal-import">
     <div class="modal-dialog modal-lg">
       <form method="post" id="form-import" action="{{url('')}}/pembayaran/import-excel" enctype="multipart/form-data" class="modal-content">
@@ -325,7 +290,7 @@
     "order": [[ 1, "asc" ]],
     "autoWidth": false,
     "ajax":{
-      url: "{{url('')}}/pembayaran/data",
+      url: "{{url('')}}/pembayaran_dibayar/data_dibayar",
       type: "POST",
       data:function(d){
         d.status = status;
@@ -502,16 +467,6 @@
         $('#selected-count').text(selectedCount);
   });
 
-  $('#table tbody').on('change', 'input[type="checkbox"]', function() {
-        var selected = table.column(0).nodes().to$().find(':checkbox:checked').length;
-        $('#selected').text(selected);
-    });
-
-  $('#table thead').on('change', 'input[type="checkbox"]', function() {
-        var selected = table.column(0).nodes().to$().find(':checkbox:checked').length;
-        $('#selected').text(selected);
-  });
-
   function filterTampilan(){
     let all_columns = $("#view-tampilan div label input")
     
@@ -578,8 +533,8 @@
   $("#head-cb").on('click',function(){
     var isChecked = $("#head-cb").prop('checked')
     $(".cb-child").prop('checked',isChecked)
-    $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi,#button-update-va").prop('disabled',!isChecked)
-    $("#button-aktif-all,#button-export-terpilih,#button-aktivasi,#button-update-va").prop('disabled',!isChecked)
+    $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!isChecked)
+    $("#button-aktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!isChecked)
   })
 
   $("#table tbody").on('click','.cb-child',function(){
@@ -591,10 +546,9 @@
     let button_non_aktif_status = (semua_checkbox.length>0)
     let button_export_terpilih_status = button_non_aktif_status;
     let button_aktivasi_status = button_non_aktif_status;
-    let button_update_va_status = button_non_aktif_status;
 
-    $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi,#button-update-va").prop('disabled',!button_non_aktif_status)
-    $("#button-aktif-all,#button-export-terpilih,#button-aktivasi,#button-update-va").prop('disabled',!button_non_aktif_status)
+    $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!button_non_aktif_status)
+    $("#button-aktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!button_non_aktif_status)
   })
 
   // function nonAktifkanTerpilih () {
@@ -674,26 +628,6 @@
     })
     let ids = semua_id.join(',')
     $("#form-aktivasi [name='ids']").val(ids)
-    
-    // $.ajax({
-    //   url:"{{url('')}}/karyawan/export_terpilih",
-    //   method:'POST',
-    //   data:{ids:semua_id},
-    //   success:function(res){
-    //     console.log(res)
-    //     $("#button-export-terpilih").prop('disabled',false)
-    //   }
-    // })
-  }
-
-  function updateVA() {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    let ids = semua_id.join(',')
-    $("#form-update-va [name='ids']").val(ids)
     
     // $.ajax({
     //   url:"{{url('')}}/karyawan/export_terpilih",

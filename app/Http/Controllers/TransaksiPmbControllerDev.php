@@ -502,7 +502,7 @@ class TransaksiPmbControllerDev extends Controller
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                 'method' => $method,
                 'endpoint' => $endpointAPI ,
-                'mode' => 'production',
+                'mode' => 'sandbox',
                 'request_body' => json_encode($data),
                 'respons' => $response->body(),
                 'user_id' => $userId,

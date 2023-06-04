@@ -240,12 +240,31 @@
 							</a>
 						</li>
 
-						<li class="nav-item  {{ $title === "Data Pembayaran" ? 'active' : '' }}">
-							<a href="/pembayaran">
-								<i class="fas fa-th-list"></i>
+						<li class="nav-item">
+							<div>
+							<a data-toggle="collapse" href="#sidebarLayouts">
+								<i class="fa fa-ellipsis-h"></i>
 								<p>Data Pembayaran</p>
+								<span class="caret"></span>
 							</a>
-						</li>		
+							<div class="collapse" id="sidebarLayouts">
+								<ul class="nav nav-collapse">
+									<li class="nav-item  {{ $title === "Data Pembayaran - Belum dibayar" ? 'active' : '' }}">
+										<a href="/pembayaran">
+											<i class="fas fa-th-list"></i>
+											<p>Belum dibayar</p>
+										</a>
+									</li>	
+									<li class="nav-item  {{ $title === "Data Pembayaran - Dibayar" ? 'active' : '' }}">
+										<a href="/pembayaran_dibayar">
+											<i class="fas fa-th-list"></i>
+											<p>Dibayar</p>
+										</a>
+									</li>	
+								</ul>
+							</div>
+						</div>
+						</li>	
 
 						<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
 							<a href="/pebayaran/lainnya">

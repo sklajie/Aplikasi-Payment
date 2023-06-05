@@ -233,7 +233,7 @@
 
   <div class="modal fade" id="modal-update-va">
     <div class="modal-dialog modal-lg">
-      <form method="post" id="form-aktivasi" action="{{ url('') }}/pembayaran/aktivasi_va" enctype="multipart/form-data" class="modal-content">
+      <form method="post" id="form-update-invoice" action="{{ url('') }}/pembayaran/update_invoice" enctype="multipart/form-data" class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Update Invoice</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -259,7 +259,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary" onclick="showConfirmDialogAktivasi()">Aktivasi</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogAktivasi()">Update</button>
         </div>
       </form>
     </div>
@@ -743,6 +743,24 @@
       }
     });
   }
+
+  function showConfirmDialogUpdate() {
+
+  Swal.fire({
+    title: 'Confirm',
+    text: "Apakah anda yakin ingin update VA",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'aktivasi'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $("#form-update-invoice").submit()
+    }
+  });
+  }
+
 
 </script>
 

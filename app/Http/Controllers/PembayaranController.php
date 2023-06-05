@@ -23,7 +23,7 @@ class PembayaranController extends Controller
 
     public function index(Request $request)
     {
-        $title = 'Data Pembayaran - Belum Bayar';
+        $title = 'Data Pembayaran';
         $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
         $dataprodi = Pembayaran::distinct()->pluck('prodi');
         return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi'));
@@ -70,7 +70,7 @@ class PembayaranController extends Controller
                 'name' => $pembayaran->nama,
                 'email'=> $pembayaran->email,
                 'address'=>$pembayaran->address,
-                'va'=>$pembayaran->va,
+                'va'=>(int) $pembayaran->va,
                 'phone'=>$pembayaran->phone,
                 'activeDate'=> $pembayaran->activeDate,
                 'inactiveDate'=> $pembayaran->inactiveDate,
@@ -107,10 +107,11 @@ class PembayaranController extends Controller
 
                         // Inisialisasi array kosong
             
-            $save_number = Pembayaran::find($datas['va']);
-            $invoiceNumber = $responseapi->json('data.number');
-            $save_number->invoiceNumber = $invoiceNumber;
+            $save_number = Pembayaran::where('va',$datas['va'])->first();
+            $save_number->invoiceNumber = $responseapi->json('data.number');;
             $save_number->save();
+
+            
 
             $dataArray = [];
 
@@ -186,8 +187,6 @@ class PembayaranController extends Controller
 
         foreach($data as $datas){
 
-
-
             $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'grant_type' => 'password',
                 'client_id' => 'BPI3764',
@@ -212,7 +211,7 @@ class PembayaranController extends Controller
             if ($responseapi->successful()) {
                 // Jika permintaan sukses, perbarui data respons dan waktu update di tabel histori
                 $histori = new Histori();
-                $histori->pembayaran_lainnya_id = $pembayarans->id;
+                $histori->pembayaran_lainnya_id = $datas->id;
                 $histori->method = $method;
                 $histori->endpoint = $endpointAPI;
                 $histori->mode = 'sandbox';
@@ -422,7 +421,7 @@ class PembayaranController extends Controller
             'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->orderBy($orderBy, $request->input('order.0.dir'))
         ->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')
-        ->where('status','=', 1);
+        ->where('status','=', 0);
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\API\PendaftaranController;
 use App\Http\Controllers\BsiApiController;
 use App\Http\Controllers\PembayaranLainnyaController;
 use App\Http\Controllers\PembayaranLainnyaDevController;
+use App\Http\Controllers\BpiNotificationController;
 use App\Http\Controllers\TransaksiPmbController;
 use App\Http\Controllers\TransaksiPmbControllerDev;
 use App\Http\Controllers\NotificationController;
@@ -16,7 +17,7 @@ Route::prefix('v1')->group(function () {
     Route::put('/pembayaran_lainnya/{invoice_number}', [TransaksiPmbController::class, 'update']);
     Route::get('/DataTransactions', [PembayaranLainnyaController::class, 'DataTransaction']);
     Route::get('/DataDetailTransactions', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
-    Route::post('/notification', [TransaksiPmbController::class, 'receiveBpiNotification']);
+    Route::post('/notification', [BpiNotificationController::class, 'receiveBpiNotification']);
 });
 
 Route::prefix('v1/dev')->group(function () {

@@ -65,3 +65,4 @@ Route::any('/log_transaksi/detail/{pembayaran_id}', 'App\Http\Controllers\Pembay
 Route::get('/log_transaksi_dev', 'App\Http\Controllers\PembayaranLainnyaDevController@index');
 Route::any('/log_transaksi_dev/data', 'App\Http\Controllers\PembayaranLainnyaDevController@data');
 Route::any('/log_transaksi_dev/detail/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@showDetail');
+Route::any('/log_transaksi_dev/kirim_ulang_notif/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@kirimulang');

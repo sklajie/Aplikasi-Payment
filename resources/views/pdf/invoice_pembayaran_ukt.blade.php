@@ -1,3 +1,8 @@
+@php
+    setlocale(LC_TIME, 'id_ID');
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +21,7 @@
 
     <div style="width: 100%; height: 200px;">
         <div style="width: 70%;">
-            <h2 style="padding:20px; float:left;"><img src="{{ url('') }}/assets/img/logo_polindra.png" width="60px" alt="" > Politeknik Negeri Indramayu</h2>
+            <h4 style="padding:20px; float:left;"><img src="{{ url('') }}/assets/img/logo_polindra.png" width="40px" alt="" > Politeknik Negeri Indramayu</h4>
         </div>
         <div style="width: 30%; float:right;" class="kiri">
             <p style="padding: 20px;">Jl. Raya Lohbener Lama, Kecamatan Lohbener, Kabupaten Indramayu, Jawa Barat 45252 <br>
@@ -85,12 +90,12 @@
                 </div>
                 <div style="width: 20%; float:right;">
                     <div>
-                        <p><span id="tanggalwaktu"></span></p>
+                        <p><span>{{ $formattedTime }}</span></p>
                     </div>
                     <div class="ttd" style="height:80px;">
                         
                     </div>
-                    <p>(_______________________)</p>
+                    <p>(_________________)</p>
                 </div>
             </div>
         </center>
@@ -99,22 +104,5 @@
     
 </body>
 
-<script>
-    window.print();
-</script>
-
-<script>
-    var tw = new Date();
-    if (tw.getTimezoneOffset() == 0) (a=tw.getTime() + ( 7 *60*60*1000))
-    else (a=tw.getTime());
-    tw.setTime(a);
-    var tahun= tw.getFullYear ();
-    var hari= tw.getDay ();
-    var bulan= tw.getMonth ();
-    var tanggal= tw.getDate ();
-    var hariarray=new Array("Minggu,","Senin,","Selasa,","Rabu,","Kamis,","Jum'at,","Sabtu,");
-    var bulanarray=new Array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");
-    document.getElementById("tanggalwaktu").innerHTML = hariarray[hari]+" "+tanggal+" "+bulanarray[bulan]+" "+tahun;
-    </script>
 
 </html>

@@ -77,8 +77,8 @@ class PembayaranController extends Controller
                 'items' => [
                     [
                         'description'=>'Pembayaran UKT',
-                        'unitPrice' =>  $pembayaran->unitPrice,
-                        'qty'=>  $pembayaran->qty,
+                        'unitPrice' =>  $pembayaran->amount,
+                        'qty'=> 1,
                         'amount'=>  $pembayaran->amount
                     ]
                 ],
@@ -88,8 +88,6 @@ class PembayaranController extends Controller
 
 
         foreach($data as $datas){
-
-
 
             $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'grant_type' => 'password',
@@ -110,24 +108,9 @@ class PembayaranController extends Controller
             $save_number = Pembayaran::where('va',$datas['va'])->first();
             $save_number->invoiceNumber = $responseapi->json('data.number');;
             $save_number->save();
-
-            
-
-            $dataArray = [];
-
-
-                    $response_pembayaran = [
-                        $responseapi->json()
-                    ];
-
-                    $dataArray[] =  $response_pembayaran;
-
-
         }
 
-        dd($dataArray);
-       
-
+        return redirect()->route('pembayaran.index')->with('success', 'Aktivasi VA berhasil dilakukan.');
 
     }
 
@@ -238,7 +221,7 @@ class PembayaranController extends Controller
             // ]);
         }
 
-        
+        return redirect()->route('pembayaran.index')->with('success', 'Update perpanjang masa berlaku VA berhasil dilakukan.');
     }
 
 
@@ -521,16 +504,20 @@ class PembayaranController extends Controller
      * 
      */
 
-     
+        $currentTime = Carbon::now();
+        setlocale(LC_TIME, 'id_ID');
+        $formattedTime = $currentTime->isoFormat('dddd, D MMMM YYYY');
+
         $data['pembayaran'] = Pembayaran::select([
         'pembayaran.*',
         'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
         
-            // return view('pdf.invoice_pembayaran_ukt', $data);
+            return view('pdf.invoice_pembayaran_ukt', $data , compact('formattedTime'));
 
-        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
-        return $pdf->download('pembayaran.pdf');
+
+        // $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        // return $pdf->download('pembayaran.pdf');
 
     // $filename = 'pembayaran.pdf';
 

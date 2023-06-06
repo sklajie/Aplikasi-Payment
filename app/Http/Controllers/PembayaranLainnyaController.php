@@ -133,6 +133,111 @@ class PembayaranLainnyaController extends Controller
         ]);
     }
 
+    public function indexShowList(Request $request)
+    {
+        $jenis_pembayaran = PembayaranLainnya::distinct()->pluck('jenis_pembayaran');
+        $title = 'Pembayaran Lainnya';
+        return view('pages.pembayaran_lainnya' , compact(['title','jenis_pembayaran']));
+    }
+
+    public function dataShowList(Request $request)
+    {
+    	$orderBy = 'pembayaran_lainnya.name';
+        
+        switch($request->input('order.0.column')){
+            case "1":
+                $orderBy = 'pembayaran_lainnya.id';
+                break;
+            case "2":
+                $orderBy = 'pembayaran_lainnya.name';
+                break;
+            case "3":
+                $orderBy = 'pembayaran_lainnya.email';
+                break;
+            case "4":
+                $orderBy = 'pembayaran_lainnya.amount';
+                break;
+            case "5":
+                $orderBy = 'pembayaran_lainnya.regis_number';
+                break;
+            case "6":
+                $orderBy = 'pembayaran_lainnya.paid';
+                break;
+            case "7":
+                $orderBy = 'pembayaran_lainnya.paid_date';
+                break;
+            default:
+                $orderBy = 'pembayaran_lainnya.regis_number';
+                break;
+        }
+
+            $data = PembayaranLainnya::select([
+                'pembayaran_lainnya.*'
+            ]);
+
+
+
+        // search
+        if($request->input('search.value')!=null){
+            $data = $data->where(function($q)use($request){
+                $q->whereRaw('LOWER(pembayaran_lainnya.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran_lainnya.email) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran_lainnya.regis_number) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran_lainnya.amount) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ;
+            });
+        }
+
+        //filter tahun berdasarkan prodi
+        if($request->input('jenis_pembayaran')!=null){
+            $data = $data->where('jenis_pembayaran',$request->jenis_pembayaran);
+        }
+
+        // //filter tahun berdasarkan tahun akademik
+        // if($request->input('tahun_akademik')!=null){
+        //     $data = $data->where('tahun_akademik',$request->tahun_akademik);
+        // }
+
+        //filter berdasarkan status
+        if($request->input('paid')!=null){
+            if($request->input('paid')== 1){
+                $data = $data->where('paid', $request->paid);
+            }
+        }
+
+        // //filter berdasarkan semester
+        // if($request->input('semester')!=null){
+        //     if($request->input('semester')== 1){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 2){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 3){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 4){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 5){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 6){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 7){
+        //         $data = $data->where('semester', $request->semester);
+        //     }else if($request->input('semester')== 8){
+        //         $data = $data->where('semester', $request->semester);
+        //     }
+        // }
+
+        $recordsFiltered = $data->get()->count();
+        if($request->input('length')!=-1) $data = $data->skip($request->input('start'))->take($request->input('length'));
+        $data = $data->orderBy($orderBy,$request->input('order.0.dir'))->get();
+        $recordsTotal = $data->count();
+        return response()->json([
+            'draw'=>$request->input('draw'),
+            'recordsTotal'=>$recordsTotal,
+            'recordsFiltered'=>$recordsFiltered,
+            'data'=>$data
+        ]);
+    }
+
     public function showDetail(Request $request, $id){
         $title = 'detail';
         $data = PembayaranLainnya::select([

@@ -27,6 +27,7 @@ route::get('/cek', function(){
 
 Auth::routes();
 
+//pembayaran
 Route::get('/pembayaran', 'App\Http\Controllers\PembayaranController@index')->middleware(['auth', 'adminkeuangan']);
 Route::any('/pembayaran/data', 'App\Http\Controllers\PembayaranController@data')->middleware(['auth', 'adminkeuangan']);
 Route::get('/pembayaran_dibayar', 'App\Http\Controllers\PembayaranController@indexDibayar')->middleware(['auth', 'adminkeuangan']);
@@ -38,6 +39,11 @@ Route::post('/pembayaran/export_data_terpilih','App\Http\Controllers\PembayaranC
 Route::post('/pembayaran/aktivasi_va','App\Http\Controllers\PembayaranController@aktivasiVA')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/update_invoice','App\Http\Controllers\PembayaranController@updateInvoice')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
+
+//pembayaran_lainnya
+Route::get('/pembayaran_lainnya','App\Http\Controllers\PembayaranLainnyaController@indexShowList')->middleware(['auth', 'adminkeuangan']);
+Route::any('/pembayaran_lainnya/data','App\Http\Controllers\PembayaranLainnyaController@dataShowList')->middleware(['auth', 'adminkeuangan']);
+
 
 Route::resource('/users', App\Http\Controllers\UserController::class )->middleware(['auth', 'superadmin']);
 

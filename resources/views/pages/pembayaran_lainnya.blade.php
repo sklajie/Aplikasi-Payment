@@ -6,13 +6,15 @@
     display: block;
   }
 </style>
+
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
 @stop
 
 @section('content')
 <div class="main-panel">
     <div class="page-inner">
         <div class="page-header">
-            <h4 class="page-title" style="padding-top: 10px;">Data Pembayaran Lainnya</h4>
+            <h4 class="page-title" style="padding-top: 10px;">Log Transaksi</h4>
             
         </div>
         <div>
@@ -32,110 +34,37 @@
                     <i class="flaticon-right-arrow"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/datapenyakit">Data Pembayaran Lainnya</a>
+                    <a href="">Data Pembayaran Lainnya</a>
                 </li>
             </ul>
             </div>
-	{{-- <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Karyawan</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Karyawan</li>
-          </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid --> --}}
+
   </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-            {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Karyawan</button>
-          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Karyawan Excel</button> --}}
-          <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{url('')}}/karyawan/export">Export Data Pembayaran Lainnya</a>
-          {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
-          <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
-          <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportKaryawanTerpilih()">Export Karyawan Terpilih</button>
-          
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Data Pembayaran Lainnya</h3>
             </div>
            <div class="card-body">
-              <div class="row" id="row-tampilan">
-                <div class="col-md-12">
-                  <h4>Pilih Tampilan</h4>
-                </div>
-                <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="1" checked="true"> NIM
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="2" checked="true"> Nama
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="3" checked="true"> Semester
-                  </label>
-                </div>
-                <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="4" checked="true"> Tahun Akademik
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="5" checked="true"> Tanggal Bayar
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="6" checked="true"> Status
-                  </label>
-                </div>
-                {{-- <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="7"> Detail Alamat
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="8"> Foto
-                  </label>
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="9"> BPJS Kesehatan
-                  </label>
-                </div>
-                <div class="col-md-3">
-                  <label>
-                    <input type="checkbox" class="tampilan" data-kolom="10"> BPJS Ketenagakerjaan
-                  </label>
-                </div> --}}
-              </div>
-              <br>
               <div class="row">
                 <div class="col-md-12">
                   <h4>Filter Data</h4>
                 </div>
-                <div class="col-md-4">
-                  <label>Semester</label>
-                  <select id="filter-organisasi" class="form-control filter">
-                    <option value="">Pilih Organisasi</option>
-                    {{-- @foreach($list_organisasi as $organisasi)
-                    <option value=""></option>
-                    @endforeach --}}
-                  </select>
+                <div class="col-md-6">
+                    <label>Tahun Akademik</label>
+                    <select id="filter-jenis-pembayaran" class="form-control filter">
+                      <option value="">Semua</option>
+                      @foreach($jenis_pembayaran as $jenis_pembayaran)
+                      <option value="{{ $jenis_pembayaran }}">{{ $jenis_pembayaran }}</option>
+                      @endforeach
+                    </select>
                 </div>
-                <div class="col-md-4">
-                  <label>Prodi</label>
-                  <select id="filter-bpjs-kesehatan" class="form-control filter">
-                    <option value="">Pilih prodi</option>
-                    <option value="1">Teknik Mesin</option>
-                    <option value="2">Teknik Informatika</option>
-                    <option value="3">Teknik Pendingin dan Tata udara</option>
-                  </select>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <label>Status</label>
-                  <select id="filter-bpjs-ketenagakerjaan" class="form-control filter">
-                    <option value="">Status</option>
+                  <select id="filter-status" class="form-control filter">
+                    <option value="">semua</option>
                     <option value="1">Lunas</option>
                     <option value="0">Belum lunas</option>
                   </select>
@@ -146,15 +75,14 @@
                 <table id="table" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th  style="width: 2%">
-                      <input type="checkbox" id="head-cb">
-                    </th>
-                    <th>Nim</th>
-					<th>Nama</th>
-					<th>Semester</th>
-					<th>Tahun Akademik</th>
-		    		<th>Tanggal Bayar</th>
-					<th>Status</th>
+                    <th>ID</th>
+                    <th>Kategori Pembayaran</th>
+                    <th>Nama</th>
+                    <th>E-mail</th>
+                    <th>VA</th>
+                    <th>Amount</th>
+                    <th>Tanggal bayar</th>
+                    <th>Status bayar</th>
                     <th>###</th>
                   </tr>
                   </thead>
@@ -167,11 +95,11 @@
       </div>
     </div>
 
-  {{-- <div class="modal fade" id="modal-create">
+  <div class="modal fade" id="modal-aktivasi">
     <div class="modal-dialog modal-lg">
-      <form method="post" id="form-create" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
+      <form method="post" id="form-aktivasi" action="{{ url('') }}/pembayaran/aktivasi_va" enctype="multipart/form-data" class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Tambah Data Karyawan Baru</h4>
+          <h4 class="modal-title">Aktivasi VA</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -180,136 +108,22 @@
           {{csrf_field()}}
           <div class="row">
             <div class="col-md-12">
-              <label>Nama <small class="text-danger">*</small></label>
-              <input type="text" name="nama" class="form-control" required>
+              <input type="text" name="ids" hidden>
+              <p>Jumlah data terpilih: <span id="selected-count">0</span></p>
             </div>
             <div class="col-md-12">
-              <label>Nomor KTP <small class="text-danger">*</small></label>
-              <input type="text" name="nomor_ktp" class="form-control" required>
+              <label>Active date <small class="text-danger">*</small></label>
+              <input type="date" name="activeDate" class="form-control" required>
             </div>
             <div class="col-md-12">
-              <label>NIK <small class="text-danger">*</small></label>
-              <input type="text" name="nik" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Telp <small class="text-danger">*</small></label>
-              <input type="text" name="telp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Email</label>
-              <input type="email" name="email" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Detail Alamat</label>
-              <textarea class="form-control" name="detail_alamat"></textarea>
-            </div>
-            <div class="col-md-12">
-              <label>Status</label>
-              <select name="status" class="form-control" required>
-                <option value="aktif">Aktif</option>
-                <option value="non aktif">Non Aktif</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Kesehatan</label>
-              <input type="text" name="nomor_bpjs_kesehatan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Ketenagakerjaan</label>
-              <input type="text" name="nomor_bpjs_ketenagakerjaan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Organisasi</label>
-              <select name="organisasi_id" class="form-control" required>
-                <option value="">Pilih Organisasi</option>
-                @foreach($list_organisasi as $organisasi)
-                <option value="{{$organisasi->id}}">{{$organisasi->nama}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-md-12" style="margin-top: 4px;">
-              <input type="file" name="foto" accept="image/*">
+              <label>Inactive date <small class="text-danger">*</small></label>
+              <input type="date" name="inactiveDate" class="form-control" required>
             </div>
           </div>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modal-edit">
-    <div class="modal-dialog modal-lg">
-      <form method="post" id="form-edit" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Data Karyawan Baru</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{csrf_field()}}
-          <input type="hidden" name="id">
-          {{method_field('PATCH')}}
-          <div class="row">
-            <div class="col-md-12">
-              <label>Nama <small class="text-danger">*</small></label>
-              <input type="text" name="nama" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor KTP <small class="text-danger">*</small></label>
-              <input type="text" name="nomor_ktp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>NIK <small class="text-danger">*</small></label>
-              <input type="text" name="nik" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Telp <small class="text-danger">*</small></label>
-              <input type="text" name="telp" class="form-control" required>
-            </div>
-            <div class="col-md-12">
-              <label>Email</label>
-              <input type="email" name="email" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Detail Alamat</label>
-              <textarea class="form-control" name="detail_alamat"></textarea>
-            </div>
-            <div class="col-md-12">
-              <label>Status</label>
-              <select name="status" class="form-control" required>
-                <option value="aktif">Aktif</option>
-                <option value="non aktif">Non Aktif</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Kesehatan</label>
-              <input type="text" name="nomor_bpjs_kesehatan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Nomor BPJS Ketenagakerjaan</label>
-              <input type="text" name="nomor_bpjs_ketenagakerjaan" class="form-control">
-            </div>
-            <div class="col-md-12">
-              <label>Organisasi</label>
-              <select name="organisasi_id" class="form-control" required>
-                <option value="">Pilih Organisasi</option>
-                @foreach($list_organisasi as $organisasi)
-                <option value="{{$organisasi->id}}">{{$organisasi->nama}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-md-12" style="margin-top: 4px;">
-              <input type="file" name="foto" accept="image/*">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogAktivasi()">Aktivasi</button>
         </div>
       </form>
     </div>
@@ -317,9 +131,9 @@
 
   <div class="modal fade" id="modal-import">
     <div class="modal-dialog modal-lg">
-      <form method="post" id="form-import" action="{{url('karyawan')}}" enctype="multipart/form-data" class="modal-content">
+      <form method="post" id="form-import" action="{{url('')}}/pembayaran/import-excel" enctype="multipart/form-data" class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Import Data Karyawan</h4>
+          <h4 class="modal-title">Import Data Mahasiswa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -329,11 +143,11 @@
           {{csrf_field()}}
           <div class="row">
             <div class="col-md-12">
-              <p>Import data karyawan sesuai format contoh berikut.<br/><a href="{{url('')}}/excel-karyawan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Karyawan</a></p>
+              <p>Import data Mahasiswa sesuai format contoh berikut.<br/><a href="{{url('')}}/assets/Contoh_Format_Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
             </div>
             <div class="col-md-12">
-              <label>File Excel Karyawan</label>
-              <input type="file" name="excel-karyawan" required>
+              <label>File Excel Mahasiswa</label>
+              <input type="file" name="Tagihan" required>
             </div>
           </div>
         </div>
@@ -345,10 +159,12 @@
     </div>
   </div>
 
-  <form action="{{url('')}}/karyawan/export_terpilih" method="post" id="form-export-terpilih" class="hidden">
+
+
+  <form action="{{url('')}}/pembayaran/export_data_terpilih" method="post" id="form-export-terpilih" class="hidden">
     <input type="hidden" name="ids">
     <button class="hidden" style="display: none;" type="submit">S</button>
-  </form> --}}
+  </form> 
 
     </div>
 </div> 
@@ -356,10 +172,9 @@
 
 @section('js')
 <script type="text/javascript">
-  let list_karyawan = [];
-  let organisasi = $("#filter-organisasi").val()
-  ,bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-  ,bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
+  let list_pembayaran = [];
+  let jenis_pembayaran = $("#filter-jenis-pembayaran").val(),
+  paid = $("#filter-status").val()
   
   const table = $('#table').DataTable({
     "pageLength": 25,
@@ -369,127 +184,92 @@
     "bInfo": true,
     "processing":true,
     "bServerSide": true,
-    "order": [[ 1, "desc" ]],
+    "order": [[ 1, "asc" ]],
     "autoWidth": false,
     "ajax":{
-      url: "{{url('')}}/karyawan/data",
+      url: "{{url('')}}/pembayaran_lainnya/data",
       type: "POST",
       data:function(d){
-        d.organisasi = organisasi;
-        d.bpjs_kesehatan = bpjs_kesehatan;
-        d.bpjs_ketenagakerjaan = bpjs_ketenagakerjaan;
+        d.paid = paid;
+        d.jenis_pembayaran = jenis_pembayaran;
         return d
       }
     },
-    "initComplete": function(settings, json) {
-      const all_checkbox_view = $("#row-tampilan div input[type='checkbox']")
-      $.each(all_checkbox_view,function(key,checkbox){
-        let kolom = $(checkbox).data('kolom')
-        let is_checked = checkbox.checked
-        table.column(kolom).visible(is_checked)
-      })
-      setTimeout(function(){
-        table.columns.adjust().draw();
-      },3000)
-    },
     columnDefs: [
+      {targets:'_all', visible:true},
       {
         "targets": 0,
         "class":"text-nowrap",
-        "sortable":false,
         "render": function(data, type, row, meta){
-          return `<input type="checkbox" class="cb-child" value="${row.id}">`;
+          list_pembayaran[row.id] = row;
+          return row.id;
         }
       },
       {
         "targets": 1,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          list_karyawan[row.id] = row;
-          return row.nik;
+          return row.jenis_pembayaran;
         }
       },
       {
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama;
+          return row.name;
         }
       },
       {
         "targets": 3,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nomor_ktp;
+          return row.email;
         }
       },
       {
         "targets": 4,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.telp;
+          return row.regis_number;
         }
       },
       {
         "targets": 5,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama_organisasi;
+          return row.amount;
         }
       },
       {
         "targets": 6,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.email;
+          return row.paid_date;
         }
       },
       {
         "targets": 7,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.detail_alamat;
+          if (row.paid === 1) {
+                  return '<span style="color: blue;">Dibayar</span>';
+              } else {
+                  return  '<span style="color: red;">Belum Dibayar</span>';
+              }
         }
       },
       {
         "targets": 8,
-        "class":"text-nowrap",
-        "sortable":false,
-        "render": function(data, type, row, meta){
-          if(row.foto==null){
-            return `<img style="max-width:85px;max-height:85px;" src="{{url('')}}/dist/img/default.png"/>`
-          }else{
-            return `<a href="{{url('')}}/karyawan/foto/${row.id}" target="_blank"><img style="max-width:85px;max-height:85px;" src="{{url('')}}/karyawan/foto/${row.id}"/></a>`
-          }
-        }
-      },
-      {
-        "targets": 9,
-        "class":"text-nowrap",
-        "render": function(data, type, row, meta){
-          return row.nomor_bpjs_kesehatan;
-        }
-      },
-      {
-        "targets": 10,
-        "class":"text-nowrap",
-        "render": function(data, type, row, meta){
-          return row.nomor_bpjs_ketenagakerjaan;
-        }
-      },
-      {
-        "targets": 11,
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/karyawan/download_pdf/${row.id}" class="btn btn-sm btn-primary btn-block">Download Pdf</a>
-            <button onclick="showDetailKaryawan('${row.id}')" class="btn btn-sm btn-warning btn-block">Edit</button>
-          `;
-          if(row.status=='aktif'){
-            tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
-          }else{
-            tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-success btn-block">Aktifkan</button>`
-          }
+            <a href="{{url('')}}/log_transaksi/detail/${row.pembayaran_id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
+            `;
+          // if(row.status=='aktif'){
+          //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
+          // }else{
+          //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-success btn-block">Aktifkan</button>`
+          // }
           return tampilan;
         }
       }
@@ -497,170 +277,183 @@
     ]
   });
 
-  $("#row-tampilan input[type='checkbox']").on('change',function(){
-    let checkbox = $(this)
-    let kolom = $(this).data('kolom')
-    let is_checked = checkbox[0].checked
-    table.column(kolom).visible(is_checked)
-  })
+//   $("#row-tampilan input[type='checkbox']").on('change',function(){
+//     let checkbox = $(this)
+//     let kolom = $(this).data('kolom')
+//     let is_checked = checkbox[0].checked
+//     table.column(kolom).visible(is_checked)
+//   })
 
-  function filterTampilan(){
-    let all_columns = $("#view-tampilan div label input")
+//   $('#table tbody').on('change', 'input[type="checkbox"]', function() {
+//         var selectedCount = table.column(0).nodes().to$().find(':checkbox:checked').length;
+//         $('#selected-count').text(selectedCount);
+//     });
+
+//   $('#table thead').on('change', 'input[type="checkbox"]', function() {
+//         var selectedCount = table.column(0).nodes().to$().find(':checkbox:checked').length;
+//         $('#selected-count').text(selectedCount);
+//   });
+
+//   function filterTampilan(){
+//     let all_columns = $("#view-tampilan div label input")
     
-  }
+//   }
 
-  $("#form-create").on('submit',function(e){
-    e.preventDefault()
+  // function showDetailKaryawan(id) {
+  //   const karyawan = list_pembayaran[id]
+  //   $("#modal-edit").modal('show')
+  //   // SET SEMUA KE DEFAULT
+  //   $("#form-edit input:not([name='_token']):not([name='_method'])").val('')
+  //   $("#form-edit textarea").val('')
+  //   $("#form-edit select:not([name='status'])").val('')
+
+
+  //   $("#form-edit [name='id']").val(id)
+  //   $("#form-edit [name='nama']").val(karyawan.nama)
+  //   $("#form-edit [name='nomor_ktp']").val(karyawan.nomor_ktp)
+  //   $("#form-edit [name='nik']").val(karyawan.nik)
+  //   $("#form-edit [name='telp']").val(karyawan.telp)
+  //   $("#form-edit [name='email']").val(karyawan.email)
+  //   $("#form-edit [name='detail_alamat']").val(karyawan.detail_alamat)
+  //   $("#form-edit [name='status']").val(karyawan.status)
+  //   $("#form-edit [name='nomor_bpjs_kesehatan']").val(karyawan.nomor_bpjs_kesehatan)
+  //   $("#form-edit [name='nomor_bpjs_ketenagakerjaan']").val(karyawan.nomor_bpjs_ketenagakerjaan)
+  //   $("#form-edit [name='organisasi_id']").val(karyawan.organisasi_id)
+  // }
+
+  // $("#form-edit").on('submit',function(e){
+  //   e.preventDefault()
+  //   $("#form-edit").ajaxSubmit({
+  //     success:function(res){
+  //       if(res===true){
+  //         alert("BERHASIL UPDATE KARYAWAN")
+  //         table.ajax.reload(null,false)
+  //         $("#modal-edit").modal('hide')
+  //       }
+  //     }
+  //   })
+  // })
+
+  // function toggleStatus(id) {
+  //   const _c = confirm("Anda yakin akan melakukan operasi ini ?")
+  //   if(_c===true){
+  //     let karyawan = list_pembayaran[id]
+  //     let status_update = ''
+  //     if(karyawan.status=='aktif'){
+  //       status_update = 'non aktif'
+  //     }else{
+  //       status_update = 'aktif'
+  //     }
+  //     $.ajax({
+  //       url:'{{url('')}}/karyawan/update_status',
+  //       method:'POST',
+  //       data:{id:id,status:status_update,_token:'{{csrf_token()}}'},
+  //       success:function(res){
+  //         if(res===true){
+  //           table.ajax.reload(null,false)
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
+
+//   $("#head-cb").on('click',function(){
+//     var isChecked = $("#head-cb").prop('checked')
+//     $(".cb-child").prop('checked',isChecked)
+//     $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!isChecked)
+//     $("#button-aktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!isChecked)
+//   })
+
+//   $("#table tbody").on('click','.cb-child',function(){
+//     if($(this).prop('checked')!=true){
+//       $("#head-cb").prop('checked',false)
+//     }
+
+//     let semua_checkbox = $("#table tbody .cb-child:checked")
+//     let button_non_aktif_status = (semua_checkbox.length>0)
+//     let button_export_terpilih_status = button_non_aktif_status;
+//     let button_aktivasi_status = button_non_aktif_status;
+
+//     $("#button-nonaktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!button_non_aktif_status)
+//     $("#button-aktif-all,#button-export-terpilih,#button-aktivasi").prop('disabled',!button_non_aktif_status)
+//   })
+
+  // function nonAktifkanTerpilih () {
+  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
+  //   let semua_id = []
+  //   $.each(checkbox_terpilih,function(index,elm){
+  //     semua_id.push(elm.value)
+  //   })
+  //   $("#button-nonaktif-all").prop('disabled',true)
+  //   $.ajax({
+  //     url:"{{url('')}}/karyawan/non-aktifkan",
+  //     method:'post',
+  //     data:{ids:semua_id},
+  //     success:function(res){
+  //       table.ajax.reload(null,false)
+  //       $("#button-nonaktif-all").prop('disabled',false)
+  //       $("#head-cb").prop('checked',false)
+  //     }
+  //   })
+  // }
+
+  // function aktifkanTerpilih () {
+  //   let checkbox_terpilih = $("#table tbody .cb-child:checked")
+  //   let semua_id = []
+  //   $.each(checkbox_terpilih,function(index,elm){
+  //     semua_id.push(elm.value)
+  //   })
+  //   $("#button-nonaktif-all").prop('disabled',true)
+  //   $.ajax({
+  //     url:"{{url('')}}//pembayaran/aktivasi",
+  //     method:'post',
+  //     data:{ids:semua_id},
+  //     success:function(res){
+  //       table.ajax.reload(null,false)
+  //       $("#button-aktif-all").prop('disabled',false)
+  //       $("#head-cb").prop('checked',false)
+  //     }
+  //   })
+  //   // console.log(semua_id)
+  //   // console.log("YANG TERPILIH AKAN DINONAKTIFKAN")
+  // }
+
+  // $(document).ready(function() {
+  //   var table = $('#data-table').DataTable({
+  //       processing: true,
+  //       serverSide: true,
+  //       ajax: {
+  //           url: '{{ url('') }}/pembayaran/aktivasi',
+  //           type: 'POST'
+  //       },
+  //       columns: [
+  //           { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false },
+  //           { data: 'id', name: 'id' },
+  //           { data: 'name', name: 'name' },
+  //           { data: 'email', name: 'email' }
+  //       ]
+  //   });
     
-
-    $("#form-create").ajaxSubmit({
-      success:function(res){
-        table.ajax.reload(null,false)
-        // SET SEMUA KE DEFAULT
-        $("#form-create input:not([name='_token'])").val('')
-        $("#form-create textarea").val('')
-        $("#form-create select:not([name='status'])").val('')
-
-
-        $("#modal-create").modal('hide')
-      }
-    })
-  })
-
-  function showDetailKaryawan(id) {
-    const karyawan = list_karyawan[id]
-    $("#modal-edit").modal('show')
-    // SET SEMUA KE DEFAULT
-    $("#form-edit input:not([name='_token']):not([name='_method'])").val('')
-    $("#form-edit textarea").val('')
-    $("#form-edit select:not([name='status'])").val('')
-
-
-    $("#form-edit [name='id']").val(id)
-    $("#form-edit [name='nama']").val(karyawan.nama)
-    $("#form-edit [name='nomor_ktp']").val(karyawan.nomor_ktp)
-    $("#form-edit [name='nik']").val(karyawan.nik)
-    $("#form-edit [name='telp']").val(karyawan.telp)
-    $("#form-edit [name='email']").val(karyawan.email)
-    $("#form-edit [name='detail_alamat']").val(karyawan.detail_alamat)
-    $("#form-edit [name='status']").val(karyawan.status)
-    $("#form-edit [name='nomor_bpjs_kesehatan']").val(karyawan.nomor_bpjs_kesehatan)
-    $("#form-edit [name='nomor_bpjs_ketenagakerjaan']").val(karyawan.nomor_bpjs_ketenagakerjaan)
-    $("#form-edit [name='organisasi_id']").val(karyawan.organisasi_id)
-  }
-
-  $("#form-edit").on('submit',function(e){
-    e.preventDefault()
-    $("#form-edit").ajaxSubmit({
-      success:function(res){
-        if(res===true){
-          alert("BERHASIL UPDATE KARYAWAN")
-          table.ajax.reload(null,false)
-          $("#modal-edit").modal('hide')
-        }
-      }
-    })
-  })
-
-  function toggleStatus(id) {
-    const _c = confirm("Anda yakin akan melakukan operasi ini ?")
-    if(_c===true){
-      let karyawan = list_karyawan[id]
-      let status_update = ''
-      if(karyawan.status=='aktif'){
-        status_update = 'non aktif'
-      }else{
-        status_update = 'aktif'
-      }
-      $.ajax({
-        url:'{{url('')}}/karyawan/update_status',
-        method:'POST',
-        data:{id:id,status:status_update,_token:'{{csrf_token()}}'},
-        success:function(res){
-          if(res===true){
-            table.ajax.reload(null,false)
-          }
-        }
-      })
-    }
-  }
-
-  $("#head-cb").on('click',function(){
-    var isChecked = $("#head-cb").prop('checked')
-    $(".cb-child").prop('checked',isChecked)
-    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!isChecked)
-  })
-
-  $("#table tbody").on('click','.cb-child',function(){
-    if($(this).prop('checked')!=true){
-      $("#head-cb").prop('checked',false)
-    }
-
-    let semua_checkbox = $("#table tbody .cb-child:checked")
-    let button_non_aktif_status = (semua_checkbox.length>0)
-    let button_export_terpilih_status = button_non_aktif_status;
-    $("#button-nonaktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-    $("#button-aktif-all,#button-export-terpilih").prop('disabled',!button_non_aktif_status)
-  })
-
-  function nonAktifkanTerpilih () {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    $("#button-nonaktif-all").prop('disabled',true)
-    $.ajax({
-      url:"{{url('')}}/karyawan/non-aktifkan",
-      method:'post',
-      data:{ids:semua_id},
-      success:function(res){
-        table.ajax.reload(null,false)
-        $("#button-nonaktif-all").prop('disabled',false)
-        $("#head-cb").prop('checked',false)
-      }
-    })
-  }
-
-  function aktifkanTerpilih () {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    $("#button-nonaktif-all").prop('disabled',true)
-    $.ajax({
-      url:"{{url('')}}/karyawan/aktifkan",
-      method:'post',
-      data:{ids:semua_id},
-      success:function(res){
-        table.ajax.reload(null,false)
-        $("#button-aktif-all").prop('disabled',false)
-        $("#head-cb").prop('checked',false)
-      }
-    })
-    // console.log(semua_id)
-    // console.log("YANG TERPILIH AKAN DINONAKTIFKAN")
-  }
+  //   $('#select-all').on('click', function() {
+  //       $('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+  //   });
+  // });
 
   $(".filter").on('change',function(){
-    organisasi = $("#filter-organisasi").val()
-    bpjs_kesehatan = $("#filter-bpjs-kesehatan").val()
-    bpjs_ketenagakerjaan = $("#filter-bpjs-ketenagakerjaan").val()
+    paid = $("#filter-status").val()
+    jenis_pembayaran = $("#filter-jenis-pembayaran").val()
     table.ajax.reload(null,false)
   })
 
-  function exportKaryawanTerpilih() {
-    let checkbox_terpilih = $("#table tbody .cb-child:checked")
-    let semua_id = []
-    $.each(checkbox_terpilih,function(index,elm){
-      semua_id.push(elm.value)
-    })
-    let ids = semua_id.join(',')
-    $("#button-export-terpilih").prop('disabled',true)
-    $("#form-export-terpilih [name='ids']").val(ids)
-    $("#form-export-terpilih").submit()
+//   function aktivasi() {
+//     let checkbox_terpilih = $("#table tbody .cb-child:checked")
+//     let semua_id = []
+//     $.each(checkbox_terpilih,function(index,elm){
+//       semua_id.push(elm.value)
+//     })
+//     let ids = semua_id.join(',')
+//     $("#form-aktivasi [name='ids']").val(ids)
+    
     // $.ajax({
     //   url:"{{url('')}}/karyawan/export_terpilih",
     //   method:'POST',
@@ -670,6 +463,47 @@
     //     $("#button-export-terpilih").prop('disabled',false)
     //   }
     // })
-  }
+//   }
+
+//   function exportDataTerpilih() {
+//     let checkbox_terpilih = $("#table tbody .cb-child:checked")
+//     let semua_id = []
+//     $.each(checkbox_terpilih,function(index,elm){
+//       semua_id.push(elm.value)
+//     })
+//     let ids = semua_id.join(',')
+//     $("#button-export-terpilih").prop('disabled',true)
+//     $("#form-export-terpilih [name='ids']").val(ids)
+//     $("#form-export-terpilih").submit()
+    // $.ajax({
+    //   url:"{{url('')}}/karyawan/export_terpilih",
+    //   method:'POST',
+    //   data:{ids:semua_id},
+    //   success:function(res){
+    //     console.log(res)
+    //     $("#button-export-terpilih").prop('disabled',false)
+    //   }
+    // })
+//   }
+
+//   function showConfirmDialogAktivasi() {
+
+//     Swal.fire({
+//       title: 'Confirm',
+//       text: "Apakah anda yakin ingin mengaktivasi VA",
+//       icon: 'warning',
+//       showCancelButton: true,
+//       confirmButtonColor: '#3085d6',
+//       cancelButtonColor: '#d33',
+//       confirmButtonText: 'aktivasi'
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         $("#form-aktivasi").submit()
+//       }
+//     });
+//   }
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 @stop

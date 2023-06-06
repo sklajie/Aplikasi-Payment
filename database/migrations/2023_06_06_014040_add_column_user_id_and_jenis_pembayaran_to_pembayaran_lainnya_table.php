@@ -15,6 +15,8 @@ return new class extends Migration
             $table->uuid('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('jenis_pembayaran')->nullable();
+            $table->string('mode')->nullable();
+
         });
     }
 

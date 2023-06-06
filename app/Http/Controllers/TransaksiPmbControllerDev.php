@@ -516,6 +516,49 @@ class TransaksiPmbControllerDev extends Controller
             ], 500);
         }
     }
+
+    public function kirimulang(Request $request)
+    {
+        //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya
+        $user = $pembayaranLainnya->histori->user;
+        $userId = $user->id;
+        $endpoint = $user->endpoint;
+
+        // Kirim notifikasi ke endpoint
+        // Formatkan data notifikasi sesuai dengan kebutuhan endpoint
+        $data = [
+            'message' => $notification->message,
+            'data' => json_decode($notification->data, true),
+        ];
+
+        //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
+        $response = http::post($endpoint, [
+            'json' => $data,
+        ]);
+
+        $method = $request->method();
+        $endpointapi = $request->fullUrl();
+        $endpointAPI = strval($endpointapi);
+
+
+        //Menyimpan data notifikasi ke histori
+        $histori = Histori::create([
+            'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+            'method' => $method,
+            'endpoint' => $endpointAPI ,
+            'mode' => 'sandbox',
+            'request_body' => json_encode($data),
+            'respons' => $response->body(),
+            'user_id' => $userId,
+        ]);
+
+        // Mengirim respons
+        return response()->json([
+            'timestamp' => date('m/d/Y, h:i:s A'),
+            'success' => $response->getStatusCode() != 200 ? false : true,
+            'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
+        ]);
+    }
     
     public function add(Request $request, $trx_id, $trx_status, $va_status, $va)
     {

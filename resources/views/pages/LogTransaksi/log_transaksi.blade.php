@@ -248,7 +248,6 @@
           return tampilan;
         }
       }
-      
     ]
   });
 

@@ -23,7 +23,7 @@ class PembayaranController extends Controller
 
     public function index(Request $request)
     {
-        $title = 'Data Pembayaran';
+        $title = 'Data Pembayaran - Belum Dibayar';
         $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
         $dataprodi = Pembayaran::distinct()->pluck('prodi');
         return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi'));
@@ -131,7 +131,7 @@ class PembayaranController extends Controller
 
     }
 
-    public function update(Request $request, $invoiceNumber)
+    public function updateInvoice(Request $request)
     {
 
         // Mengisi data dari tabel pembayaran_lainnya ke dalam variabel
@@ -199,43 +199,43 @@ class PembayaranController extends Controller
 
             $responseapi = Http::withHeaders([
                 'Authorization' => 'Bearer '. $accessToken,
-                ])->post('https://billing-bpi-dev.maja.id/api/v2/update/' . $datas['invoiceNumber'], $datas);
+                ])->post('https://billing-bpi-dev.maja.id/api/v2/update/' . $datas['number'], $datas);
 
             dd($responseapi->json());
 
 
-            $method = $request->method();
-            $endpointapi = $request->fullUrl();
-            $endpointAPI = strval($endpointapi);
+            // $method = $request->method();
+            // $endpointapi = $request->fullUrl();
+            // $endpointAPI = strval($endpointapi);
     
-            if ($responseapi->successful()) {
-                // Jika permintaan sukses, perbarui data respons dan waktu update di tabel histori
-                $histori = new Histori();
-                $histori->pembayaran_lainnya_id = $datas->id;
-                $histori->method = $method;
-                $histori->endpoint = $endpointAPI;
-                $histori->mode = 'sandbox';
-                $histori->request_body = json_encode($data);
-                $histori->respons = json_encode($responseapi->json());
-                $histori->updated_at = now();
-                // set user_id jika ada
+            // if ($responseapi->successful()) {
+            //     // Jika permintaan sukses, perbarui data respons dan waktu update di tabel histori
+            //     $histori = new Histori();
+            //     $histori->pembayaran_lainnya_id = $datas->id;
+            //     $histori->method = $method;
+            //     $histori->endpoint = $endpointAPI;
+            //     $histori->mode = 'sandbox';
+            //     $histori->request_body = json_encode($data);
+            //     $histori->respons = json_encode($responseapi->json());
+            //     $histori->updated_at = now();
+            //     // set user_id jika ada
     
-                $histori->save();
-            } else {
-                // Jika permintaan gagal, berikan respons error atau lakukan tindakan yang sesuai
-                return response()->json([
-                    'timestamp' => date('m/d/Y, h:i:s A'),
-                    'success' => false,
-                    'message' => 'Gagal meng-update invoice',
-                ], 500);
-            }
+            //     $histori->save();
+            // } else {
+            //     // Jika permintaan gagal, berikan respons error atau lakukan tindakan yang sesuai
+            //     return response()->json([
+            //         'timestamp' => date('m/d/Y, h:i:s A'),
+            //         'success' => false,
+            //         'message' => 'Gagal meng-update invoice',
+            //     ], 500);
+            // }
     
             // Berikan respons sukses
-            return response()->json([
-                'timestamp' => date('m/d/Y, h:i:s A'),
-                'success' => true,
-                'message' => 'Invoice berhasil diupdate',
-            ]);
+            // return response()->json([
+            //     'timestamp' => date('m/d/Y, h:i:s A'),
+            //     'success' => true,
+            //     'message' => 'Invoice berhasil diupdate',
+            // ]);
         }
 
         

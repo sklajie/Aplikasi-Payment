@@ -241,7 +241,7 @@
 						</li>
 
 						<li class="nav-item">
-							<div class="nav-item  {{ $title === "Data Pembayaran" ? 'active' : '' or $title === "Data Pembayaran - Dibayar" ? 'active' : ''}}">
+							<div class="nav-item">
 							<a data-toggle="collapse" href="#sidebarLayouts">
 								<i class="fa fa-ellipsis-h"></i>
 								<p>Data Pembayaran</p>
@@ -249,12 +249,12 @@
 							</a>
 							<div class="collapse" id="sidebarLayouts">
 								<ul class="nav nav-collapse">
-									<li class="nav-link  {{ $title === "Data Pembayaran" ? 'active' : '' }}">
+									<li class="nav-item  {{ $title === "Data Pembayaran - Belum Dibayar" ? 'active' : '' }}">
 										<a href="/pembayaran">
 											<span class="sub-item"><p>Belum dibayar</p></span>
 										</a>
 									</li>	
-									<li class="nav-link  {{ $title === "Data Pembayaran - Dibayar" ? 'active' : '' }}">
+									<li class="nav-item  {{ $title === "Data Pembayaran - Dibayar" ? 'active' : '' }}">
 										<a href="/pembayaran_dibayar">
 											<span class="sub-item"><p>Dibayar</p></span>
 										</a>

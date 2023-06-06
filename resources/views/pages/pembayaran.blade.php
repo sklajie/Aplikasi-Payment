@@ -259,7 +259,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary" onclick="showConfirmDialogAktivasi()">Update</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogUpdate()">Update</button>
         </div>
       </form>
     </div>
@@ -693,7 +693,7 @@
       semua_id.push(elm.value)
     })
     let ids = semua_id.join(',')
-    $("#form-update-va [name='ids']").val(ids)
+    $("#form-update-invoice [name='ids']").val(ids)
     
     // $.ajax({
     //   url:"{{url('')}}/karyawan/export_terpilih",
@@ -753,7 +753,7 @@
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'aktivasi'
+    confirmButtonText: 'Update'
   }).then((result) => {
     if (result.isConfirmed) {
       $("#form-update-invoice").submit()

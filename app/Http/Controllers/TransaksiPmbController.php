@@ -194,19 +194,10 @@ class TransaksiPmbController extends Controller
                 'regis_number' => 'required',
                 'amount' => 'required|numeric',
                 'token' => 'required',
+                'description' => 'required'
             ]);
 
             DB::beginTransaction();
-
-            // Simpan data pembayaran_lainnya
-            // $pembayaranLainnya = PembayaranLainnya::create([
-            //     'name' => $data['name'],
-            //     'email' => $data['email'],
-            //     'regis_number' => $data['regis_number'],
-            //     'amount' => (int) $data['amount'],
-            // ]);
-            
-            // $pembayaranLainnyaId = $pembayaranLainnya->id;
 
             // Buat data untuk dikirim ke Bank BSI
             $requestData = [
@@ -217,7 +208,7 @@ class TransaksiPmbController extends Controller
                 'email' => $data['email'],
                 'items' => [
                     [
-                        'description' => 'Pembayaran PMB',
+                        'description' =>  $data['description'],
                         'unitPrice' => (int)$data['amount'],
                         'qty' => 1,
                         'amount' => (int)$data['amount']
@@ -251,18 +242,12 @@ class TransaksiPmbController extends Controller
                 'regis_number' => $data['regis_number'],
                 'amount' => (int) $data['amount'],
                 'invoice_number' => $invoiceNumber,
+                'jenis_pembayaran' =>  $data['description'],
+                'id_user' => $data['token'],
+                'debug' => 'production',
             ]);
 
             $pembayaranLainnyaId = $pembayaranLainnya->id;
-
-            // // Simpan data histori respons ke dalam tabel Histori
-            // $histori = Histori::create([
-            //     'pembayaran_lainnya_id' => $pembayaranLainnyaId,
-            //     'method' => 'Metode Pembayaran',
-            //     'request_body' => json_encode($requestData),
-            //     'respons' => json_encode($responseApi->json()),
-            //     'user_id' => $data['token'],
-            // ]);
 
             $method = $request->method();
             $endpointapi = $request->fullUrl();
@@ -278,7 +263,6 @@ class TransaksiPmbController extends Controller
                 'user_id' => $data['token'],
                 'mode' => 'production',
             ]);
-            
             
             $historiUserId = $histori->user_id;
 
@@ -440,8 +424,6 @@ class TransaksiPmbController extends Controller
                 $updatestatus->paid_date = now();
                 $updatestatus->save();
             }
-
-    
             if (!$pembayaranLainnya) {
                 return response()->json([
                     'timestamp' => date('m/d/Y, h:i:s A'),
@@ -457,7 +439,6 @@ class TransaksiPmbController extends Controller
                 'data' => json_encode($request->except(['va', 'message'])),
             ]);
             DB::commit();
-
     
             //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
 
@@ -475,10 +456,7 @@ class TransaksiPmbController extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-
-            $response = http::post($endpoint, [
-                'json' => $data,
-            ]);
+            $response = http::post($endpoint, $data);
 
             $method = $request->method();
             $endpointapi = $request->fullUrl();
@@ -496,13 +474,17 @@ class TransaksiPmbController extends Controller
                 'user_id' => $userId,
             ]);
 
+            // dd($response->getStatusCode());
+
             DB::commit();
+
             // Mengirim respons
             return response()->json([
                 'timestamp' => date('m/d/Y, h:i:s A'),
                 'success' => $response->getStatusCode() != 200 ? false : true,
                 'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
             ]);
+            
         } catch (\Exception $e) {
 
             DB::rollback();

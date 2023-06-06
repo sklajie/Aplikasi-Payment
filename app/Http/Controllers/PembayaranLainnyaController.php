@@ -28,7 +28,7 @@ class PembayaranLainnyaController extends Controller
 
     public function data(Request $request)
     {
-    	$orderBy = 'histori.name';
+    	$orderBy = 'pembayaran_lainnya.name';
         
         switch($request->input('order.0.column')){
             case "1":
@@ -57,18 +57,15 @@ class PembayaranLainnyaController extends Controller
                 break;
         }
 
-            $data = Histori::select([
-                'histori.*',
-                'pembayaran_lainnya.id as pembayaran_id',
-                'pembayaran_lainnya.name as nama',
-                'pembayaran_lainnya.email as email',
-                'pembayaran_lainnya.amount as amount',
-                'pembayaran_lainnya.paid as paid',
-                'pembayaran_lainnya.paid_date as paid_date',
-                'pembayaran_lainnya.regis_number as regis_number',
-            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('histori.user_id', '=', Auth()->user()->id)->where('mode' , '=', 'production');
-
-
+        $data = PembayaranLainnya::select([
+            'pembayaran_lainnya.id as pembayaran_id',
+            'pembayaran_lainnya.name as nama',
+            'pembayaran_lainnya.email as email',
+            'pembayaran_lainnya.amount as amount',
+            'pembayaran_lainnya.paid as paid',
+            'pembayaran_lainnya.paid_date as paid_date',
+            'pembayaran_lainnya.regis_number as regis_number',
+        ])->where('id_user', '=', Auth()->user()->id)->where('debug' , '=', 'sandbox');
 
         // search
         if($request->input('search.value')!=null){
@@ -262,9 +259,11 @@ class PembayaranLainnyaController extends Controller
 
     public function DataTransaction(Request $request){
 
-        $data = Histori::select([
-            'histori.id',
-            'histori.user_id',
+        $data = $request->validate([
+            'token' => 'required',
+        ]);
+
+        $data = PembayaranLainnya::select([
             'pembayaran_lainnya.id as transaction_id',
             'pembayaran_lainnya.name',
             'pembayaran_lainnya.email',
@@ -272,7 +271,7 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('mode' , '=', 'production')->get();
+        ])->where('debug' , '=', 'production')->where('id_user','=', $data)->get();
 
 
         return response()->json(

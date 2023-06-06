@@ -58,7 +58,13 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
                             </tr>
                             <tr>
                                 <td style="width: 20%">Status Pembayaran</td>
-                                <th>{{ $data->paid  }}</th>
+                                <th>
+                                    @if ($data->paid === 1)
+                                        <?php echo '<span style="color: blue;">Dibayar</span>'; ?>
+                                    @else
+                                        <?php echo '<span style="color: red;">Belum Dibayar</span>'; ?>
+                                    @endif
+                                </th>
                             </tr>
                         </tbody>
                     </table>

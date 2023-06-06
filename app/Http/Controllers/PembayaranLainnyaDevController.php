@@ -158,9 +158,11 @@ class PembayaranLainnyaDevController extends Controller
 
     public function DataTransaction(Request $request){
 
-        $data = Histori::select([
-            'histori.id',
-            'histori.user_id',
+        $data = $request->validate([
+            'token' => 'required',
+        ]);
+
+        $data = PembayaranLainnya::select([
             'pembayaran_lainnya.id as transaction_id',
             'pembayaran_lainnya.name',
             'pembayaran_lainnya.email',
@@ -168,7 +170,7 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('mode' , '=', 'sandbox')->get();
+        ])->where('debug' , '=', 'sandbox')->where('id_user','=', $data)->get();
 
 
         return response()->json(
@@ -179,15 +181,15 @@ class PembayaranLainnyaDevController extends Controller
 
     }
 
+
     public function DataDetailTransaction(Request $request){
 
-        $id = $request->validate([
+        $source = $request->validate([
             'id' => 'required',
+            'token' => 'required',
         ]);
 
-        $data = Histori::select([
-            'histori.id',
-            'histori.user_id',
+        $data = PembayaranLainnya::select([
             'pembayaran_lainnya.id as transaction_id',
             'pembayaran_lainnya.name',
             'pembayaran_lainnya.email',
@@ -195,7 +197,8 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'sandbox')->find($id);
+        ])->where('id_user','=', $source['token'])->get();
+
 
         if ($data) {
             return response()->json([

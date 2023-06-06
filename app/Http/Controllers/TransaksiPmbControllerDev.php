@@ -194,6 +194,7 @@ class TransaksiPmbControllerDev extends Controller
                 'regis_number' => 'required',
                 'amount' => 'required|numeric',
                 'token' => 'required',
+                'description' => 'required'
             ]);
 
             DB::beginTransaction();
@@ -217,7 +218,7 @@ class TransaksiPmbControllerDev extends Controller
                 'email' => $data['email'],
                 'items' => [
                     [
-                        'description' => 'Pembayaran PMB',
+                        'description' =>  $data['description'],
                         'unitPrice' => (int)$data['amount'],
                         'qty' => 1,
                         'amount' => (int)$data['amount']
@@ -251,6 +252,9 @@ class TransaksiPmbControllerDev extends Controller
                 'regis_number' => $data['regis_number'],
                 'amount' => (int) $data['amount'],
                 'invoice_number' => $invoiceNumber,
+                'jenis_pembayaran' =>  $data['description'],
+                'id_user' => $data['token'],
+                'debug' => 'sandbox',
             ]);
 
             $pembayaranLainnyaId = $pembayaranLainnya->id;
@@ -456,9 +460,7 @@ class TransaksiPmbControllerDev extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-            $response = http::post($endpoint, [
-                'json' => $data,
-            ]);
+            $response = http::post($endpoint, $data);
 
             $method = $request->method();
             $endpointapi = $request->fullUrl();
@@ -502,7 +504,7 @@ class TransaksiPmbControllerDev extends Controller
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                 'method' => $method,
                 'endpoint' => $endpointAPI ,
-                'mode' => 'sandbox',
+                'mode' => 'production',
                 'request_body' => json_encode($data),
                 'respons' => $response->body(),
                 'user_id' => $userId,
@@ -516,7 +518,7 @@ class TransaksiPmbControllerDev extends Controller
             ], 500);
         }
     }
-
+    
     public function kirimulang(Request $request)
     {
         //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya

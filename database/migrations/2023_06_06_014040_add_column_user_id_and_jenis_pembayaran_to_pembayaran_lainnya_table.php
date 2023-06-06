@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pembayaran_lainnya', function (Blueprint $table) {
-            $table->uuid('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->uuid('id_user')->nullable();
+            $table->foreign('id_user')->references('id')->on('users');
             $table->string('jenis_pembayaran')->nullable();
-            $table->string('mode')->nullable();
+            $table->string('debug')->nullable();
 
         });
     }

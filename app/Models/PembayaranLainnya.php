@@ -25,6 +25,9 @@ class PembayaranLainnya extends Model
         'updated_at',
         'paid_date',
         'paid',
+        'id_user',
+        'jenis_pembayaran',
+        'debug',
     ];
 
     /**

@@ -239,6 +239,7 @@
         "render": function(data, type, row, meta){
           let tampilan = `
             <a href="{{url('')}}/log_transaksi_dev/detail/${row.pembayaran_id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Detail</a>
+            <a href="{{url('')}}/log_transaksi_dev/kirim_ulang_notif/${row.pembayaran_id}" class="btn btn-sm btn-info btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Kirim Ulang</a>
             `;
           // if(row.status=='aktif'){
           //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`
@@ -248,16 +249,6 @@
           return tampilan;
         }
       },
-      {
-        "targets": 8,
-        "sortable":false,
-        "render": function(data, type, row, meta){
-          let tampilan = `
-            <a href="{{url('')}}/log_transaksi_dev/kirim_ulang_notif/${row.pembayaran_id}" class="btn btn-sm btn-warning btn-block"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Kirim Ulang</a>
-            `;
-          return tampilan;
-        }
-      }
     ]
   });
 

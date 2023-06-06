@@ -55,8 +55,7 @@ class PembayaranLainnyaDevController extends Controller
                 break;
         }
 
-            $data = Histori::select([
-                'histori.*',
+            $data = PembayaranLainnya::select([
                 'pembayaran_lainnya.id as pembayaran_id',
                 'pembayaran_lainnya.name as nama',
                 'pembayaran_lainnya.email as email',
@@ -64,7 +63,7 @@ class PembayaranLainnyaDevController extends Controller
                 'pembayaran_lainnya.paid as paid',
                 'pembayaran_lainnya.paid_date as paid_date',
                 'pembayaran_lainnya.regis_number as regis_number',
-            ])->join('pembayaran_lainnya','pembayaran_lainnya.id','=','histori.pembayaran_lainnya_id')->where('user_id', '=', Auth()->user()->id)->where('mode' , '=', 'sandbox');
+            ])->where('id_user', '=', Auth()->user()->id)->where('debug' , '=', 'sandbox');
 
 
 
@@ -129,6 +128,10 @@ class PembayaranLainnyaDevController extends Controller
             'recordsFiltered'=>$recordsFiltered,
             'data'=>$data
         ]);
+    }
+
+    public function kirimUlangNotif(Request $request, $id){
+        $response = Histori::find($id);
     }
 
     public function showDetail(Request $request, $id){

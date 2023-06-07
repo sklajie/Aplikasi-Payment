@@ -4,33 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Dashboard';
-        // $result = DB::select(DB::raw("select count(nullif(status, true)) as belum_terbayar, count(nullif(status, false)) as terbayar from pembayaran"));       
-        // $data = "";
-        // foreach($result as $value){
-        //     $data ="$value->status";
-        // }
-        // $piechart = $data;
-        $pembayaran = Pembayaran::select('status',DB::raw("COUNT(id) as count"))
-                    ->groupBy('status')->get();
 
+        $semesterOptions = Pembayaran::distinct('semester')->pluck('semester');
 
-        $belumlunas = Pembayaran::select('status',DB::raw("COUNT(id) as count"))->where('status', 0)
-                    ->groupBy('status')->get();
-        $lunas = Pembayaran::select('status',DB::raw("COUNT(id) as count"))->where('status', 1)
-                    ->groupBy('status')->get();
-        $countlunas = DB::table('pembayaran')->where('status', 1)->count();
-        $countbelumlunas = DB::table('pembayaran')->where('status', 0)->count();
-                    
-        return view('home', compact('title', 'pembayaran'));
+        $tahunAkademikOptions = Pembayaran::distinct('tahun_akademik')->pluck('tahun_akademik');
+
+        $tahunAkademik = $request->input('tahun_akademik');
+        $semester = $request->input('semester');
+
+        $query = Pembayaran::query();
+        if ($tahunAkademik) {
+            $query->where('tahun_akademik', $tahunAkademik);
+        }
+        if ($semester) {
+            $query->where('semester', $semester);
+        }
+        $data = $query->select('status', DB::raw("COUNT(status) as count"))->groupBy('status')->get();
+        $dataSemester = Pembayaran::distinct('semester')->pluck('semester');
+        // dd(json_encode($dataSemester));
+        return view('home', compact('title', 'data', 'tahunAkademik', 'tahunAkademikOptions', 'semester', 'semesterOptions'));
     }
+
 }

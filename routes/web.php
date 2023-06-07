@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\DokumentasiController;
+use App\Http\Controllers\DashboardController;
 use App\Services\BillingApi;
 
 use App\Http\Controllers\TransaksiPmbController;
@@ -19,7 +20,7 @@ use App\Http\Controllers\TransaksiPmbController;
 |
 */
 
-Route::resource('/', App\Http\Controllers\DashboardController::class )->middleware(['auth','adminapps']);
+Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'] )->middleware(['auth','adminapps']);
 
 route::get('/cek', function(){
     return view('pages/log_transaksi');

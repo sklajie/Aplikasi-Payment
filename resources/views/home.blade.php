@@ -8,7 +8,7 @@
 				<div class="panel-header">
 					<div class="page-inner">
 						<div class="page-header container-fluid">
-							<h4 class="page-title" style="padding-top: 10px;">Dahboard</h4>
+							<h4 class="page-title" style="padding-top: 10px;">Dashboard</h4>
 						</div>
 						<div>
 							<ul class="breadcrumbs">
@@ -26,6 +26,7 @@
 							<br>
 					</div>
 				</div>
+
 				<div class="page-inner mt--5">
 					<div class="container-fluid">
 						<div class="card">
@@ -33,148 +34,144 @@
 								<div class="card-title">Presentase Pelunasan</div>
 							</div>
 							<div class="card-body">
+								<div class="row">
+								<div class="col md-5">
+									<label for="semester">Tahun Akademik</label>
+									<select id="semester" class="form-control filter" onchange="applyFilter()">
+										<option value="">Semua</option>
+										@foreach($tahunAkademikOptions as $tahunAkademikOption)
+										<option value="{{ $tahunAkademikOption }}" {{ $tahunAkademikOption == $tahunAkademik ? 'selected' : '' }}>
+											{{ $tahunAkademikOption }}</option>
+										@endforeach
+									</select>
+								</div>
+
+								<div class="col md-5">
+									<label for="tahun_akademik">Semester</label>
+									<select id="tahun_akademik" class="form-control filter" onchange="applyFilter()">
+										<option value="">Semua</option>
+										@foreach($semesterOptions as $semesterOption)
+										<option value="{{ $semesterOption }}" {{ $semesterOption == $semester ? 'selected' : '' }}>
+											{{ $semesterOption }}</option>
+										@endforeach
+									</select>	
+								</div>
+							</div>
 								<div class="chart-container">
 									<center>
-									<div id="pieChart" style="width:400px;"></div>
+										<canvas id="pieChart" width="400" height="400"></canvas>
 									</center>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="container-fluid">
-						<div class="card">
-							<div class="card-header">
-								<div class="card-title">Grafik Pembayaran</div>
-							</div>
-							<div class="card-body">
-								<div class="chart-container">
-									<canvas id="MultipleChart"></canvas>
-								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			
-			<footer class="footer">
-				<div class="container-fluid">
-					<nav class="pull-left">
-						<ul class="nav">
-							<li class="nav-item">
-								<a class="nav-link" href="https://www.themekita.com">
-									ThemeKita
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Help
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Licenses
-								</a>
-							</li>
-						</ul>
-					</nav>
-					<div class="copyright ml-auto">
-						2018, made with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.themekita.com">ThemeKita</a>
-					</div>				
-				</div>
-			</footer>
-			
 		</div>
 
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script>
-	// Inisialisasi data pembayaran
-	var pembayaran = {!! json_encode($pembayaran) !!}
+		<script>
+			function applyFilter() {
+    // Ambil nilai filter tahun akademik dan semester dari elemen HTML
+    let tahunAkademik = document.getElementById('tahun_akademik').value;
+    let semester = document.getElementById('semester').value;
 
-	// Konfigurasi grafik
-	var options = {
-		chart: {
-			renderTo: 'pieChart',
-			plotBackgroundColor: null,
-			plotBorderWidth: null,
-			
-			plotShadow: null,
-			type: 'pie'
-		},
-		title: {
-			text: 'Presentasi Pembayaran'
-		},
-		tooltip: {
-			pointFormat: '{series.name} : <b>{point.percentage:.1f}%</b>'
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: true,
-				cursor: 'pointer',
-				dataLabels: {
-					enabled: true,
-					format: '<b></b>: {point.percentage:.1f} %',
-				},
-				colors: [ 'rgba(255, 0, 0, 0.5)','rgba(0, 255, 0, 0.5)']
-			}
-		},
-		series: [{
-			name: 'Pembayaran',
-			data: []
-		}]
-	};
-
-	// Mengisi data pembayaran ke dalam grafik
-	pembayaran.forEach(function(item) {
-		options.series[0].data.push([item.status, item.count]);
-	});
-
-	// options.plotOptions.pie.showInLegend = true;
-    // options.plotOptions.pie.dataLabels.enabled = false;
-
-	// Membuat grafik pie chart
-	var chart = new Highcharts.Chart(options);
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-
-
-
-
-var data = {
-  labels: ['Kategori 1', 'Kategori 2', 'Kategori 3'],
-  datasets: [
-    {
-      label: 'Lunas',
-      data: $countlunas ,
-	  backgroundColor: 'rgba(0, 255, 0, 0.5)'
-    },
-    {
-      label: 'Belum Lunas',
-      data: $countbelumlunas,
-	  backgroundColor: 'rgba(255, 0, 0, 0.5)'
-    }
-  ]
-};
-
-  var ctx = document.getElementById('MultipleChart').getContext('2d');
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
+    // Kirim permintaan AJAX ke server
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Tanggapi permintaan sukses, perbarui data dan buat ulang pie chart dan bar chart
+                let responseData = JSON.parse(xhr.responseText);
+                updateCharts(responseData);
+            } else {
+                // Tanggapi permintaan gagal
+                console.error('Terjadi kesalahan saat memuat data');
+            }
         }
-      }
-    }
-  });
+    };
 
-  
+    // URL endpoint untuk mengambil data dengan filter
+    let url = '/chart-data?tahun_akademik=' + tahunAkademik + '&semester=' + semester;
 
+    // Kirim permintaan GET
+    xhr.open('GET', url);
+    xhr.send();
+}
+
+function updateCharts(data) {
+    // Hitung total jumlah data
+    let totalCount = data.reduce((total, item) => total + item.count, 0);
+
+    // Proses data dan konversi ke presentasi
+    let stats = data.map(item => {
+        let percentage = ((item.count / totalCount) * 100).toFixed(2);
+        if (item.status === 0) {
+            return "Belum Lunas (" + percentage + "%)";
+        } else {
+            return 'Lunas (' + percentage + "%)";
+        }
+    });
+    let count = data.map(item => item.count);
+
+    // Update data dan tampilkan ulang pie chart
+    pieChart.data.labels = stats;
+    pieChart.data.datasets[0].data = count;
+    pieChart.update();
+
+    // Update data dan tampilkan ulang bar chart
+    barChart.data.datasets[0].data = count;
+    barChart.update();
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
+    let data = {!! json_encode($data) !!};
+
+    // Ambil data semester dari elemen HTML
+    let semesterOptions = {!! json_encode($semesterOptions) !!};
+
+    // Hitung total jumlah data
+    let totalCount = data.reduce((total, item) => total + item.count, 0);
+
+    // Proses data dan konversi ke presentasi
+    let stats = data.map(item => {
+        let percentage = ((item.count / totalCount) * 100).toFixed(2);
+        if (item.status === 0) {
+            return "Belum Lunas (" + percentage + "%)";
+        } else {
+            return 'Lunas (' + percentage + "%)";
+        }
+    });
+    let count = data.map(item => item.count);
+
+    // Buat pie chart
+    let ctxPie = document.getElementById('pieChart').getContext('2d');
+    let pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: stats,
+            datasets: [{
+                data: count,
+                backgroundColor: [
+                    'red',
+                    'green'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+});
 </script>
-
 	
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection

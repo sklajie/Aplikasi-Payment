@@ -65,7 +65,7 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.paid as paid',
             'pembayaran_lainnya.paid_date as paid_date',
             'pembayaran_lainnya.regis_number as regis_number',
-        ])->where('id_user', '=', Auth()->user()->id)->where('debug' , '=', 'sandbox');
+        ])->where('id_user', '=', Auth()->user()->id)->where('debug' , '=', 'production');
 
         // search
         if($request->input('search.value')!=null){
@@ -273,24 +273,30 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.paid_date',
         ])->where('debug' , '=', 'production')->where('id_user','=', $data)->get();
 
+        if (!$data->isEmpty()) {
+            return response()->json(
 
-        return response()->json(
-            [
-                'data' => $data,
-            ]
-        );
+                [
+                    'message' => 'Success',
+                    'data' => $data,
+                ], 200
+            );    
+        } else {
+            return response()->json([
+                'message' => 'failed : data tidak ditemukan'
+            ], 404);
+        }
 
     }
 
     public function DataDetailTransaction(Request $request){
 
-        $id = $request->validate([
+        $source = $request->validate([
             'id' => 'required',
+            'token' => 'required',
         ]);
 
-        $data = Histori::select([
-            'histori.id',
-            'histori.user_id',
+        $data = PembayaranLainnya::select([
             'pembayaran_lainnya.id as transaction_id',
             'pembayaran_lainnya.name',
             'pembayaran_lainnya.email',
@@ -298,15 +304,17 @@ class PembayaranLainnyaController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->join('pembayaran_lainnya', 'pembayaran_lainnya.id', '=', 'histori.pembayaran_lainnya_id')->where('mode' , '=', 'production')->find($id);
+        ])->where('id_user','=', $source['token'])->where('id','=', $source['id'])->first();
+
 
         if ($data) {
             return response()->json([
+                'message' => 'Success : data ditemukan',
                 'data' => $data
             ], 200);
         } else {
             return response()->json([
-                'message' => 'Data not found'
+                'message' => 'failed : data tidak ditemukan'
             ], 404);
         }
 

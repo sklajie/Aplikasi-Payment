@@ -172,12 +172,19 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.paid_date',
         ])->where('debug' , '=', 'sandbox')->where('id_user','=', $data)->get();
 
+        if (!$data->isEmpty()) {
+            return response()->json(
 
-        return response()->json(
-            [
-                'data' => $data,
-            ]
-        );
+                [
+                    'message' => 'Success',
+                    'data' => $data,
+                ], 200
+            );    
+        } else {
+            return response()->json([
+                'message' => 'failed : data tidak ditemukan'
+            ], 404);
+        }
 
     }
 
@@ -197,16 +204,17 @@ class PembayaranLainnyaDevController extends Controller
             'pembayaran_lainnya.regis_number',
             'pembayaran_lainnya.paid',
             'pembayaran_lainnya.paid_date',
-        ])->where('id_user','=', $source['token'])->get();
+        ])->where('id_user','=', $source['token'])->where('id','=', $source['id'])->first();
 
 
         if ($data) {
             return response()->json([
+                'message' => 'Success : data ditemukan',
                 'data' => $data
             ], 200);
         } else {
             return response()->json([
-                'message' => 'Data not found'
+                'message' => 'failed : data tidak ditemukan'
             ], 404);
         }
 

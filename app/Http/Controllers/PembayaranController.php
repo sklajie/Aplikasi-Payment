@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp\Exception\GuzzleException;
 
+use function PHPSTORM_META\map;
+
 class PembayaranController extends Controller
 {
 
@@ -234,7 +236,7 @@ class PembayaranController extends Controller
                 $orderBy = 'pembayaran.id';
                 break;
             case "2":
-                $orderBy = 'pembayaran.kategori_pembayaran_id';
+                $orderBy = 'pembayaran.kategori_pembayaran';
                 break;
             case "3":
                 $orderBy = 'pembayaran.nama';
@@ -276,10 +278,7 @@ class PembayaranController extends Controller
 
         $data = Pembayaran::select([
             'pembayaran.*',
-            'kategori_pembayaran.kategori_pembayaran as nama_kategori'
-        ])->orderBy($orderBy, $request->input('order.0.dir'))
-        ->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')
-        ->where('status','=', 1);
+        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('status','=', 1);
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 
@@ -293,7 +292,7 @@ class PembayaranController extends Controller
                 ->orWhereRaw('LOWER(pembayaran.date) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.prodi) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.semester) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-                ->orWhereRaw('LOWER(kategori_pembayaran.kategori_pembayaran) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.kategori_pembayaran) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ;
             });
         }
@@ -359,7 +358,7 @@ class PembayaranController extends Controller
                 $orderBy = 'pembayaran.id';
                 break;
             case "2":
-                $orderBy = 'pembayaran.kategori_pembayaran_id';
+                $orderBy = 'pembayaran.kategori_pembayaran';
                 break;
             case "3":
                 $orderBy = 'pembayaran.nama';
@@ -401,10 +400,7 @@ class PembayaranController extends Controller
 
         $data = Pembayaran::select([
             'pembayaran.*',
-            'kategori_pembayaran.kategori_pembayaran as nama_kategori'
-        ])->orderBy($orderBy, $request->input('order.0.dir'))
-        ->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')
-        ->where('status','=', 0);
+        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('status','=', 0);
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 
@@ -418,7 +414,7 @@ class PembayaranController extends Controller
                 ->orWhereRaw('LOWER(pembayaran.date) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.prodi) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran.semester) like ? ',['%'.strtolower($request->input('search.value')).'%'])
-                ->orWhereRaw('LOWER(kategori_pembayaran.kategori_pembayaran) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                ->orWhereRaw('LOWER(pembayaran.kategori_pembayaran) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ;
             });
         }
@@ -510,8 +506,7 @@ class PembayaranController extends Controller
 
         $data['pembayaran'] = Pembayaran::select([
         'pembayaran.*',
-        'kategori_pembayaran.kategori_pembayaran as nama_kategori'
-        ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
+        ])->find($id);
         
             // return view('pdf.invoice_pembayaran_ukt', $data , compact('formattedTime'));
 
@@ -539,15 +534,57 @@ class PembayaranController extends Controller
     public function StoreDataPembayaran(Request $request)
     {
 
-        $parameter = [
+
+        $parameterMahasiswa = [
             'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
             'debug' => 'false',
             'datatable' => 'false',
             'per_page' => 20
         ];
 
-        $data = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameter);
-        dd($data);
+        $response = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
+
+
+        $data_mahasiswa = $response['result']['data'];
+
+        $tahunsekarang = date('Y');
+        $tahundepan = $tahunsekarang+1;
+        $tahunakademik = $tahunsekarang.'/'.$tahundepan;
+
+        foreach($data_mahasiswa as $items){
+            Pembayaran::create([
+                'kategori_pembayaran' => 'Uang Kuliah Tahunan',
+                'nama' => $items['mahasiswa_nama'],
+                'nim' => $items['mahasiswa_nim'],
+                'semester' => $items['semester_kode'],
+                'email' => $items['user_mail'],
+                'address' => $items['mahasiswa_alamat'],
+                'phone' => $items['mahasiswa_handphone'],
+                'tahun_akademik' => $tahunakademik,
+                'va' =>  $items['semester_kode'].$tahunsekarang.$items['mahasiswa_nim'],
+                'prodi' => $items['nama_prodi'],
+                'status' => '0'
+            ]);
+        }
+
+        
+        // $parameterPembayaran = [
+        //     'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
+        //     'debug' => 'false',
+        //     'datatable' => 'false',
+        //     'per_page' => 20
+        // ];
+
+        // $response = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameter);
+
+
+    }
+
+    public function invoice(){
+
+        $title = 'Invoice';
+        return view('pdf.invoice', compact('title'));
+
     }
 
 }

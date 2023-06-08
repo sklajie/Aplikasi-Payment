@@ -44,6 +44,7 @@
       <div class="row">
         <div class="col-md-12">
           {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
+          <a class="btn btn-default" style="margin-bottom: 1rem;" href="{{ url('') }}/cek_store">Tambahkan data pembayaran</a>
           <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
           <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
@@ -368,7 +369,7 @@
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama_kategori;
+          return row.kategori_pembayaran;
         }
       },
       {

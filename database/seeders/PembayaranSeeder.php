@@ -22,7 +22,7 @@ class PembayaranSeeder extends Seeder
 
         DB::table('pembayaran')->insert([
             'id' => Str::uuid(),
-            'kategori_pembayaran_id' => fake()->randomElement($kategori_id),
+            'kategori_pembayaran' => 'Uang Kuliah Tahunan',
             'nama' => 'Halim',
             'nim' => '2103012',
             'email' => 'halim@gmail.com',
@@ -43,7 +43,7 @@ class PembayaranSeeder extends Seeder
 
         DB::table('pembayaran')->insert([
             'id' => Str::uuid(),
-            'kategori_pembayaran_id' => fake()->randomElement($kategori_id),
+            'kategori_pembayaran' => 'Uang Kuliah Tahunan',
             'nama' => 'David',
             'nim' => '2103007',
             'email' => 'david@gmail.com',
@@ -65,7 +65,7 @@ class PembayaranSeeder extends Seeder
         
         DB::table('pembayaran')->insert([
             'id' => Str::uuid(),
-            'kategori_pembayaran_id' => fake()->randomElement($kategori_id),
+            'kategori_pembayaran' => 'Uang Kuliah Tahunan',
             'nama' => 'Ibnu',
             'nim' => '2103014',
             'email' => 'ibnu@gmail.com',

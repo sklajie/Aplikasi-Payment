@@ -20,6 +20,8 @@ use App\Http\Controllers\TransaksiPmbController;
 |
 */
 
+Route::get('/cek_store','App\Http\Controllers\PembayaranController@StoreDataPembayaran');
+
 Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'] )->middleware(['auth','adminapps']);
 
 route::get('/cek', function(){

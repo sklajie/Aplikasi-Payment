@@ -333,7 +333,7 @@
         "targets": 2,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama_kategori;
+          return row.kategori_pembayaran;
         }
       },
       {

@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('pembayaran', function (Blueprint $table) {
             $table->dropForeign(['kategori_pembayaran_id']);
-            $table->dropColumn('kategori_pembayaran_id');
+            $table->uuid('kategori_pembayaran')->change();
         });
     }
 };

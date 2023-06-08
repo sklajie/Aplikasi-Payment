@@ -47,6 +47,7 @@
 											<thead>
 												<tr>
 													<th>No</th>
+													<th>ID</th>
 													<th>Kategori</th>
 													<th>Action</th>
 												</tr>
@@ -56,6 +57,7 @@
 												@foreach ($kategori_pembayaran as $data)	
 												<tr>
 													<td>{{$loop->iteration}}</td>
+													<td>{{$data->id}}</td>
 													<td>{{$data->kategori_pembayaran}}</td>
 													<td>
 														

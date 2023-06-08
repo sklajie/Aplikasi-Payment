@@ -513,11 +513,11 @@ class PembayaranController extends Controller
         'kategori_pembayaran.kategori_pembayaran as nama_kategori'
         ])->join('kategori_pembayaran','kategori_pembayaran.id','=','pembayaran.kategori_pembayaran_id')->find($id);
         
-            return view('pdf.invoice_pembayaran_ukt', $data , compact('formattedTime'));
+            // return view('pdf.invoice_pembayaran_ukt', $data , compact('formattedTime'));
 
 
-        // $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
-        // return $pdf->download('pembayaran.pdf');
+        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        return $pdf->download('pembayaran.pdf');
 
     // $filename = 'pembayaran.pdf';
 
@@ -533,6 +533,21 @@ class PembayaranController extends Controller
     // return response()->download(public_path($filename));
     
 
+    }
+
+
+    public function StoreDataPembayaran(Request $request)
+    {
+
+        $parameter = [
+            'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
+            'debug' => 'false',
+            'datatable' => 'false',
+            'per_page' => 20
+        ];
+
+        $data = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameter);
+        dd($data);
     }
 
 }

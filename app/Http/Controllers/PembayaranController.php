@@ -535,4 +535,11 @@ class PembayaranController extends Controller
 
     }
 
+    public function invoice(){
+    
+        $title = 'Invoice';
+        return view('pdf.invoice', compact('title'));
+
+    }
+
 }

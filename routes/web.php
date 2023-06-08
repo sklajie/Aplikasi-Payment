@@ -42,6 +42,7 @@ Route::post('/pembayaran/export_data_terpilih','App\Http\Controllers\PembayaranC
 Route::post('/pembayaran/aktivasi_va','App\Http\Controllers\PembayaranController@aktivasiVA')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/update_invoice','App\Http\Controllers\PembayaranController@updateInvoice')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
+Route::get('/invoice', 'App\Http\Controllers\PembayaranController@invoice');
 
 //pembayaran_lainnya
 Route::get('/pembayaran_lainnya','App\Http\Controllers\PembayaranLainnyaController@indexShowList')->middleware(['auth', 'adminkeuangan']);

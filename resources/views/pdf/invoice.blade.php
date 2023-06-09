@@ -20,7 +20,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4>Logo</h4>
+                            <img src="../assets/img/logo_polindra.png" style="width:100px;">
+                            <img src="../assets/img/kampus_merdeka.png" style="width:100px;">
                             <h6>Jl. Lohbener lama No.08, Legok, Kec. Lohbener, Kabupaten Indramayu, Jawa Barat, 45252</h6>
                         </div>
                         <div class="col-md-6" style="font-size:20px; text-align:right;">
@@ -34,20 +35,22 @@
                         </div>
                         <br> <br><br>
                         <br> <br><br>
+                        <br> <br><br>
+                        <br> <br><br>
 
                         <div class="col-md-6">
                             <h2>Invoice To:</h2>
-                            <h4>Halim</h4>
-                            <h5>Indramayu</h5>
-                            <h5>halim@gmail.com</h5>
+                            <h4>{{$invoice->nama}}</h4>
+                            <h5>{{$invoice->address}}</h5>
+                            <h5>{{$invoice->e}}</h5>
                         </div>
                         <div class="col-md-6" style="font-size:20px; text-align:right;">
                             <div class="mb-2 copy-text" >
                             Payment Details:
                             </div>
-                            <div class="mb-2" style="font-size:15px;">Total:</div>
-                            <div class="mb-2" style="font-size:15px;">Bank Name:</div>
-                            <div class="mb-2" style="font-size:15px;">No Virtual Acount:</div>
+                            <div class="mb-2" style="font-size:15px;">Total: Rp.{{$invoice->amount}}</div>
+                            <div class="mb-2" style="font-size:15px;">Bank Name: Bank Syariah Indonesia</div>
+                            <div class="mb-2" style="font-size:15px;">No Virtual Acount: {{$invoice->va}}</div>
                             </div>
                         </div>
                     
@@ -61,12 +64,12 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Uang Kuliah Tunggal</td>
-                                    <td style="text-align: right;">5000000</td>
+                                    <td>{{$invoice->ketegori_pembayaran}}</td>
+                                    <td style="text-align: right;">{{$invoice->amount}}</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold; text-align: right;">Total</td>
-                                    <td style="font-weight:bold; text-align: right;">5000000</td>
+                                    <td style="font-weight:bold; text-align: right;">{{$invoice->amount}}</td>
                                 </tr>
                             </tbody>
                         </table>

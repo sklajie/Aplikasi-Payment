@@ -541,16 +541,20 @@ class PembayaranController extends Controller
             'per_page' => 20
         ];
 
-        $response = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
+        $responsemhs = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
+
+        dd($responsemhs);
 
 
-        $data_mahasiswa = $response['result']['data'];
+        $data_mahasiswa = $responsemhs['result']['data'];
 
         $tahunsekarang = date('Y');
         $tahundepan = $tahunsekarang+1;
         $tahunakademik = $tahunsekarang.'/'.$tahundepan;
 
         foreach($data_mahasiswa as $items){
+            // $existingRecord = Pembayaran::where('nim', $items['mahasiswa_nim'])->first();
+
             Pembayaran::create([
                 'kategori_pembayaran' => 'Uang Kuliah Tahunan',
                 'nama' => $items['mahasiswa_nama'],
@@ -566,15 +570,84 @@ class PembayaranController extends Controller
             ]);
         }
 
-        
-        // $parameterPembayaran = [
-        //     'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
-        //     'debug' => 'false',
-        //     'datatable' => 'false',
-        //     'per_page' => 20
-        // ];
+        $dataMHS = Pembayaran::all();
 
-        // $response = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameter);
+        foreach ($dataMHS as $data) {
+
+            $parameterukt = [
+                'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
+                'debug' => 'false',
+                'datatable' => 'true',
+                'per_page' => 20,
+                'nim' => $data->nim
+            ];
+
+            $responseUKT = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa/ukt',$parameterukt);
+
+            $data_ukt= $responseUKT['result']['data'];
+
+
+        }
+
+        //     dd($data_ukt);
+
+        //     $nim = $data['nim'];
+        //     $semester = $data_ukt['semester'];
+
+        //     $status_value = ($data_ukt['bayar_status'] == "lunas") ? 1 : 0;
+
+            
+
+        //     foreach($data_ukt as $items){
+        //         Pembayaran::create([
+        //             'kategori_pembayaran' => 'Uang Kuliah Tahunan',
+        //             'nama' => $data->nama,
+        //             'nim' => $data->nim,
+        //             'semester' => $data->semester,
+        //             'email' => $data->email,
+        //             'address' => $data->address,
+        //             'phone' => $data->phone,
+        //             'tahun_akademik' => $tahunakademik,
+        //             'va' =>  $data->semester.$tahunsekarang.$data->nim,
+        //             'prodi' => $data->prodi,
+        //             'status' => $status_value,
+        //             'amount' => $items['bayar_nilai'],
+        //             'date' => $items['bayar_tanggal']
+        //         ]);
+        //     }
+
+        // // }
+        
+
+
+
+        // if ($response->successful()) {
+        //     $data = $response->json();
+
+        //     foreach ($data as $item) {
+        //         $nim = $item['nim'];
+        //         $semester = $item['semester'];
+
+        //         // Periksa apakah ada record dengan nim yang sama
+        //         $existingRecord = Mahasiswa::where('nim', $nim)->first();
+
+        //         if ($existingRecord) {
+        //             // Jika ada record dengan nim yang sama, periksa apakah semester berbeda
+        //             if ($existingRecord->semester != $semester) {
+        //                 // Jika semester berbeda, simpan record baru
+        //                 $mahasiswa = new Mahasiswa($item);
+        //                 $mahasiswa->save();
+        //             } else {
+        //                 // Jika semester sama, lewati record
+        //                 continue;
+        //             }
+        //         } else {
+        //             // Jika tidak ada record dengan nim yang sama, simpan record baru
+        //             $mahasiswa = new Mahasiswa($item);
+        //             $mahasiswa->save();
+        //         }
+        //     }
+        // }
 
 
     }

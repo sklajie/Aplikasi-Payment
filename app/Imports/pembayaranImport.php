@@ -18,8 +18,8 @@ class pembayaranImport implements ToModel, WithHeadingRow
     {
         $now = date('Y-m-d H:i:s');
         return new Pembayaran([
-            'id' => $row['id'],
-            'kategori_pembayaran_id' => $row['kategori_pembayaran_id'],
+            'id' => Str::uuid(),
+            'kategori_pembayaran' => $row['kategori_pembayaran'],
             'nama'=>$row['nama'],
             'nim'=>$row['nim'],
             'email'=>$row['email'],
@@ -32,10 +32,7 @@ class pembayaranImport implements ToModel, WithHeadingRow
             'amount'=> $row['amount'],
             'status'=> '0',
             'activeDate'=> '2023-6-17',
-            'inactiveDate'=> '2023-6-29',
-            'date'=>$now,
-            'item_pembayaran_id'=>$row['item_pembayaran_id'],
-            
+            'inactiveDate'=> '2023-6-29',            
         ]);
     }
 }

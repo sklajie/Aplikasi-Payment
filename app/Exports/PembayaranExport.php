@@ -28,7 +28,7 @@ class PembayaranExport implements FromQuery, WithHeadings, WithMapping
 	public function headings(): array
     {
         return [
-            'kategori_pembayaran_id',
+            'kategori_pembayaran',
             'nama',
             'nim',
             'email',
@@ -45,7 +45,7 @@ class PembayaranExport implements FromQuery, WithHeadings, WithMapping
     public function map($pembayaran): array
     {
         return [
-            $pembayaran->kategori_pembayaran_id,
+            $pembayaran->kategori_pembayaran,
             $pembayaran->nama,
             $pembayaran->nim,
             $pembayaran->email,

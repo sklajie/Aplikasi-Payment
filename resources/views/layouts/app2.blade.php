@@ -91,65 +91,6 @@
 					<a href="/" class="logo">
 						<p alt="navbar brand" class="navbar-brand" style="color: white">POLINDRA</p>
 					</a>
-					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-						
-						<li class="nav-item dropdown hidden-caret">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
-								<div class="avatar-sm">
-									<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 24px; color:white; padding-top:8px; border:1px solid;"></i></center>
-								</div>
-							</a>
-							<ul class="dropdown-menu dropdown-user animated fadeIn">
-								<div class="dropdown-user-scroll scrollbar-outer">		
-									<li>
-											<!-- Authentication Links -->
-										@guest
-
-											@if (Route::has('login'))
-
-												<li class="dropdown-item" href="{{ route('login') }}">
-													<a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
-												</li>
-
-											@endif
-
-										@else
-											<li class="nav-item dropdown">
-
-												<div class="user-box">
-													<div class="avatar-lg"><center><i class="fas fa-user avatar-img rounded" style="font-size: 45px; color:rgb(0, 73, 98); padding-top:8px; border:1px solid;"></i></center></div>
-													<div class="u-text">
-														<h4>{{ Auth::user()->name }}</h4>
-														<p class="text-muted">{{ Auth::user()->email }}</p>
-														<a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
-													</div>
-												</div>
-												
-												<div class="dropdown-divider"></div>
-
-												<li class="dropdown-item" href="{{ route('login') }}">
-													<a class="dropdown-item" href="{{ route('logout') }}"
-														onclick="event.preventDefault();
-														document.getElementById('logout-form').submit();">
-														{{ __('Logout') }}
-													</a>
-				
-													<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-														@csrf
-													</form>
-												</li>
-											</li>
-										@endguest
-										
-									</li>
-
-									
-
-
-								</div>
-							</ul>
-						</li>
-					</ul>
 				</div>
 			</nav>
 			<!-- End Navbar -->

@@ -626,9 +626,10 @@ class PembayaranController extends Controller
 
     }
 
-    public function invoice(){
+    public function invoice($id){
         $title = 'Invoice';
-        return view('pdf.invoice', compact('title'));
+        $invoice = Pembayaran::find($id);
+        return view('pdf.invoice', compact('title','invoice'));
 
     }
 

@@ -10,7 +10,7 @@ class ProductionController extends Controller
     public function index()
     {
         $title = 'Api Keys';
-        return view('pages.production.api_keys', compact('title'))->with([
+        return view('pages.Production.api_keys', compact('title'))->with([
             'user' => User::all(),
         ]); 
     }
@@ -39,6 +39,6 @@ class ProductionController extends Controller
     public function dokumentasi()
     {
         $title = 'dokumentasi';
-        return view('pages.production.dokumentasi', compact('title'));
+        return view('pages.Production.dokumentasi', compact('title'));
     }
 }

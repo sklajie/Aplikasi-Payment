@@ -33,7 +33,7 @@
                             <div class="mb-2" style="font-size:15px;">Status :
                                 <span class="badge bg-warning" style="width: 150px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
                             </div>
-                            @else
+                            @elseif($invoice->status == 1)
                             <div class="mb-2" style="font-size:15px;">Status :
                                 <span class="badge bg-success" style="width: 150px; height: 25px; color:white; font-size:13px;">Lunas</span>
                             </div>
@@ -65,18 +65,18 @@
                         <table class="table table-bordered  table-striped">
                             <thead>
                                 <tr>
-                                    <th style="width: 80%">Item</th>
-                                    <th style="text-align: right;">Sub Total</th>
+                                    <th style="width: 80%; font-size:20px;">Item</th>
+                                    <th style="text-align: right; font-size:20px;">Sub Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>{{$invoice->ketegori_pembayaran}}</td>
-                                    <td style="text-align: right;">{{$invoice->amount}}</td>
+                                    <td style="text-align: right; font-size:20px;">{{$invoice->amount}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight:bold; text-align: right;">Total</td>
-                                    <td style="font-weight:bold; text-align: right;">{{$invoice->amount}}</td>
+                                    <td style="font-weight:bold; text-align: right; font-size:20px;">Total</td>
+                                    <td style="font-weight:bold; text-align: right; font-size:20px;">{{$invoice->amount}}</td>
                                 </tr>
                             </tbody>
                         </table>

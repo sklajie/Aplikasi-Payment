@@ -513,7 +513,7 @@
         "targets": 14,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          if (row.status === 1) {
+          if (row.status == 1) {
                   return '<span style="color: blue;">Dibayar</span>';
               } else {
                   return  '<span style="color: red;">Belum Dibayar</span>';

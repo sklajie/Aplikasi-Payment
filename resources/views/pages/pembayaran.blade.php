@@ -44,7 +44,7 @@
       <div class="row">
         <div class="col-md-12">
           {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
-          <a class="btn btn-default" style="margin-bottom: 1rem;" href="{{ url('') }}/cek_store">Tambahkan data pembayaran</a>
+          <a class="btn btn-default" style="margin-bottom: 1rem;" href="{{ url('') }}/cek_store">Restore data pembayaran</a>
           <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
           <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
@@ -52,6 +52,7 @@
           <button disabled type="button" class="btn btn-success" style="margin-bottom: 1rem;" id="button-export-terpilih" onclick="exportDataTerpilih()">Export Data Terpilih</button>
           <button disabled type="button" class="btn btn-info" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-aktivasi" onclick="aktivasi()" id="button-aktivasi">Aktivasi</button>
           <button disabled type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-update-va" onclick="updateVA()" id="button-update-va">Update VA</button>
+          <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create-tagihan" id="button-update-va">Buat Tagihan</button>
           
           <div class="card">
             <div class="card-header">
@@ -143,6 +144,15 @@
                 <div class="col-md-3">
                   <label>Semester</label>
                   <select id="filter-semester" class="form-control filter">
+                    <option value="">Semua</option>
+                    @foreach($datasemester as $semester)
+                    <option value="{{ $semester }}">Semester {{ $semester }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                {{-- <div class="col-md-3">
+                  <label>Semester</label>
+                  <select id="filter-semester" class="form-control filter">
                     <option value="">semua</option>
                     <option value="1">Semester 1</option>
                     <option value="2">Semester 2</option>
@@ -153,7 +163,7 @@
                     <option value="7">Semester 7</option>
                     <option value="8">Semester 8</option>
                   </select>
-                </div>
+                </div> --}}
                 <div class="col-md-3">
                   <label>Status</label>
                   <select id="filter-status" class="form-control filter">
@@ -261,6 +271,56 @@
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
           <button type="button" class="btn btn-primary" onclick="showConfirmDialogUpdate()">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-create-tagihan">
+    <div class="modal-dialog modal-lg">
+      <form method="post" id="form-create-tagihan" action="{{ url('') }}/pembayaran/store" enctype="multipart/form-data" class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Tambahkan Data Pembayaran</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{csrf_field()}}
+          <div class="row">
+            {{-- <div class="col-md-12">
+              <input type="text" name="ids" hidden>
+              <p>Jumlah data terpilih: <span id="selected">0</span></p>
+            </div> --}}
+            <div class="col-md-12">
+              <label>Nama <small class="text-danger">*</small></label>
+              <input type="text" name="activeDate" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>Nim <small class="text-danger">*</small></label>
+              <input type="text" name="activeDate" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>Email <small class="text-danger">*</small></label>
+              <input type="email" name="inactiveDate" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>VA <small class="text-danger">*</small></label>
+              <input type="email" name="inactiveDate" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>Alamat <small class="text-danger">*</small></label>
+              <input type="email" name="inactiveDate" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>Phone <small class="text-danger">*</small></label>
+              <input type="email" name="inactiveDate" class="form-control" required><br>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogUpdate()">Tambahkan</button>
         </div>
       </form>
     </div>

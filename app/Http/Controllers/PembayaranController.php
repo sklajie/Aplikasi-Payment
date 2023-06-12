@@ -498,19 +498,17 @@ class PembayaranController extends Controller
      * @return \Illuminate\Http\Response
      * 
      */
-
+        
         $currentTime = Carbon::now();
         setlocale(LC_TIME, 'id_ID');
         $formattedTime = $currentTime->isoFormat('dddd, D MMMM YYYY');
 
-        $data['pembayaran'] = Pembayaran::select([
-        'pembayaran.*',
-        ])->find($id);
+        $invoice = Pembayaran::find($id);
         
             // return view('pdf.invoice_pembayaran_ukt', $data , compact('formattedTime'));
 
 
-        $pdf = PDF::loadView('pdf.invoice_pembayaran_ukt', $data);
+        $pdf = PDF::loadView('pdf.invoice', [$invoice]);
         return $pdf->download('pembayaran.pdf');
 
     // $filename = 'pembayaran.pdf';

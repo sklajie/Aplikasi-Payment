@@ -75,12 +75,12 @@
 													
 															<a href="{{ route('users.edit', $data->id )}}" class="btn btn-primary btn-xs"><i class="fa fa-print">&NonBreakingSpace; Edit</i></a>
 															<!-- Button trigger modal -->
-															<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModalCenter">
+															<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModalCenter{{$data->id}}" >
 																<i class="fa fa-trash">&NonBreakingSpace;</i>Hapus
 															</button>
 
 															<!-- Modal -->
-															<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+															<div class="modal fade" id="exampleModalCenter{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 																<div class="modal-dialog modal-dialog-centered" role="document">
 																<div class="modal-content">
 																	<div class="modal-header">
@@ -91,7 +91,7 @@
 																	</div>
 																	
 																	<div class="modal-body">
-																		Yakin Untuk Menghapus Pengguna Ini?
+																		Yakin Untuk Menghapus {{$data->name}} Dari Daftar Pengguna?
 																	</div>
 
 																	<div class="modal-footer">

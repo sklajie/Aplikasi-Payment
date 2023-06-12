@@ -10,6 +10,7 @@ use App\Http\Controllers\BpiNotificationController;
 use App\Http\Controllers\TransaksiPmbController;
 use App\Http\Controllers\TransaksiPmbControllerDev;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentController;
 
 
 Route::prefix('v1')->group(function () {
@@ -18,6 +19,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/DataTransactions', [PembayaranLainnyaController::class, 'DataTransaction']);
     Route::get('/DataDetailTransactions', [PembayaranLainnyaController::class, 'DataDetailTransaction']);
     Route::post('/notification', [BpiNotificationController::class, 'receiveBpiNotification']);
+});
+
+Route::prefix('data')->group(function () {
+    Route::post('/payment', [PaymentController::class, 'processPayment']);
 });
 
 Route::prefix('v1/dev')->group(function () {

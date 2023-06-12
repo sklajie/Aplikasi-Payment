@@ -45,6 +45,9 @@ Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::
 Route::get('/pembayaran/invoice/{id}', 'App\Http\Controllers\PembayaranController@invoice');
 Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@store');
 
+//siakad
+Route::get('/siakad/invoice/{nim}', 'App\Http\Controllers\PaymentController@invoice');
+
 //pembayaran_lainnya
 Route::get('/pembayaran_lainnya','App\Http\Controllers\PembayaranLainnyaController@indexShowList')->middleware(['auth', 'adminkeuangan']);
 Route::any('/pembayaran_lainnya/data','App\Http\Controllers\PembayaranLainnyaController@dataShowList')->middleware(['auth', 'adminkeuangan']);

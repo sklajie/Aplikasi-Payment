@@ -231,25 +231,28 @@ class PembayaranController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'username' => 'required|unique:users,username,',
-            'email' => 'required|email|unique:users,email,',
-            'no_hp' => 'required|min:10|',
-            'level_id' => 'required',
-            'password' => 'required',
 
+        $request->validate([
+            'nama' => 'required',
+            'va' => 'required|unique',
+            'email' => 'required',
+            'amount' => 'required',
+            'kategori_pembayaran' => 'required',
         ]);
 
-        $user = new Pembayaran;
-        $user->name = $request->name;
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->no_hp = $request->no_hp;
-        $user->level_id = $request->level_id;
-        $user->save();
+        $pembayaran = new Pembayaran;
+        $pembayaran->nama = $request->name;
+        $pembayaran->nim = $request->nim;
+        $pembayaran->phone = $request->phone;
+        $pembayaran->address = $request->address;
+        $pembayaran->email = $request->email;
+        $pembayaran->amount = $request->amount;
+        $pembayaran->va = $request->va;
+        $pembayaran->va = $request->va;
+        $pembayaran->kategori_pembayaran = $request->kategori_pembayaran;
+        $pembayaran->save();
 
-        return to_route('users.index')->with('Success', 'Data Berhasil Ditambahkan');
+        return redirect()->back()->with('Success', 'Data Berhasil Ditambahkan');
     }
 
 

@@ -294,33 +294,50 @@
             </div> --}}
             <div class="col-md-12">
               <label>Nama <small class="text-danger">*</small></label>
-              <input type="text" name="activeDate" class="form-control" required><br>
+              <input type="text" name="nama" class="form-control" required><br>
             </div>
             <div class="col-md-12">
               <label>Nim <small class="text-danger">*</small></label>
-              <input type="text" name="activeDate" class="form-control" required><br>
+              <input type="text" name="nim" class="form-control"><br>
             </div>
             <div class="col-md-12">
               <label>Email <small class="text-danger">*</small></label>
-              <input type="email" name="inactiveDate" class="form-control" required><br>
-            </div>
-            <div class="col-md-12">
-              <label>VA <small class="text-danger">*</small></label>
-              <input type="email" name="inactiveDate" class="form-control" required><br>
-            </div>
-            <div class="col-md-12">
-              <label>Alamat <small class="text-danger">*</small></label>
-              <input type="email" name="inactiveDate" class="form-control" required><br>
+              <input type="email" name="email" class="form-control" required><br>
             </div>
             <div class="col-md-12">
               <label>Phone <small class="text-danger">*</small></label>
-              <input type="email" name="inactiveDate" class="form-control" required><br>
+              <input type="text" name="phone" class="form-control"><br>
+            </div>
+            <div class="col-md-12">
+              <label>Prodi <small class="text-danger">*</small></label>
+              <input type="text" name="prodi" class="form-control"><br>
+            </div>
+            <div class="col-md-12">
+              <label>Tahun Akademik <small class="text-danger">*</small></label>
+              <input type="text" name="tahun_akademik" class="form-control"><br>
+            </div>
+            <div class="col-md-12">
+              <label>Kategori Pembayaran <small class="text-danger">*</small></label>
+              {{-- <select name="kategori_pembayaran" id="">
+                @foreach ($data_kategori as $item)
+                    <option value="{{ $item->kategori_pembayaran }}">{{ $item->kategori_pembayaran }}</option>
+                @endforeach
+              </select> --}}
+              <input type="" name="inactiveDate" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>VA <small class="text-danger">*</small></label>
+              <input type="number" name="va" class="form-control" required><br>
+            </div>
+            <div class="col-md-12">
+              <label>Alamat <small class="text-danger">*</small></label>
+              <input type="text" name="address" class="form-control"><br>
             </div>
           </div>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary" onclick="showConfirmDialogUpdate()">Tambahkan</button>
+          <button type="submit" class="btn btn-primary">Tambahkan</button>
         </div>
       </form>
     </div>
@@ -340,7 +357,7 @@
           {{csrf_field()}}
           <div class="row">
             <div class="col-md-12">
-              <p>Import data Mahasiswa sesuai format contoh berikut.<br/><a href="{{url('')}}/assets/Contoh_Format_Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
+              <p>Import data Mahasiswa sesuai format contoh berikut dan beri nama "Tagihan.xlsx" pada file yang diupload. <br/><a href="{{url('')}}/assets/Contoh_Format_Tagihan.xlsx"><i class="fas fa-download"></i> File Contoh Excel Mahasiswa</a></p>
             </div>
             <div class="col-md-12">
               <label>File Excel Mahasiswa</label>

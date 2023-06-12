@@ -355,7 +355,7 @@
 					</li>			
 
 					<li class="nav-item {{ $title === "Pembayaran Lainnya" ? 'active' : '' }}">
-						<a href="/pembayaran/lainnya">
+						<a href="/pembayaran_lainnya">
 							<i class="far fa-list-alt"></i>
 							<p>Pembayaran Lainnya</p>
 						</a>

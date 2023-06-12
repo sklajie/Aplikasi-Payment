@@ -113,8 +113,8 @@
 							<div class="card-body">
                                 <div class="row">
                                     <div class="col md-5">
-                                        <label for="semester">Tahun Akademik</label>
-                                        <select id="semester" class="form-control filter" onchange="applyFilter()">
+                                        <label for="tahun_akademik">Tahun Akademik</label>
+                                        <select id="tahun_akademik" class="form-control filter" onchange="applyFilter()">
                                             <option value="">Semua</option>
                                             @foreach($tahunAkademikOptions as $tahunAkademikOption)
                                             <option value="{{ $tahunAkademikOption }}" {{ $tahunAkademikOption == $tahunAkademik ? 'selected' : '' }}>
@@ -122,10 +122,9 @@
                                             @endforeach
                                         </select>
                                     </div>
-                            
                                     <div class="col md-5">
-                                        <label for="tahun_akademik">Semester</label>
-                                        <select id="tahun_akademik" class="form-control filter" onchange="applyFilter()">
+                                        <label for="semester">Semester</label>
+                                        <select id="semester" class="form-control filter" onchange="applyFilter()">
                                             <option value="">Semua</option>
                                             @foreach($semesterOptions as $semesterOption)
                                             <option value="{{ $semesterOption }}" {{ $semesterOption == $semester ? 'selected' : '' }}>
@@ -135,11 +134,12 @@
                                     </div>
                                 </div>
                             </div>
-								<div class="chart-container">
-									<center>
-										<canvas id="pieChart" width="400" height="400"></canvas>
-									</center>
-								</div>
+                            <div class="chart-container">
+                                <center>
+                                    <canvas id="pieChart" width="400" height="400"></canvas>
+                                </center>
+                            </div>
+                            
 							</div>
 							</div>
 						</div>
@@ -201,14 +201,12 @@
     document.addEventListener("DOMContentLoaded", function(event) {
         // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
         let data = {!! json_encode($data) !!};
-        let user = {!! json_encode($user) !!};
 
         // Ambil data semester dari elemen HTML
         let semesterOptions = {!! json_encode($semesterOptions) !!};
 
         // Hitung total jumlah data
         let totalCount = data.reduce((total, item) => total + item.count, 0);
-        let totalCountUsers = user.map(item => item.countUser);
 
         // Proses data dan konversi ke presentasi
         let stats = data.map(item => {
@@ -242,12 +240,26 @@
             }
         });
 
-        // Buat doughnut chart
-        let ctxDoughnut = document.getElementById('doughnut').getContext('2d');
+
+        // Tambahkan event listener untuk perubahan filter
+        $('#filter').change(function() {
+            applyFilter();
+        });
+    });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+        // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
+        let user = {!! json_encode($user) !!};
+        
+        let totalCountUsers = user.map(item => item.countUser);
+
+let ctxDoughnut = document.getElementById('doughnut').getContext('2d');
         let doughnutChart = new Chart(ctxDoughnut, {
             type: 'doughnut',
             data: {
-                labels: ['Pengguna'],
+                labels: ['Pengguna '],
                 datasets: [{
                     data: totalCountUsers,
                     backgroundColor: [
@@ -261,13 +273,9 @@
                 maintainAspectRatio: false
             }
         });
-
-        // Tambahkan event listener untuk perubahan filter
-        $('.filter').change(function() {
-            applyFilter();
-        });
     });
 </script>
+
 
 
 <script>
@@ -275,16 +283,16 @@
         // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
         let datapembayaran = {!! json_encode($pembayaran) !!};
 
-        let countpembayaran = datapembayaran.map(item => item.countpembayaran);
+        let totalcountpembayaran = datapembayaran.map(item => item.countpembayaran);
 
         // Buat pie chart
         let ctxDoughnut = document.getElementById('doughnutpembayaran').getContext('2d');
         let doughnutChart = new Chart(ctxDoughnut, {
             type: 'doughnut',
             data: {
-                labels: ['Semua Data Pembayaran'],
+                labels: ['Semua Data Pembayaran '],
                 datasets: [{
-                    data: countpembayaran,
+                    data: totalcountpembayaran,
                     backgroundColor: [
                         '#efbbff',
                     ],
@@ -335,7 +343,7 @@
         // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
         let databelumlunas = {!! json_encode($belumlunas) !!};
 
-        let countbelumlunas = databelumlunas.map(item => item.countbelumlunas);
+        let totalcountbelumlunas = databelumlunas.map(item => item.countbelumlunas);
 
         // Buat pie chart
         let ctxDoughnut = document.getElementById('doughnutbelumlunas').getContext('2d');
@@ -344,7 +352,7 @@
             data: {
                 labels: ['Pembayaran Belum Lunas'],
                 datasets: [{
-                    data: countbelumlunas,
+                    data: totalcountbelumlunas,
                     backgroundColor: [
                         'rgb(179, 255, 171)',
                     ],

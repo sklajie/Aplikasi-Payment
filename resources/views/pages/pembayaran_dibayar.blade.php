@@ -436,7 +436,7 @@
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `
-            <a target="_blank" href="{{url('')}}/pembayaran/download_pdf/${row.id}" class="btn btn-sm btn-danger btn-block"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Cetak Invoice</a>
+            <a target="_blank" href="{{url('')}}/pembayaran/invoice/${row.id}" class="btn btn-sm btn-danger btn-block"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Cetak Invoice</a>
             `;
           // if(row.status=='aktif'){
           //   tampilan+=`<button onclick="toggleStatus('${row.id}')" class="btn btn-sm btn-danger btn-block">Nonaktifkan</button>`

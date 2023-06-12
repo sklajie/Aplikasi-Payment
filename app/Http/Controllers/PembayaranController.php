@@ -29,7 +29,8 @@ class PembayaranController extends Controller
         $title = 'Data Pembayaran - Belum Dibayar';
         $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
         $dataprodi = Pembayaran::distinct()->pluck('prodi');
-        return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi'));
+        $datasemester = Pembayaran::distinct()->pluck('semester');
+        return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi','datasemester'));
     }
 
      public function indexDIbayar(Request $request)
@@ -37,7 +38,8 @@ class PembayaranController extends Controller
         $title = 'Data Pembayaran - Dibayar';
         $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
         $dataprodi = Pembayaran::distinct()->pluck('prodi');
-        return view('pages.pembayaran_dibayar' , compact('title','datatahunakademik','dataprodi'));
+        $datasemester = Pembayaran::distinct()->pluck('semester');
+        return view('pages.pembayaran_dibayar' , compact('title','datatahunakademik','dataprodi','datasemester'));
     }
     
     public function aktivasiVA(Request $request){
@@ -113,7 +115,7 @@ class PembayaranController extends Controller
             $save_number->save();
         }
 
-        return redirect()->route('pembayaran.index')->with('success', 'Aktivasi VA berhasil dilakukan.');
+        return redirect()->back()->with('success', 'Aktivasi VA berhasil dilakukan.');
 
     }
 
@@ -224,8 +226,32 @@ class PembayaranController extends Controller
             // ]);
         }
 
-        return redirect()->route('pembayaran.index')->with('success', 'Update perpanjang masa berlaku VA berhasil dilakukan.');
+        return redirect()->back()->with('success', 'Update perpanjang masa berlaku VA berhasil dilakukan.');
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users,username,',
+            'email' => 'required|email|unique:users,email,',
+            'no_hp' => 'required|min:10|',
+            'level_id' => 'required',
+            'password' => 'required',
+
+        ]);
+
+        $user = new Pembayaran;
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->no_hp = $request->no_hp;
+        $user->level_id = $request->level_id;
+        $user->save();
+
+        return to_route('users.index')->with('Success', 'Data Berhasil Ditambahkan');
+    }
+
 
 
     public function dataDIbayar(Request $request)
@@ -319,23 +345,7 @@ class PembayaranController extends Controller
 
         //filter berdasarkan semester
         if($request->input('semester')!=null){
-            if($request->input('semester')== 1){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 2){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 3){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 4){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 5){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 6){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 7){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 8){
-                $data = $data->where('semester', $request->semester);
-            }
+            $data = $data->where('semester',$request->semester);
         }
 
         $recordsFiltered = $data->get()->count();
@@ -440,24 +450,9 @@ class PembayaranController extends Controller
         }
 
         //filter berdasarkan semester
+        //filter berdasarkan semester
         if($request->input('semester')!=null){
-            if($request->input('semester')== 1){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 2){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 3){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 4){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 5){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 6){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 7){
-                $data = $data->where('semester', $request->semester);
-            }else if($request->input('semester')== 8){
-                $data = $data->where('semester', $request->semester);
-            }
+            $data = $data->where('semester',$request->semester);
         }
 
         $recordsFiltered = $data->get()->count();
@@ -557,15 +552,14 @@ class PembayaranController extends Controller
                 if (!$existingData) {
                     // Jika data tidak ada dalam database, simpan data baru
                     Mahasiswa::create([
-                        'nama' => $items['mahasiswa_nama'],
-                        'nim' => $items['mahasiswa_nim'],
-                        'semester' => $items['semester_kode'],
-                        'email' => $items['user_mail'],
-                        'address' => $items['mahasiswa_alamat'],
-                        'phone' => $items['mahasiswa_handphone'],
-                        'tahun_akademik' => $tahunakademik,
-                        'va' =>  $items['semester_kode'].$tahunsekarang.$items['mahasiswa_nim'],
-                        'prodi' => $items['nama_prodi'],
+                        'nama_mahasiswa' => $items['mahasiswa_nama'],
+                        'nim_mahasiswa' => $items['mahasiswa_nim'],
+                        'semester_mahasiswa' => $items['semester_kode'],
+                        'email_mahasiswa' => $items['user_mail'],
+                        'address_mahasiswa' => $items['mahasiswa_alamat'],
+                        'phone_mahasiswa' => $items['mahasiswa_handphone'],
+                        'tahun_akademik_mahasiswa' => $tahunakademik,
+                        'prodi_mahasiswa' => $items['nama_prodi'],
                     ]);
                 }else{
                     continue;
@@ -573,56 +567,56 @@ class PembayaranController extends Controller
             }
         }
 
-        $dataMHS = Mahasiswa::all();
+        // $dataMHS = Mahasiswa::all();
 
-        foreach ($dataMHS as $data) {
+        // foreach ($dataMHS as $data) {
 
-            $parameterukt = [
-                'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
-                'debug' => 'false',
-                'datatable' => 'true',
-                'per_page' => 20,
-                'nim' => $data->nim
-            ];
+        //     $parameterukt = [
+        //         'key' => '5c7bfc3e-5317-402c-a0a9-e91ef1fd8add',
+        //         'debug' => 'false',
+        //         'datatable' => 'true',
+        //         'per_page' => 20,
+        //         'nim' => $data->nim_mahasiswa
+        //     ];
 
-            $responseUKT = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa/ukt',$parameterukt);
+        //     $responseUKT = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa/ukt',$parameterukt);
 
-            $data_ukt= $responseUKT['result']['data'];
+        //     $data_ukt= $responseUKT['result']['data'];
 
-            foreach($data_ukt as $data_invoice){
+        //     foreach($data_ukt as $data_invoice){
 
-                $tahunsekarang = date('Y');
+        //         $tahunsekarang = date('Y');
 
-                $status_value = ($data_invoice['bayar_status'] == "lunas") ? 1 : 0;
+        //         $status_value = ($data_invoice['bayar_status'] == "lunas") ? 1 : 0;
 
-                $no_va =  $tahunsekarang.$data_invoice['mahasiswa_nim'].$data_invoice['semester_kode'];
+        //         $no_va =  $tahunsekarang.$data_invoice['mahasiswa_nim'].$data_invoice['semester_kode'];
 
-                $existingDataUkt = Pembayaran::where('va', $no_va)->first();
+        //         $existingDataUkt = Pembayaran::where('va', $no_va)->first();
     
-                if (!$existingDataUkt) {
-                    // Jika data tidak ada dalam database, simpan data baru
-                    Pembayaran::create([
-                        'kategori_pembayaran' => 'Uang Kuliah Tahunan',
-                        'nama' => $data->nama,
-                        'nim' => $data->nim,
-                        'semester' => $data->semester,
-                        'email' => $data->email,
-                        'address' => $data->address,
-                        'phone' => $data->phone,
-                        'tahun_akademik' => $tahunakademik,
-                        'va' => $no_va,
-                        'prodi' => $data->prodi,
-                        'status' => $status_value,
-                        'amount' => $data_invoice['bayar_nilai'],
-                        'date' => $data_invoice['bayar_tanggal']
-                    ]);
+        //         if (!$existingDataUkt) {
+        //             // Jika data tidak ada dalam database, simpan data baru
+        //             Pembayaran::create([
+        //                 'kategori_pembayaran' => 'Uang Kuliah Tahunan',
+        //                 'nama' => $data->nama_mahasiswa,
+        //                 'nim' => $data->nim_mahasiswa,
+        //                 'semester' => $data_invoice[''],
+        //                 'email' => $data->email,
+        //                 'address' => $data->address,
+        //                 'phone' => $data->phone,
+        //                 'tahun_akademik' => $tahunakademik,
+        //                 'va' => $no_va,
+        //                 'prodi' => $data->prodi,
+        //                 'status' => $status_value,
+        //                 'amount' => $data_invoice['bayar_nilai'],
+        //                 'date' => $data_invoice['bayar_tanggal']
+        //             ]);
 
-                }else{
-                    continue;
-                }
-            }
+        //         }else{
+        //             continue;
+        //         }
+        //     }
 
-        }
+        // }
 
     }
 

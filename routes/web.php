@@ -43,6 +43,7 @@ Route::post('/pembayaran/aktivasi_va','App\Http\Controllers\PembayaranController
 Route::post('/pembayaran/update_invoice','App\Http\Controllers\PembayaranController@updateInvoice')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
 Route::get('/pembayaran/invoice/{id}', 'App\Http\Controllers\PembayaranController@invoice');
+Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@store');
 
 //pembayaran_lainnya
 Route::get('/pembayaran_lainnya','App\Http\Controllers\PembayaranLainnyaController@indexShowList')->middleware(['auth', 'adminkeuangan']);

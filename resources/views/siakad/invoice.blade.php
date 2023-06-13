@@ -3,8 +3,6 @@
 @section('title', 'Invoice')
 
 @section('content')
-
-
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="main-panel">
 <div class="container-fluid">
@@ -16,6 +14,11 @@
                 <a href="{{url('')}}/pembayaran/download_pdf/{{$invoice->id}}" class="btn btn-sm btn-primary" id="btn_print"><i class="fas fa-print"></i> Print Invoice</a>
             </div>
             <div class="col-12" id="area_print">
+                @if($invoice->invoiceNumber == null && $invoice->status == 0)
+                <div class="alert alert-danger">
+                    <h3 style="color: red;">Pembayaran belum diaktivasi. Hubungi Admin Keuangan atau Humas untuk melakukan pengaktifan virtual account</a></p>
+                </div>
+                @endif
             <div class="card">
                 <div class="card-body">
                     <div class="row">

@@ -4,9 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+
+$user = User::all();
 
 class PaymentController extends Controller
 {
+    public function invoice($id){
+        $title = 'Invoice';
+        $invoice = Pembayaran::find($id);
+        return view('pdf.invoice', compact('title','invoice'));
+
+    }
+    
+    public function index(Request $request, $nim)
+    {
+        return view('siakad.table_pembayaran')->with('user', $user);
+    }
+
     public function processPayment(Request $request)
     {
         // Validasi data yang diterima
@@ -23,11 +38,8 @@ class PaymentController extends Controller
             ->get();
 
         if ($pembayaran->count() > 0) {
-            // Jika ditemukan, kirim respons dengan informasi pembayaran
-            return response()->json([
-                'success' => true,
-                'data' => $pembayaran
-            ]);
+            // Jika ditemukan, kirim respons dengan informasi pembayaran dan nim
+        return view('siakad.table_pembayaran')->with('pembayaran', $pembayaran)->with('nim', $nim);
         } else {
             // Jika tidak ditemukan, kirim respons dengan pesan error
             return response()->json([

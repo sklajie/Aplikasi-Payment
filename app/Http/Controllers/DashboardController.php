@@ -38,7 +38,7 @@ class DashboardController extends Controller
         }
         $data = $query->select('status', DB::raw("COUNT(status) as count"))->groupBy('status')->get();
         $dataSemester = Pembayaran::distinct('semester')->pluck('semester');
-        // dd(json_encode($dataSemester));
+        
         return view('home', compact('title', 'data', 'tahunAkademik', 'tahunAkademikOptions', 'semester', 'semesterOptions','user','userall','lunas','lunasall','belumlunas','belumlunasall','pembayaran','pembayaranall'));
     }
 

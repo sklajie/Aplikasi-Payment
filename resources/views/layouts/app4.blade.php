@@ -44,7 +44,7 @@
 	</style>
 	@yield('css')
 
-	<link rel="icon" href="{{ url('') }}/assets/img/icon.ico" type="image/x-icon"/>
+	<link rel="icon" href="{{ url('') }}/assets/img/logo_polindra.png" type="image/x-icon"/>
 
 	<!-- Fonts and icons -->
 	<script src="{{ url('') }}/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -87,6 +87,7 @@
 			<div class="logo-header" style="background-color: green">
 				
 				<a href="/" class="logo">
+					<img src="{{ url('') }}/assets/img/logo_polindra.png" style="width:40px;">
 					<p alt="navbar brand" class="navbar-brand" style="color: white">POLINDRA</p>
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">

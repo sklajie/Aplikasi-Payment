@@ -22,41 +22,38 @@
 								<div class="card-body">
 									
 									<div class="table-responsive">
-										<table id="add-row" class="display table table-striped table-hover" >
+										<table id="add-row" class="display table table-striped table-hover">
 											<thead>
 												<tr>
 													<th>No</th>
 													<th>Nama</th>
-													<th>Email</th>
-													<th>No Handphone</th>
-													<th>Kategori Pembayaran</th>
-													<th>Semester</th>
+													<th>NIM</th>
+													<th>semester</th>
+													<th>Virtual Account</th>
+													<th>Status Pembayaran</th>
 													<th>Amount</th>
 													<th>Aksi</th>
-
 												</tr>
 											</thead>
-											
-											<tbody>	
-												{{-- @foreach ($user as $data)	
+											<tbody>
+												@foreach ($pembayaran as $data)
 												<tr>
-													<td>{{$loop->iteration}}</td>
-													<td>{{$data->name}}</td>
-													<td>{{$data->email}}</td>
-													<td>{{$data->no_hp}}</td>
-													<td>{{$data->kategori_pembayaran}}</td>
-													<td>{{$data->semester}}</td>
-													<td>{{$data->amount}}</td>
-													
+													<td>{{ $loop->iteration }}</td>
+													<td>{{ $data->nama }}</td>
+													<td>{{ $data->nim }}</td>
+													<td>{{ $data->semester }}</td>
+													<td>{{ $data->va }}</td>
+													<td>{{ $data->status }}</td>
+													<td>{{ $data->amount }}</td>
 													<td>
-                                                        <a href="{{url('')}}/pembayaran/invoice/$data->id" class="btn btn-primary btn-xs"><i class="">&NonBreakingSpace; Cek Invoice</i></a>
+														<a href="{{ url('') }}/siakad/invoice/{{ $data->id }}" class="btn btn-primary btn-xs"><i class="">&nbsp;Cek Invoice</i></a>
 													</td>
 												</tr>
-												@endforeach --}}
+												@endforeach
 											</tbody>
-											
 										</table>
 									</div>
+									
 								</div>
 							</div>
 						</div>

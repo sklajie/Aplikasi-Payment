@@ -41,9 +41,9 @@ Route::put('/pembayaran/import-excel','App\Http\Controllers\PembayaranController
 Route::post('/pembayaran/export_data_terpilih','App\Http\Controllers\PembayaranController@exportDataTerpilih')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/aktivasi_va','App\Http\Controllers\PembayaranController@aktivasiVA')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/update_invoice','App\Http\Controllers\PembayaranController@updateInvoice')->middleware(['auth', 'adminkeuangan']);
-Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi');
-Route::get('/pembayaran/invoice/{id}', 'App\Http\Controllers\PembayaranController@invoice');
-Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@store');
+Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::class], 'aktivasi')->middleware(['auth', 'adminkeuangan']);
+Route::get('/pembayaran/invoice/{id}', 'App\Http\Controllers\PembayaranController@invoice')->middleware(['auth', 'adminkeuangan']);
+Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@store')->middleware(['auth', 'adminkeuangan']);
 
 //siakad
 Route::get('/siakad/invoice/{nim}', 'App\Http\Controllers\PaymentController@invoice');

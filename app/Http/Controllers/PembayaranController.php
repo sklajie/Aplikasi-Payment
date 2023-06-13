@@ -60,7 +60,7 @@ class PembayaranController extends Controller
 
             $pembayaran->activeDate = $active_date;
             $pembayaran->inactiveDate = $inactive_date;
-            $pembayaran->status = 0;
+            $pembayaran->status = 'menunggu pembayaran';
             $pembayaran->save();
         }
 
@@ -140,7 +140,7 @@ class PembayaranController extends Controller
 
             $pembayaran->activeDate = $active_date;
             $pembayaran->inactiveDate = $inactive_date;
-            $pembayaran->status = 0;
+            $pembayaran->status = 'menunggu pembayaran';
             $pembayaran->save();
         }
 
@@ -308,7 +308,7 @@ class PembayaranController extends Controller
 
         $data = Pembayaran::select([
             'pembayaran.*',
-        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('status','=', 1);
+        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('status','=', 'dibayar');
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 
@@ -414,7 +414,7 @@ class PembayaranController extends Controller
 
         $data = Pembayaran::select([
             'pembayaran.*',
-        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('status','=', 0);
+        ])->orderBy($orderBy, $request->input('order.0.dir'))->where('status','!=', 'dibayar');
 
         $datatahun = Pembayaran::distinct()->pluck('tahun_akademik');
 

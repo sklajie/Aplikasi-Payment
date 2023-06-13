@@ -531,10 +531,12 @@
         "targets": 14,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          if (row.status == 1) {
+          if (row.status == 'dibayar') {
                   return '<span style="color: blue;">Dibayar</span>';
+              } else if (row.status == 'menunggu_pembayaran') {
+                  return  '<span style="color: orange;">Menunggu Pembayaran</span>';
               } else {
-                  return  '<span style="color: red;">Belum Dibayar</span>';
+                return  '<span style="color: red;">Belum Dibayar</span>';
               }
         }
       },

@@ -39,11 +39,17 @@ class PembayaranExport implements FromQuery, WithHeadings, WithMapping
             'prodi',
             'amount',
             'date',
+            'status'
         ];
     }
     
     public function map($pembayaran): array
     {
+        if ($pembayaran->status == 'dibayar') {
+            $status = 'lunas';
+        } else {
+            $status = 'belum lunas';
+        }
         return [
             $pembayaran->kategori_pembayaran,
             $pembayaran->nama,
@@ -56,6 +62,7 @@ class PembayaranExport implements FromQuery, WithHeadings, WithMapping
             $pembayaran->prodi,
             $pembayaran->amount,
             $pembayaran->date,
+            $status
         ];
     }
 }

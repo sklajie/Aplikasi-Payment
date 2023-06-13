@@ -13,7 +13,7 @@
             <div class="section-body">
             <div class="row">
             <div class="col-12 mt-3 mb-3">      
-                <a href="{{url('')}}/pembayaran/download_pdf/{{$invoice->id}}" class="btn btn-sm btn-primary" id="btn_print"><i class="fas fa-print"></i> Print Invoice</a>
+                <a target="blank" href="{{url('')}}/pembayaran/download_pdf/{{$invoice->id}}" class="btn btn-sm btn-primary" id="btn_print"><i class="fas fa-print"></i> Print Invoice</a>
             </div>
             <div class="col-12" id="area_print">
             <div class="card">

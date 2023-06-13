@@ -231,26 +231,33 @@ class PembayaranController extends Controller
 
     public function store(Request $request)
     {
+        
 
         $request->validate([
             'nama' => 'required',
-            'va' => 'required|unique',
             'email' => 'required',
-            'amount' => 'required',
+            'phone' => 'required',
+            'va' => 'required|unique:pembayaran,va',
             'kategori_pembayaran' => 'required',
+            'amount' => 'required',
+            'address' => 'required',
+            'status' => 'required',
         ]);
 
-        $pembayaran = new Pembayaran;
-        $pembayaran->nama = $request->name;
-        $pembayaran->nim = $request->nim;
-        $pembayaran->phone = $request->phone;
-        $pembayaran->address = $request->address;
-        $pembayaran->email = $request->email;
-        $pembayaran->amount = $request->amount;
-        $pembayaran->va = $request->va;
-        $pembayaran->va = $request->va;
-        $pembayaran->kategori_pembayaran = $request->kategori_pembayaran;
-        $pembayaran->save();
+        Pembayaran::create([
+            'kategori_pembayaran' => $request->kategori_pembayaran,
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            'semester' => $request->semester,
+            'email' => $request->email,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'tahun_akademik' => $request->tahun_akademik,
+            'va' => $request->va,
+            'prodi' => $request->prodi,
+            'status' => 'belum_dibayar',
+            'amount' => $request->amount,
+        ]);
 
         return redirect()->back()->with('Success', 'Data Berhasil Ditambahkan');
     }
@@ -594,7 +601,7 @@ class PembayaranController extends Controller
 
                 $tahunsekarang = date('Y');
 
-                $status_value = ($data_invoice['bayar_status'] == "lunas") ? 1 : 0;
+                $status_value = ($data_invoice['bayar_status'] == "lunas") ? 'dibayar' : 'belum_dibayar';
 
                 $no_va =  $data_invoice['mahasiswa_nim'].$semester;
                 

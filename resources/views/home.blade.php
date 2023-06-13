@@ -206,9 +206,9 @@
         // Proses data dan konversi ke presentasi
         let stats = data.map(item => {
             let percentage = ((item.count / totalCount) * 100).toFixed(2);
-            if (item.status === 0) {
+            if (item.status != 'dibayar') {
                 return "Belum Lunas (" + percentage + "%)";
-            } else {
+            } else{
                 return 'Lunas (' + percentage + "%)";
             }
         });

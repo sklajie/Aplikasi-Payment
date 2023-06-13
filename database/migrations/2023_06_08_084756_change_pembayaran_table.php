@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('activeDate')->nullable()->change();
             $table->string('inactiveDate')->nullable()->change();
             $table->string('date')->nullable()->change();
+            $table->string('prodi')->nullable()->change();
+            $table->string('semester')->nullable()->change();
+            $table->string('tahun_akademik')->nullable()->change();
+            $table->string('nim')->nullable()->change();
         });
     }
 

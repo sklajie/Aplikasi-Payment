@@ -17,10 +17,10 @@ class DashboardController extends Controller
         $userall = user::all();
         $pembayaran = pembayaran::select( DB::raw("count(id) as countpembayaran"))->get();
         $pembayaranall = pembayaran::all();
-        $lunas = pembayaran::select( DB::raw("count(id) as countlunas"))->where('status', 1)->get();
-        $lunasall = pembayaran::select('id')->where('status', 1)->get();
-        $belumlunas = pembayaran::select( DB::raw("count(id) as countbelumlunas"))->where('status', 0)->get();
-        $belumlunasall = pembayaran::select('id')->where('status', 0)->get();
+        $lunas = pembayaran::select( DB::raw("count(id) as countlunas"))->where('status', 'dibayar')->get();
+        $lunasall = pembayaran::select('id')->where('status', 'dibayar')->get();
+        $belumlunas = pembayaran::select( DB::raw("count(id) as countbelumlunas"))->where('status', '!=' ,'dibayar')->get();
+        $belumlunasall = pembayaran::select('id')->where('status','!=', 'dibayar')->get();
 
         $semesterOptions = Pembayaran::distinct('semester')->pluck('semester');
 
@@ -36,7 +36,7 @@ class DashboardController extends Controller
         if ($semester) {
             $query->where('semester', $semester);
         }
-        $data = $query->select('status', DB::raw("COUNT(status) as count"))->groupBy('status')->get();
+        $data = $query->select('status', DB::raw("COUNT(status) as count"))->groupBy('status' )->get();
         $dataSemester = Pembayaran::distinct('semester')->pluck('semester');
         
         return view('home', compact('title', 'data', 'tahunAkademik', 'tahunAkademikOptions', 'semester', 'semesterOptions','user','userall','lunas','lunasall','belumlunas','belumlunasall','pembayaran','pembayaranall'));

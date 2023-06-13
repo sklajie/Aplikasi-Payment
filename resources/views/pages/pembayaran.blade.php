@@ -318,17 +318,25 @@
               <input type="text" name="tahun_akademik" class="form-control"><br>
             </div>
             <div class="col-md-12">
+              <label>Semester<small class="text-danger">*</small></label>
+              <input type="text" name="semester" class="form-control"><br>
+            </div>
+            <div class="col-md-12">
+              <label>Amount<small class="text-danger">*</small></label>
+              <input type="text" name="amount" class="form-control"><br>
+            </div>
+            <div class="col-md-12">
               <label>Kategori Pembayaran <small class="text-danger">*</small></label>
               {{-- <select name="kategori_pembayaran" id="">
                 @foreach ($data_kategori as $item)
                     <option value="{{ $item->kategori_pembayaran }}">{{ $item->kategori_pembayaran }}</option>
                 @endforeach
               </select> --}}
-              <input type="" name="inactiveDate" class="form-control" required><br>
+              <input type="" name="kategori_pembayaran" class="form-control" required><br>
             </div>
             <div class="col-md-12">
               <label>VA <small class="text-danger">*</small></label>
-              <input type="number" name="va" class="form-control" required><br>
+              <input type="number" name="va" id="va" class="form-control" required><br>
             </div>
             <div class="col-md-12">
               <label>Alamat <small class="text-danger">*</small></label>
@@ -338,7 +346,8 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Tambahkan</button>
+          <input type="submit" class="btn btn-primary" value="Tambahkan">
+          {{-- <button type="submit" class="btn btn-primary">Tambahkan</button> --}}
         </div>
       </form>
     </div>

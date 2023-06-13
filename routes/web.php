@@ -54,6 +54,8 @@ Route::get('/siakad/invoice/{nim}', function(){
     return view('siakad.table_pembayaran', compact('title'));
 });
 
+Route::get('/siakad/invoice/{id}', 'App\Http\Controllers\PaymentController@invoice');
+
 //pembayaran_lainnya
 Route::get('/pembayaran_lainnya','App\Http\Controllers\PembayaranLainnyaController@indexShowList')->middleware(['auth', 'adminkeuangan']);
 Route::any('/pembayaran_lainnya/data','App\Http\Controllers\PembayaranLainnyaController@dataShowList')->middleware(['auth', 'adminkeuangan']);

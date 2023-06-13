@@ -10,9 +10,11 @@ $user = User::all();
 
 class PaymentController extends Controller
 {
-    public function invoicePayment()
-    {
-        
+    public function invoice($id){
+        $title = 'Invoice';
+        $invoice = Pembayaran::find($id);
+        return view('pdf.invoice', compact('title','invoice'));
+
     }
     
     public function index(Request $request, $nim)

@@ -46,7 +46,7 @@
 													<td>{{ $data->status }}</td>
 													<td>{{ $data->amount }}</td>
 													<td>
-														<a href="{{ url('') }}/pembayaran/invoice/{{ $data->id }}" class="btn btn-primary btn-xs"><i class="">&nbsp;Cek Invoice</i></a>
+														<a href="{{ url('') }}/siakad/invoice/{{ $data->id }}" class="btn btn-primary btn-xs"><i class="">&nbsp;Cek Invoice</i></a>
 													</td>
 												</tr>
 												@endforeach

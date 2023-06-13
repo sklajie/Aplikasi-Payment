@@ -569,6 +569,7 @@ class PembayaranController extends Controller
                         'phone_mahasiswa' => $items['mahasiswa_handphone'],
                         'tahun_akademik_mahasiswa' => $tahunakademik,
                         'prodi_mahasiswa' => $items['nama_prodi'],
+                        'user_id' => '',
                     ]);
                 }else{
                     continue;

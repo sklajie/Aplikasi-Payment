@@ -49,10 +49,10 @@ Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@stor
 //siakad
 // Route::get('/siakad/invoice/{nim}', 'App\Http\Controllers\PaymentController@index');
 
-Route::get('/siakad/invoice/{nim}', function(){
-    $title = 'Pembayaran Siakad';
-    return view('siakad.table_pembayaran', compact('title'));
-});
+// Route::get('/siakad/invoice/{nim}', function(){
+//     $title = 'Pembayaran Siakad';
+//     return view('siakad.table_pembayaran', compact('title'));
+// });
 
 Route::get('/siakad/invoice/{id}', 'App\Http\Controllers\PaymentController@invoice');
 

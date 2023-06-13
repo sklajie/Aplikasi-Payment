@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function () {
 
 Route::prefix('data')->group(function () {
     Route::post('/payment', [PaymentController::class, 'processPayment']);
+    Route::get('/payment/{id}', [PaymentController::class, 'invoice']);
 });
 
 Route::prefix('v1/dev')->group(function () {

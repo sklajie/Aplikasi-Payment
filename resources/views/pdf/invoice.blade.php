@@ -69,8 +69,8 @@
                         <table class="table table-bordered  table-striped">
                             <thead>
                                 <tr>
-                                    <th style="width: 80%; font-size:20px;">Item</th>
-                                    <th style="text-align: right; font-size:20px;">Sub Total</th>
+                                    <th style="width: 80%; font-size:15px;">Item</th>
+                                    <th style="text-align: right; font-size:15px;">Sub Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,10 +86,12 @@
                             </tbody>
                         </table>
                         <div class="mb-2" style="text-align:right; font-size:15px;">
-                            @if($invoice->status == 0)
-                                <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span> 
-                            @elseif($invoice->status == 1)
-                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Lunas</span>
+                            @if($invoice->status == 'dibayar')
+                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Dibayar</span>
+                            @elseif($invoice->status == 'menunggu_pembayaran')
+                                <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
+                            @elseif($invoice->status == 'belum_dibayar')
+                                <span class="badge bg-dark" style="width: 155px; height: 25px; color:white; font-size:13px;">Belum Dibayar</span>
                             @endif
                         </div>
                         </div>

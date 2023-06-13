@@ -5,20 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Pembayaran;
 
-$user = User::all();
+
 
 class PaymentController extends Controller
 {
-    public function invoice($id){
-        $title = 'Invoice';
-        $invoice = Pembayaran::find($id);
-        return view('pdf.invoice', compact('title','invoice'));
-
-    }
+    
     
     public function index(Request $request, $nim)
     {
+        $user = User::all();
         return view('siakad.table_pembayaran')->with('user', $user);
     }
 
@@ -47,5 +44,10 @@ class PaymentController extends Controller
                 'message' => 'Data pembayaran tidak ditemukan'
             ], 404);
         }
+    }
+    public function invoice($id){
+        $title = 'Invoice';
+        $invoice = pembayaran::find($id);
+        return view('siakad.invoice', compact('title','invoice'));
     }
 }

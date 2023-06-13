@@ -30,109 +30,124 @@ class BpiNotificationController extends Controller
             ]);
 
             DB::beginTransaction();
-    
+
             // Dapatkan data va dari notifikasi
             $va = $data['va'];
-    
+
             // Cari entri pembayaran_lainnya yang sesuai dengan regis_number yang cocok dengan va
             $pembayaranLainnya = PembayaranLainnya::where('regis_number', $va)->first();
 
-            if ($data['message'] == 'Payment Sukses') {
-                $updatestatus = PembayaranLainnya::where('regis_number', $va)->first();
-            
-                if ($updatestatus) {
-                    // Jika data ditemukan di tabel PembayaranLainnya
-                    $updatestatus->paid = '1';
-                    $updatestatus->paid_date = $data['date'];
-                    $updatestatus->save();
-                } else {
-                    // Jika data tidak ditemukan di tabel PembayaranLainnya, cek di tabel Pembayaran
-                    $updatestatus = Pembayaran::where('regis_number', $va)->first();
-            
-                    if ($updatestatus) {
-                        $updatestatus->paid = '1';
-                        $updatestatus->paid_date = $data['date'];
-                        $updatestatus->save();
-                    }
+            $pembayaran = Pembayaran::where('va', $va)->first();
+
+            if ($pembayaranLainnya) {
+                if ($data['message'] == 'Payment Sukses') {
+                    $pembayaranLainnya->paid = '1';
+                    $pembayaranLainnya->paid_date = now();
+                    $pembayaranLainnya->save();
                 }
-            }
-    
-            if (!$pembayaranLainnya) {
+
+                // Simpan notifikasi dalam tabel notifications
+                $notification = Notification::create([
+                    'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                    'message' => $data['message'],
+                    'data' => json_encode($request->except(['va', 'message'])),
+                ]);
+
+                DB::commit();
+
+                // Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya
+                $user = $pembayaranLainnya->histori->user;
+                $userId = $user->id;
+                $endpoint = $user->endpoint;
+
+                // Kirim notifikasi ke endpoint
+                // Formatkan data notifikasi sesuai dengan kebutuhan endpoint
+                $data = [
+                    'message' => $notification->message,
+                    'data' => json_decode($notification->data, true),
+                ];
+
+                // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
+                $response = http::post($endpoint, $data);
+
+                // Menyimpan data notifikasi ke histori
+                $histori = Histori::create([
+                    'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                    'method' => $request->method(),
+                    'endpoint' => $request->fullUrl(),
+                    'mode' => 'sandbox',
+                    'request_body' => json_encode($data),
+                    'respons' => $response->body(),
+                    'user_id' => $userId,
+                ]);
+
+                DB::commit();
+
+                // Mengirim respons
                 return response()->json([
                     'timestamp' => date('m/d/Y, h:i:s A'),
-                    'success' => false,
-                    'message' => 'virtual account salah.',
+                    'success' => $response->getStatusCode() != 200 ? false : true,
+                    'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
+                ]);
+            } elseif ($pembayaran) {
+                if ($data['message'] == 'Payment Sukses') {
+                    $pembayaran->status = '1';
+                    $pembayaran->date = now();
+                    $pembayaran->save();
+                }
+
+                // Simpan notifikasi dalam tabel notifications
+                $notification = Notification::create([
+                    'pembayaran_lainnya_id' => $pembayaran->id,
+                    'message' => $data['message'],
+                    'data' => json_encode($request->except(['va', 'message'])),
+                ]);
+
+                DB::commit();
+
+                // Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran
+                $user = $pembayaran->histori->user;
+                $userId = $user->id;
+                $endpoint = "";
+
+                // Kirim notifikasi ke endpoint
+                // Formatkan data notifikasi sesuai dengan kebutuhan endpoint
+                $data = [
+                    'message' => $notification->message,
+                    'data' => json_decode($notification->data, true),
+                ];
+
+                // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
+                $response = http::post($endpoint, $data);
+
+                // Menyimpan data notifikasi ke histori
+                $histori = Histori::create([
+                    'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                    'method' => $request->method(),
+                    'endpoint' => $request->fullUrl(),
+                    'mode' => 'sandbox',
+                    'request_body' => json_encode($data),
+                    'respons' => $response->body(),
+                    'user_id' => $userId,
+                ]);
+
+                DB::commit();
+
+                // Mengirim respons
+                return response()->json([
+                    'timestamp' => date('m/d/Y, h:i:s A'),
+                    'success' => $response->getStatusCode() != 200 ? false : true,
+                    'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
                 ]);
             }
-    
-            // Simpan notifikasi dalam tabel notifications
-            $notification = Notification::create([
-                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
-                'message' => $data['message'],
-                'data' => json_encode($request->except(['va', 'message'])),
-            ]);
-            DB::commit();
-
-    
-            //Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran_lainnya 
-
-            DB::beginTransaction();
-            
-            $user = $pembayaranLainnya->histori->user;
-            $userId = $user->id;
-            $endpoint = $user->endpoint;
-    
-            // Kirim notifikasi ke endpoint
-            // Formatkan data notifikasi sesuai dengan kebutuhan endpoint
-            $data = [
-                'message' => $notification->message,
-                'data' => json_decode($notification->data, true),
-            ];
-
-            //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-
-            $response = http::post($endpoint, [
-                'json' => $data,
-            ]);
-
-            $method = $request->method();
-            $endpointapi = $request->fullUrl();
-            $endpointAPI = strval($endpointapi);
-    
-
-            //Menyimpan data notifikasi ke histori
-            $histori = Histori::create([
-                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
-                'method' => $method,
-                'endpoint' => $endpointAPI ,
-                'mode' => 'production',
-                'request_body' => json_encode($data),
-                'respons' => $response->body(),
-                'user_id' => $userId,
-            ]);
-
-            DB::commit();
-            // Mengirim respons
-            return response()->json([
-                'timestamp' => date('m/d/Y, h:i:s A'),
-                'success' => $response->getStatusCode() != 200 ? false : true,
-                'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
-            ]);
         } catch (\Exception $e) {
-
             DB::rollback();
 
-            
-            $method = $request->method();
-            $endpointapi = $request->fullUrl();
-            $endpointAPI = strval($endpointapi);
-    
-
-            //Menyimpan data notifikasi ke histori
+            // Menyimpan data notifikasi ke histori
             $histori = Histori::create([
                 'pembayaran_lainnya_id' => $pembayaranLainnya->id,
-                'method' => $method,
-                'endpoint' => $endpointAPI ,
+                'method' => $request->method(),
+                'endpoint' => $request->fullUrl(),
                 'mode' => 'production',
                 'request_body' => json_encode($data),
                 'respons' => $response->body(),
@@ -147,4 +162,5 @@ class BpiNotificationController extends Controller
             ], 500);
         }
     }
+
 }

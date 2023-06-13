@@ -11,7 +11,8 @@ use Illuminate\Support\Str;
 class Pembayaran extends Model
 {
     public $table = 'pembayaran';
-    protected $guarded = [''];
+    protected $guarded = [];
+
 
     
      /**

@@ -60,7 +60,7 @@ class PembayaranController extends Controller
 
             $pembayaran->activeDate = $active_date;
             $pembayaran->inactiveDate = $inactive_date;
-            $pembayaran->status = 'menunggu pembayaran';
+            $pembayaran->status = 'menunggu_pembayaran';
             $pembayaran->save();
         }
 
@@ -229,22 +229,22 @@ class PembayaranController extends Controller
         return redirect()->back()->with('success', 'Update perpanjang masa berlaku VA berhasil dilakukan.');
     }
 
-    public function store(Request $request)
+    public function buatTagihan(Request $request)
     {
         
 
-        $request->validate([
-            'nama' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'va' => 'required|unique:pembayaran,va',
-            'kategori_pembayaran' => 'required',
-            'amount' => 'required',
-            'address' => 'required',
-            'status' => 'required',
-        ]);
+        // $request->validate([
+        //     'nama' => 'required',
+        //     'email' => 'required',
+        //     'phone' => 'required',
+        //     'va' => 'required|unique:pembayaran,va',
+        //     'kategori_pembayaran' => 'required',
+        //     'amount' => 'required',
+        //     'address' => 'required',
+        //     'status' => 'required',
+        // ]);
 
-        Pembayaran::create([
+        Pembayaran::Create([
             'kategori_pembayaran' => $request->kategori_pembayaran,
             'nama' => $request->nama,
             'nim' => $request->nim,

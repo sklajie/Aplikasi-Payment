@@ -43,7 +43,13 @@
 													<td>{{ $data->nim }}</td>
 													<td>{{ $data->semester }}</td>
 													<td>{{ $data->va }}</td>
-													<td>{{ $data->status }}</td>
+													<td>@if ($data->status == 'menunggu_pembayaran')
+															Menunggu Pembayaran
+														@elseif ($data->status == 'dibayar')
+															Sudah Dibayar
+														@elseif ($data->status == 'belum_dibayar')
+															Belum Dibayar
+														@endif</td>
 													<td>{{ $data->amount }}</td>
 													<td>
 														<a href="{{ url('') }}/siakad/invoice/{{ $data->id }}" class="btn btn-primary btn-xs"><i class="">&nbsp;Cek Invoice</i></a>

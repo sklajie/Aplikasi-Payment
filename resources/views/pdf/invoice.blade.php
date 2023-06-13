@@ -31,11 +31,11 @@
                             <div class="mb-2" style="font-size:20px;">Tanggal : 21agustus</div>
                             @if($invoice->status == 0)
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-warning" style="width: 150px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
+                                <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
                             </div>
                             @elseif($invoice->status == 1)
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-success" style="width: 150px; height: 25px; color:white; font-size:13px;">Lunas</span>
+                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Lunas</span>
                             </div>
                             @endif
 
@@ -71,20 +71,21 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{$invoice->ketegori_pembayaran}}</td>
-                                    <td style="text-align: right; font-size:20px;">{{$invoice->amount}}</td>
+                                    
+                                    <td style="font-size:15px;">{{$invoice->kategori_pembayaran}}</td>
+                                    <td style="text-align: right; font-size:15px;">{{$invoice->amount}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight:bold; text-align: right; font-size:20px;">Total</td>
-                                    <td style="font-weight:bold; text-align: right; font-size:20px;">{{$invoice->amount}}</td>
+                                    <td style="font-weight:bold; text-align: right; font-size:15px;">Total</td>
+                                    <td style="font-weight:bold; text-align: right; font-size:15px;">{{$invoice->amount}}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="mb-2" style="text-align:right; font-size:15px;">
                             @if($invoice->status == 0)
-                                <span class="badge bg-warning" style="width: 150px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span> 
-                            @else
-                                <span class="badge bg-success" style="width: 150px; height: 25px; color:white; font-size:13px;">Lunas</span>
+                                <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span> 
+                            @elseif($invoice->status == 1)
+                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Lunas</span>
                             @endif
                         </div>
                         </div>

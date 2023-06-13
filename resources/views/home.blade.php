@@ -110,30 +110,37 @@
 							<div class="card-header">
 								<div class="card-title">Presentase Pelunasan</div>
 							</div>
-							<div class="card-body">
-                                <div class="row">
-                                    <div class="col md-5">
-                                        <label for="tahun_akademik">Tahun Akademik</label>
-                                        <select id="tahun_akademik" class="form-control filter" onchange="applyFilter()">
-                                            <option value="">Semua</option>
-                                            @foreach($tahunAkademikOptions as $tahunAkademikOption)
-                                            <option value="{{ $tahunAkademikOption }}" {{ $tahunAkademikOption == $tahunAkademik ? 'selected' : '' }}>
-                                                {{ $tahunAkademikOption }}</option> 
-                                            @endforeach
-                                        </select>
+							<form action="{{ url('/') }}" method="GET" id="filterForm">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col md-5">
+                                            <label for="tahun_akademik">Tahun Akademik</label>
+                                            <select id="tahun_akademik" class="form-control filter">
+                                                <option value="">Semua</option>
+                                                @foreach($tahunAkademikOptions as $tahunAkademikOption)
+                                                <option value="{{ $tahunAkademikOption }}" {{ $tahunAkademikOption == $tahunAkademik ? 'selected' : '' }}>
+                                                    {{ $tahunAkademikOption }}</option> 
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col md-5">
+                                            <label for="semester">Semester</label>
+                                            <select id="semester" class="form-control filter">
+                                                <option value="">Semua</option>
+                                                @foreach($semesterOptions as $semesterOption)
+                                                <option value="{{ $semesterOption }}" {{ $semesterOption == $semester ? 'selected' : '' }}>
+                                                    {{ $semesterOption }}</option>
+                                                @endforeach
+                                            </select>    
+                                        </div>
                                     </div>
-                                    <div class="col md-5">
-                                        <label for="semester">Semester</label>
-                                        <select id="semester" class="form-control filter" onchange="applyFilter()">
-                                            <option value="">Semua</option>
-                                            @foreach($semesterOptions as $semesterOption)
-                                            <option value="{{ $semesterOption }}" {{ $semesterOption == $semester ? 'selected' : '' }}>
-                                                {{ $semesterOption }}</option>
-                                            @endforeach
-                                        </select>    
+                                    <div class="row mt-3">
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-primary" onclick="applyFilter()">Terapkan</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                             <div class="chart-container">
                                 <center>
                                     <canvas id="pieChart" width="400" height="400"></canvas>
@@ -154,23 +161,11 @@
 <script>
     // Fungsi untuk mengirim permintaan AJAX dan memperbarui chart
     function applyFilter() {
-        let tahunAkademik = $('#tahun_akademik').val();
-        let semester = $('#semester').val();
-
-        $.ajax({
-            url: '/',
-            type: 'GET',
-            data: {
-                tahun_akademik: tahunAkademik,
-                semester: semester
-            },
-            success: function(response) {
-                updateCharts(response);
-            },
-            error: function() {
-                console.error('Terjadi kesalahan saat memuat data');
-            }
-        });
+        
+        var tahun_akademik = document.getElementById("tahun_akademik").value;
+        var semester = document.getElementById("semester").value;
+        var url = "/?tahun_akademik=" + tahun_akademik + "&semester=" + semester;
+        window.location.href = url;
     }
 
     function updateCharts(data) {

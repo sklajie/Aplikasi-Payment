@@ -14,7 +14,7 @@
                 <a href="{{url('')}}/pembayaran/download_pdf/{{$invoice->id}}" class="btn btn-sm btn-primary" id="btn_print"><i class="fas fa-print"></i> Print Invoice</a>
             </div>
             <div class="col-12" id="area_print">
-                @if($invoice->invoiceNumber == null && $invoice->status == 0)
+                @if($invoice->status == 0)
                 <div class="alert alert-danger">
                     <h3 style="color: red;">Pembayaran belum diaktivasi. Hubungi Admin Keuangan atau Humas untuk melakukan pengaktifan virtual account</a></p>
                 </div>
@@ -32,13 +32,17 @@
                             {{$invoice->invoiceNumber}}
                             </div>
                             <div class="mb-2" style="font-size:20px;">Tanggal : 21agustus</div>
-                            @if($invoice->status == 0)
+                            @if($invoice->status == 'dibayar')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-warning" style="width: 150px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
+                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Lunas</span>
                             </div>
-                            @elseif($invoice->status == 1)
+                            @elseif($invoice->status == 'menunggu pembayaran')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-success" style="width: 150px; height: 25px; color:white; font-size:13px;">Lunas</span>
+                                <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
+                            </div>
+                            @elseif($invoice->status == 'belum dibayar')
+                            <div class="mb-2" style="font-size:15px;">Status :
+                                <span class="badge bg-dark" style="width: 155px; height: 25px; color:white; font-size:13px;">Belum Diaktivasi</span>
                             </div>
                             @endif
 

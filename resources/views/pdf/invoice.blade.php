@@ -29,17 +29,17 @@
                             {{$invoice->invoiceNumber}}
                             </div>
                             <div class="mb-2" style="font-size:20px;">Tanggal : 21agustus</div>
-                            @if($invoice->status == 1)
+                            @if($invoice->status == 'dibayar')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Lunas</span>
+                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Dibayar</span>
                             </div>
-                            @elseif($invoice->invoiceNumber != null && $invoice->status == 0)
+                            @elseif($invoice->status == 'menunggu_pembayaran')
                             <div class="mb-2" style="font-size:15px;">Status :
                                 <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
                             </div>
-                            @elseif($invoice->invoiceNumber == null)
+                            @elseif($invoice->status == 'belum_dibayar')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-dark" style="width: 155px; height: 25px; color:white; font-size:13px;">Belum Diaktivasi</span>
+                                <span class="badge bg-dark" style="width: 155px; height: 25px; color:white; font-size:13px;">Belum Dibayar</span>
                             </div>
                             @endif
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\DokumentasiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PaymentController;
 use App\Services\BillingApi;
 
 use App\Http\Controllers\TransaksiPmbController;
@@ -46,7 +47,12 @@ Route::get('/pembayaran/invoice/{id}', 'App\Http\Controllers\PembayaranControlle
 Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@store');
 
 //siakad
-Route::get('/siakad/invoice/{nim}', 'App\Http\Controllers\PaymentController@invoice');
+// Route::get('/siakad/invoice/{nim}', 'App\Http\Controllers\PaymentController@index');
+
+Route::get('/siakad/invoice/{nim}', function(){
+    $title = 'Pembayaran Siakad';
+    return view('siakad.table_pembayaran', compact('title'));
+});
 
 //pembayaran_lainnya
 Route::get('/pembayaran_lainnya','App\Http\Controllers\PembayaranLainnyaController@indexShowList')->middleware(['auth', 'adminkeuangan']);
@@ -80,9 +86,3 @@ Route::get('/log_transaksi_dev', 'App\Http\Controllers\PembayaranLainnyaDevContr
 Route::any('/log_transaksi_dev/data', 'App\Http\Controllers\PembayaranLainnyaDevController@data');
 Route::any('/log_transaksi_dev/detail/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@showDetail');
 Route::any('/log_transaksi_dev/kirim_ulang_notif/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@kirimulang');
-
-
-Route::get('/siakad', function(){
-    $title = 'Pembayaran Siakad';
-    return view('siakad.table_pembayaran', compact('title'));
-});

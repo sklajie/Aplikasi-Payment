@@ -229,22 +229,22 @@ class PembayaranController extends Controller
         return redirect()->back()->with('success', 'Update perpanjang masa berlaku VA berhasil dilakukan.');
     }
 
-    public function store(Request $request)
+    public function buatTagihan(Request $request)
     {
         
 
-        $request->validate([
-            'nama' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'va' => 'required|unique:pembayaran,va',
-            'kategori_pembayaran' => 'required',
-            'amount' => 'required',
-            'address' => 'required',
-            'status' => 'required',
-        ]);
+        // $request->validate([
+        //     'nama' => 'required',
+        //     'email' => 'required',
+        //     'phone' => 'required',
+        //     'va' => 'required|unique:pembayaran,va',
+        //     'kategori_pembayaran' => 'required',
+        //     'amount' => 'required',
+        //     'address' => 'required',
+        //     'status' => 'required',
+        // ]);
 
-        Pembayaran::create([
+        Pembayaran::Create([
             'kategori_pembayaran' => $request->kategori_pembayaran,
             'nama' => $request->nama,
             'nim' => $request->nim,
@@ -569,6 +569,7 @@ class PembayaranController extends Controller
                         'phone_mahasiswa' => $items['mahasiswa_handphone'],
                         'tahun_akademik_mahasiswa' => $tahunakademik,
                         'prodi_mahasiswa' => $items['nama_prodi'],
+                        'user_id' => '',
                     ]);
                 }else{
                     continue;

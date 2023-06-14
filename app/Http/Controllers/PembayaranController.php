@@ -151,7 +151,7 @@ class PembayaranController extends Controller
 
             $pembayaran->activeDate = $active_date;
             $pembayaran->inactiveDate = $inactive_date;
-            $pembayaran->status = 'menunggu pembayaran';
+            $pembayaran->status = 'menunggu_pembayaran';
             $pembayaran->save();
         }
 
@@ -173,8 +173,8 @@ class PembayaranController extends Controller
                 'items' => [
                     [
                         'description'=>'Pembayaran UKT',
-                        'unitPrice' =>  $pembayaran->unitPrice,
-                        'qty'=>  $pembayaran->qty,
+                        'unitPrice' =>  $pembayaran->amount,
+                        'qty'=>  1,
                         'amount'=>  $pembayaran->amount
                     ]
                 ],

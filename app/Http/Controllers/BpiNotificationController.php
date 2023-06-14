@@ -79,7 +79,7 @@ class BpiNotificationController extends Controller
                     'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                     'method' => $request->method(),
                     'endpoint' => $request->fullUrl(),
-                    'mode' => 'sandbox',
+                    'mode' => 'production',
                     'request_body' => json_encode($data),
                     'respons' => $response->body(),
                     'user_id' => $userId,
@@ -128,10 +128,10 @@ class BpiNotificationController extends Controller
 
                 // Menyimpan data notifikasi ke histori
                 $histori = Histori::create([
-                    'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                    'pembayaran_id' => $pembayaranLainnya->id,
                     'method' => $request->method(),
                     'endpoint' => $request->fullUrl(),
-                    'mode' => 'sandbox',
+                    'mode' => 'production',
                     'request_body' => json_encode($data),
                     'respons' => $response->body(),
                     'user_id' => $userId,

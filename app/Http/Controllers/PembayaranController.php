@@ -60,7 +60,7 @@ class PembayaranController extends Controller
 
             $pembayaran->activeDate = $active_date;
             $pembayaran->inactiveDate = $inactive_date;
-            $pembayaran->status = 'menunggu pembayaran';
+            $pembayaran->status = 'menunggu_pembayaran';
             $pembayaran->save();
         }
 

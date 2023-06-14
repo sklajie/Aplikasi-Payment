@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Models\Pembayaran;
+use Illuminate\Support\Carbon;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -69,4 +72,18 @@ class Kernel extends HttpKernel
         'adminapps' => \App\Http\Middleware\AdminApps::class,
         'adminkeuangan' => \App\Http\Middleware\AdminKeuangan::class,
     ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->call(function () {
+            // Mendapatkan tanggal saat ini
+            $now = Carbon::now();
+
+            // Mengubah status jika tanggal terlewat
+            Pembayaran::where('inactiveDate', '<', $now)
+                ->where('status', 'menunggu_pembayaran')
+                ->update(['status' => 'va_nonaktif']);
+        })->daily();
+    }
+
 }

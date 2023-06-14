@@ -569,7 +569,6 @@ class PembayaranController extends Controller
                         'phone_mahasiswa' => $items['mahasiswa_handphone'],
                         'tahun_akademik_mahasiswa' => $tahunakademik,
                         'prodi_mahasiswa' => $items['nama_prodi'],
-                        'user_id' => '',
                     ]);
                 }else{
                     continue;
@@ -602,7 +601,7 @@ class PembayaranController extends Controller
 
                 $tahunsekarang = date('Y');
 
-                $status_value = ($data_invoice['bayar_status'] == "lunas") ? 'dibayar' : 'belum_dibayar';
+                $status_value = ($data_invoice['bayar_status'] == "lunas") ? 'dibayar' : 'va_nonaktif';
 
                 $no_va =  $data_invoice['mahasiswa_nim'].$semester;
                 
@@ -624,7 +623,9 @@ class PembayaranController extends Controller
                         'prodi' => $data->prodi_mahasiswa,
                         'status' => $status_value,
                         'amount' => $data_invoice['bayar_nilai'],
-                        'date' => $data_invoice['bayar_tanggal']
+                        'date' => $data_invoice['bayar_tanggal'],
+                        'user_id' => '',
+
                     ]);
 
                 }else{

@@ -194,7 +194,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", function(event) {
-        // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
+
+
         let data = {!! json_encode($data) !!};
 
         // Ambil data semester dari elemen HTML
@@ -206,13 +207,22 @@
         // Proses data dan konversi ke presentasi
         let stats = data.map(item => {
             let percentage = ((item.count / totalCount) * 100).toFixed(2);
-            if (item.status != 'dibayar') {
-                return "Belum Lunas (" + percentage + "%)";
-            } else{
-                return 'Lunas (' + percentage + "%)";
+            if (item.status === 'dibayar') {
+                return "Dibayar (" + percentage + "%)";
+            } else {
+                return 'Belum Dibayar (' + percentage + "%)";
             }
         });
         let count = data.map(item => item.count);
+
+        // Menggabungkan jumlah data untuk "VA Nonaktif" dan "Menunggu Pembayaran" menjadi "Belum Dibayar"
+        let belumDibayarIndex = stats.findIndex(label => label.includes("Belum Dibayar"));
+        if (belumDibayarIndex !== -1) {
+            let belumDibayarCount = count.filter((_, index) => stats[index].includes("Belum Dibayar"))
+                                        .reduce((total, count) => total + count, 0);
+            stats[belumDibayarIndex] = "Belum Dibayar (" + ((belumDibayarCount / totalCount) * 100).toFixed(2) + "%)";
+            count.splice(belumDibayarIndex, 1, belumDibayarCount);
+        }
 
         // Buat pie chart
         let ctxPie = document.getElementById('pieChart').getContext('2d');
@@ -234,6 +244,49 @@
                 maintainAspectRatio: false
             }
         });
+
+
+
+        // Ambil data dari backend melalui Laravel (contoh menggunakan JSON)
+        // let data = {!! json_encode($data) !!};
+
+        // // Ambil data semester dari elemen HTML
+        // let semesterOptions = {!! json_encode($semesterOptions) !!};
+
+        // // Hitung total jumlah data
+        // let totalCount = data.reduce((total, item) => total + item.count, 0);
+
+        // // Proses data dan konversi ke presentasi
+        // let stats = data.map(item => {
+        //     let percentage = ((item.count / totalCount) * 100).toFixed(2);
+        //     if (item.status != 'dibayar') {
+        //         return "Belum Lunas (" + percentage + "%)";
+        //     } else{
+        //         return 'Lunas (' + percentage + "%)";
+        //     }
+        // });
+        // let count = data.map(item => item.count);
+
+        // // Buat pie chart
+        // let ctxPie = document.getElementById('pieChart').getContext('2d');
+        // let pieChart = new Chart(ctxPie, {
+        //     type: 'pie',
+        //     data: {
+        //         labels: stats,
+        //         datasets: [{
+        //             data: count,
+        //             backgroundColor: [
+        //                 '#ffb2b2',
+        //                 'rgb(179, 255, 171)'
+        //             ],
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false
+        //     }
+        // });
 
 
         // Tambahkan event listener untuk perubahan filter

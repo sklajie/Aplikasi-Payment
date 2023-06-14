@@ -109,14 +109,17 @@
                 </div>
                 <div class="col-md-2">
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="13" checked="true">Tanggal bayar
+                    <input type="checkbox" class="tampilan" data-kolom="13"> Active date
                   </label>
                   <label>
-                    <input type="checkbox" class="tampilan" data-kolom="14" checked="true"> Status VA
+                    <input type="checkbox" class="tampilan" data-kolom="14"> Inactive date
                   </label>
-                  {{-- <label>
-                    <input type="checkbox" class="tampilan" data-kolom="15" checked="true"> Status pembayaran
-                  </label> --}}
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="15" checked="true">Tanggal bayar
+                  </label>
+                  <label>
+                    <input type="checkbox" class="tampilan" data-kolom="16" checked="true"> Status
+                  </label>
                 </div>
               </div>
               <br>
@@ -194,9 +197,10 @@
                     <th>VA</th>
                     <th>Tahun Akademik</th>
                     <th>Amount</th>
+                    <th>Active Date</th>
+                    <th>Inactive Date</th>
                     <th>Tanggal Bayar</th>
                     <th>Status</th>
-                    {{-- <th>Status Pembayaran</th> --}}
                     <th>###</th>
                   </tr>
                   </thead>
@@ -540,12 +544,26 @@
         "targets": 14,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
+          return row.date;
+        }
+      },
+      {
+        "targets": 15,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
+          return row.date;
+        }
+      },
+      {
+        "targets": 16,
+        "class":"text-nowrap",
+        "render": function(data, type, row, meta){
           if (row.status == 'dibayar') {
                   return '<span style="color: blue;">Dibayar</span>';
               } else if (row.status == 'menunggu_pembayaran') {
                   return  '<span style="color: orange;">Menunggu Pembayaran</span>';
               } else {
-                return  '<span style="color: red;">Belum Dibayar</span>';
+                return  '<span style="color: red;">VA nonaktif</span>';
               }
         }
       },
@@ -557,7 +575,7 @@
       //   }
       // },
       {
-        "targets": 15,
+        "targets": 17,
         "sortable":false,
         "render": function(data, type, row, meta){
           let tampilan = `

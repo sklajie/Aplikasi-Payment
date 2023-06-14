@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use GuzzleHttp\Client;
+use App\Models\Histori;
+use App\Models\Pembayaran;
 use App\Models\Pendaftaran;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\HistoriRequest;
 use App\Models\HistoriRespons;
-use App\Models\Histori;
 use App\Models\PembayaranLainnya;
-use App\Models\Notification;
+
 use App\Http\Clients\BsiApiClient;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
-
-use GuzzleHttp\Client;
 
 class BpiNotificationController extends Controller
 {
@@ -67,6 +69,8 @@ class BpiNotificationController extends Controller
                     'data' => json_decode($notification->data, true),
                 ];
 
+                dd($data);
+
                 // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
                 $response = http::post($endpoint, $data);
 
@@ -89,9 +93,11 @@ class BpiNotificationController extends Controller
                     'success' => $response->getStatusCode() != 200 ? false : true,
                     'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
                 ]);
+
+                //pembayaran UKT
             } elseif ($pembayaran) {
                 if ($data['message'] == 'Payment Sukses') {
-                    $pembayaran->status = '1';
+                    $pembayaran->status = 'dibayar';
                     $pembayaran->date = now();
                     $pembayaran->save();
                 }
@@ -106,9 +112,9 @@ class BpiNotificationController extends Controller
                 DB::commit();
 
                 // Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran
-                $user = $pembayaran->histori->user;
-                $userId = $user->id;
-                $endpoint = "";
+                $id_user = $pembayaran->user_id;
+                $user = User::find($id_user);
+                $endpoint = $user->endpoint;
 
                 // Kirim notifikasi ke endpoint
                 // Formatkan data notifikasi sesuai dengan kebutuhan endpoint

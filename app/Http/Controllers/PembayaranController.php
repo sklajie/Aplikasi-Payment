@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 use function PHPSTORM_META\map;
 
@@ -41,9 +43,9 @@ class PembayaranController extends Controller
         $datasemester = Pembayaran::distinct()->pluck('semester');
         return view('pages.pembayaran_dibayar' , compact('title','datatahunakademik','dataprodi','datasemester'));
     }
-    
-    public function aktivasiVA(Request $request){
 
+    public function aktivasiVA(Request $request)
+    {
         $ids = explode(',', $request->ids);
         $active_date = $request->activeDate;
         $inactive_date = $request->inactiveDate;
@@ -64,36 +66,32 @@ class PembayaranController extends Controller
             $pembayaran->save();
         }
 
-        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->join('item_pembayaran','item_pembayaran.id','=','pembayaran.item_pembayaran_id')->get();
+        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->join('item_pembayaran', 'item_pembayaran.id', '=', 'pembayaran.item_pembayaran_id')->get();
 
         $data = $pembayarans->map(function ($pembayaran) {
-
             return [
-
                 'date' => date("Y-m-d"),
-                'amount'=>  $pembayaran->amount,
+                'amount' => $pembayaran->amount,
                 'name' => $pembayaran->nama,
-                'email'=> $pembayaran->email,
-                'address'=>$pembayaran->address,
-                'va'=>(int) $pembayaran->va,
-                'phone'=>$pembayaran->phone,
-                'activeDate'=> $pembayaran->activeDate,
-                'inactiveDate'=> $pembayaran->inactiveDate,
+                'email' => $pembayaran->email,
+                'address' => $pembayaran->address,
+                'va' => (int)$pembayaran->va,
+                'phone' => $pembayaran->phone,
+                'activeDate' => $pembayaran->activeDate,
+                'inactiveDate' => $pembayaran->inactiveDate,
                 'items' => [
                     [
-                        'description'=>'Pembayaran UKT',
-                        'unitPrice' =>  $pembayaran->amount,
-                        'qty'=> 1,
-                        'amount'=>  $pembayaran->amount
+                        'description' => 'Pembayaran UKT',
+                        'unitPrice' => $pembayaran->amount,
+                        'qty' => 1,
+                        'amount' => $pembayaran->amount
                     ]
                 ],
                 'attributes' => []
             ];
         });
 
-
-        foreach($data as $datas){
-
+        foreach ($data as $datas) {
             $response = Http::asForm()->post('https://account.makaramas.com/auth/realms/bpi-dev/protocol/openid-connect/token', [
                 'grant_type' => 'password',
                 'client_id' => 'BPI3764',
@@ -101,22 +99,35 @@ class PembayaranController extends Controller
                 'username' => '3764',
                 'password' => '3764',
             ]);
-            
+
             $accessToken = $response['access_token'];
 
             $responseapi = Http::withHeaders([
-                'Authorization' => 'Bearer '. $accessToken,
-                ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $datas);
+                'Authorization' => 'Bearer ' . $accessToken,
+            ])->post('https://billing-bpi-dev.maja.id/api/v2/register', $datas);
 
-                        // Inisialisasi array kosong
-            
-            $save_number = Pembayaran::where('va',$datas['va'])->first();
-            $save_number->invoiceNumber = $responseapi->json('data.number');;
+            $save_number = Pembayaran::where('va', $datas['va'])->first();
+            $save_number->invoiceNumber = $responseapi->json('data.number');
             $save_number->save();
+
+            // Mengirim pesan email
+            $va = $pembayaran->va;
+            $activeDate = $pembayaran->activeDate;
+            $inactiveDate = $pembayaran->inactiveDate;
+
+            $emailData = [
+                'subject' => 'Aktivasi VA Berhasil',
+                'body' => 'Aktivasi VA berhasil dilakukan.',
+                'recipient' => $datas['email'],
+                'va' => $va,
+                'activeDate' => $activeDate,
+                'inactiveDate' => $inactiveDate,
+            ];
+            Mail::to($datas['email'])->send(new SendMail($emailData));
+
         }
 
         return redirect()->back()->with('success', 'Aktivasi VA berhasil dilakukan.');
-
     }
 
     public function updateInvoice(Request $request)
@@ -188,8 +199,6 @@ class PembayaranController extends Controller
             $responseapi = Http::withHeaders([
                 'Authorization' => 'Bearer '. $accessToken,
                 ])->post('https://billing-bpi-dev.maja.id/api/v2/update/' . $datas['number'], $datas);
-
-            dd($responseapi->json());
 
 
             // $method = $request->method();

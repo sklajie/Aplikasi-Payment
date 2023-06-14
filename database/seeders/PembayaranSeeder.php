@@ -76,7 +76,7 @@ class PembayaranSeeder extends Seeder
             'prodi' => 'Teknik Informatika',
             'va' => '2103014',
             'amount' => '4000000',
-            'status' => 'belum_dibayar',
+            'status' => 'va_nonaktif',
             'activeDate' => Carbon::now(),
             'inactiveDate' => Carbon::now(),
             'date' => Carbon::now(),

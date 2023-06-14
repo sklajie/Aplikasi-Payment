@@ -111,6 +111,7 @@ class PembayaranController extends Controller
             $save_number->save();
 
             // Mengirim pesan email
+            $nama = $pembayaran->nama;
             $va = $pembayaran->va;
             $activeDate = $pembayaran->activeDate;
             $inactiveDate = $pembayaran->inactiveDate;
@@ -119,6 +120,7 @@ class PembayaranController extends Controller
                 'subject' => 'Aktivasi VA Berhasil',
                 'body' => 'Aktivasi VA berhasil dilakukan.',
                 'recipient' => $datas['email'],
+                'nama' => $nama,
                 'va' => $va,
                 'activeDate' => $activeDate,
                 'inactiveDate' => $inactiveDate,

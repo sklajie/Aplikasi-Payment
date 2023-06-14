@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Aktivasi VA Berhasil</title>
+    <meta charset="UTF-8">
+    <title>Pembayaran UKT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .logo {
+            max-width: 200px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Selamat, VA Anda telah diaktivasi!</h2>
-    <p>Berikut adalah detail VA Anda:</p>
+    <h2>Pembayaran UKT</h2>
+    <img src="{{ url('') }}assets/img/logo_polindra.png" alt="Logo Polindra" class="logo">
+    <p>Dear Mahasiswa,</p>
+    <p>Dengan Nama : {{ $nama }}</p>
+    <p>Berikut adalah detail pembayaran Anda:</p>
     <ul>
-        <li>Nomor VA: {{ $va }}</li>
-        <li>Tanggal Aktivasi: {{ $activeDate }}</li>
-        <li>Tanggal Nonaktif: {{ $inactiveDate }}</li>
+        <li><strong>Nomor Virtual Account (VA):</strong> {{ $va }}</li>
+        <li><strong>Tanggal Aktif:</strong> {{ $activeDate }}</li>
+        <li><strong>Tanggal Nonaktif:</strong> {{ $inactiveDate }}</li>
     </ul>
+    <p>Mohon lakukan pembayaran sebelum tanggal nonaktif untuk memastikan pembayaran Anda diproses dengan sukses.</p>
+    <p>Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim dukungan kami.</p>
     <p>Terima kasih telah menggunakan layanan kami.</p>
+    <p>Salam kami,</p>
+    <p>Tim Gateway Pembayaran</p>
 </body>
 </html>

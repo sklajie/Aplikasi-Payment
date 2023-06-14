@@ -497,7 +497,7 @@ background: linear-gradient(to right bottom, rgb(212, 212, 212), rgb(157, 157, 1
     </div>
 <br><br><br>
         <div class="alert alert-info">
-            <p>Jika ada yang ingi di konfirmasi silahkan hubungi <a data-tjr-open-modal="contact-info-modal" href="#open-info-dialog-modal">kontak support</a></p>
+            <p>Jika ada yang ingin di konfirmasi silahkan hubungi <a data-tjr-open-modal="contact-info-modal" href="#open-info-dialog-modal">kontak support</a></p>
         </div>
     </div>
 </div>

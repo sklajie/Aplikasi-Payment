@@ -14,6 +14,7 @@ use App\Models\HistoriRespons;
 use App\Models\PembayaranLainnya;
 
 use App\Http\Clients\BsiApiClient;
+use App\Models\HistoriPembayaran;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Http;
@@ -102,19 +103,20 @@ class BpiNotificationController extends Controller
                     $pembayaran->save();
                 }
 
-                // Simpan notifikasi dalam tabel notifications
-                $notification = Notification::create([
-                    'pembayaran_lainnya_id' => $pembayaran->id,
-                    'message' => $data['message'],
-                    'data' => json_encode($request->except(['va', 'message'])),
-                ]);
-
-                DB::commit();
-
                 // Ambil endpoint dari tabel users berdasarkan user_id yang terkait dengan pembayaran
                 $id_user = $pembayaran->user_id;
                 $user = User::find($id_user);
                 $endpoint = $user->endpoint;
+
+                // Simpan notifikasi dalam tabel notifications
+                $notification = Notification::create([
+                    'user_id' => $pembayaran->user_id,
+                    'message' => $data['message'],
+                    'data' => json_encode($request->except(['va', 'message'])),
+                ]);
+                
+
+                DB::commit();
 
                 // Kirim notifikasi ke endpoint
                 // Formatkan data notifikasi sesuai dengan kebutuhan endpoint
@@ -127,8 +129,13 @@ class BpiNotificationController extends Controller
                 $response = http::post($endpoint, $data);
 
                 // Menyimpan data notifikasi ke histori
-                $histori = Histori::create([
-                    'pembayaran_id' => $pembayaranLainnya->id,
+                $histori = HistoriPembayaran::create([
+                    'nama_pembayar' => $data['name'],
+                    'amount' => $data['amount'],
+                    'va' => $data['va'],
+                    'number' => $data['number'],
+                    'tanggal_bayar' => $data['date'],
+                    'pembayaran_id' => $pembayaran->id,
                     'method' => $request->method(),
                     'endpoint' => $request->fullUrl(),
                     'mode' => 'production',

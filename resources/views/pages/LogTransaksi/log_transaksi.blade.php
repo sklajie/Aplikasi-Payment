@@ -184,14 +184,14 @@
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
           list_pembayaran[row.id] = row;
-          return row.pembayaran_id;
+          return row.id;
         }
       },
       {
         "targets": 1,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.nama;
+          return row.name;
         }
       },
       {

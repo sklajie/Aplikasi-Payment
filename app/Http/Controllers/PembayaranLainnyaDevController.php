@@ -29,40 +29,31 @@ class PembayaranLainnyaDevController extends Controller
     	$orderBy = 'histori.name';
         
         switch($request->input('order.0.column')){
-            case "1":
+            case "0":
                 $orderBy = 'pembayaran_lainnya.id';
                 break;
-            case "2":
+            case "1":
                 $orderBy = 'pembayaran_lainnya.name';
                 break;
-            case "3":
+            case "2":
                 $orderBy = 'pembayaran_lainnya.email';
                 break;
-            case "4":
+            case "3":
                 $orderBy = 'pembayaran_lainnya.amount';
                 break;
-            case "5":
+            case "4":
                 $orderBy = 'pembayaran_lainnya.regis_number';
                 break;
-            case "6":
+            case "5":
                 $orderBy = 'pembayaran_lainnya.paid';
                 break;
-            case "7":
+            case "6":
                 $orderBy = 'pembayaran_lainnya.paid_date';
-                break;
-            default:
-                $orderBy = 'pembayaran_lainnya.regis_number';
                 break;
         }
 
             $data = PembayaranLainnya::select([
-                'pembayaran_lainnya.id as pembayaran_id',
-                'pembayaran_lainnya.name as nama',
-                'pembayaran_lainnya.email as email',
-                'pembayaran_lainnya.amount as amount',
-                'pembayaran_lainnya.paid as paid',
-                'pembayaran_lainnya.paid_date as paid_date',
-                'pembayaran_lainnya.regis_number as regis_number',
+                'pembayaran_lainnya.*',
             ])->where('id_user', '=', Auth()->user()->id)->where('debug' , '=', 'sandbox');
 
 
@@ -70,7 +61,7 @@ class PembayaranLainnyaDevController extends Controller
         // search
         if($request->input('search.value')!=null){
             $data = $data->where(function($q)use($request){
-                $q->whereRaw('LOWER(pembayaran_lainnya.nama) like ? ',['%'.strtolower($request->input('search.value')).'%'])
+                $q->whereRaw('LOWER(pembayaran_lainnya.name) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran_lainnya.email) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran_lainnya.regis_number) like ? ',['%'.strtolower($request->input('search.value')).'%'])
                 ->orWhereRaw('LOWER(pembayaran_lainnya.amount) like ? ',['%'.strtolower($request->input('search.value')).'%'])

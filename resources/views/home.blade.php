@@ -198,52 +198,80 @@
 
         let data = {!! json_encode($data) !!};
 
-        // Ambil data semester dari elemen HTML
-        let semesterOptions = {!! json_encode($semesterOptions) !!};
+// Ambil data semester dari elemen HTML
+let semesterOptions = {!! json_encode($semesterOptions) !!};
 
-        // Hitung total jumlah data
-        let totalCount = data.reduce((total, item) => total + item.count, 0);
+// Hitung total jumlah data
+let totalCount = data.reduce((total, item) => total + item.count, 0);
 
-        // Proses data dan konversi ke presentasi
-        let stats = data.map(item => {
-            let percentage = ((item.count / totalCount) * 100).toFixed(2);
-            if (item.status === 'dibayar') {
-                return "Dibayar (" + percentage + "%)";
-            } else {
-                return 'Belum Dibayar (' + percentage + "%)";
-            }
-        });
-        let count = data.map(item => item.count);
+// Proses data dan konversi ke presentasi
+let stats = data.map(item => {
+    let percentage = ((item.count / totalCount) * 100).toFixed(2);
+    if (item.status !== 'dibayar') {
+        return "Belum Dibayar (" + percentage + "%)";
+    } else {
+        return 'Lunas (' + percentage + "%)";
+    }
+});
+let count = data.map(item => item.count);
 
-        // Menggabungkan jumlah data untuk "VA Nonaktif" dan "Menunggu Pembayaran" menjadi "Belum Dibayar"
-        let belumDibayarIndex = stats.findIndex(label => label.includes("Belum Dibayar"));
-        if (belumDibayarIndex !== -1) {
-            let belumDibayarCount = count.filter((_, index) => stats[index].includes("Belum Dibayar"))
-                                        .reduce((total, count) => total + count, 0);
-            stats[belumDibayarIndex] = "Belum Dibayar (" + ((belumDibayarCount / totalCount) * 100).toFixed(2) + "%)";
-            count.splice(belumDibayarIndex, 1, belumDibayarCount);
-        }
+// Menggabungkan jumlah data untuk "Menunggu Pembayaran" dan "VA Nonaktif" menjadi "Belum Dibayar"
+let belumDibayarIndex = stats.findIndex(label => label.includes("Belum Dibayar"));
+if (belumDibayarIndex !== -1) {
+    let belumDibayarCount = count.filter((_, index) => stats[index].includes("Belum Dibayar"))
+                                .reduce((total, count) => total + count, 0);
+    stats[belumDibayarIndex] = "Belum Dibayar (" + ((belumDibayarCount / totalCount) * 100).toFixed(2) + "%)";
+    count.splice(belumDibayarIndex, 1, belumDibayarCount);
+}
 
-        // Buat pie chart
-        let ctxPie = document.getElementById('pieChart').getContext('2d');
-        let pieChart = new Chart(ctxPie, {
-            type: 'pie',
-            data: {
-                labels: stats,
-                datasets: [{
-                    data: count,
-                    backgroundColor: [
-                        '#ffb2b2',
-                        'rgb(179, 255, 171)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+let filteredStats = ["Lunas", "Belum Dibayar"];
+// let filteredCount = [0, 0];
+
+let filteredCount = [0, 0];
+
+data.forEach(item => {
+    let percentage = ((item.count / totalCount) * 100).toFixed(2);
+    if (item.status !== 'dibayar') {
+        filteredCount[1] += item.count; // Jumlah "Belum Dibayar"
+    } else {
+        filteredCount[0] += item.count; // Jumlah "Lunas"
+    }
+});
+
+filteredStats = filteredStats.map((label, index) => label + " (" + ((filteredCount[index] / totalCount) * 100).toFixed(2) + "%)");
+// Filter stats dan count hanya untuk "Belum Dibayar" dan "Dibayar"
+// let filteredStats = data.map(item => {
+//     let percentage = ((item.count / totalCount) * 100).toFixed(2);
+//     if (item.status !== 'dibayar') {
+//         return "Belum Dibayar (" + percentage + "%)";
+//     } else {
+//         return 'Lunas (' + percentage + "%)";
+//     }
+// });
+
+
+
+// Buat pie chart
+let ctxPie = document.getElementById('pieChart').getContext('2d');
+let pieChart = new Chart(ctxPie, {
+    type: 'pie',
+    data: {
+        labels: filteredStats,
+        datasets: [{
+            data: filteredCount,
+            backgroundColor: [
+                'rgb(179, 255, 171)',
+                '#ffb2b2'
+                
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
 
 
 
@@ -372,7 +400,9 @@ let ctxDoughnut = document.getElementById('doughnut').getContext('2d');
                 datasets: [{
                     data: countlunas,
                     backgroundColor: [
-                        '#ffb2b2',
+                        
+                    'rgb(179, 255, 171)',
+                        
                     ],
                     borderWidth: 1,
 
@@ -402,7 +432,7 @@ let ctxDoughnut = document.getElementById('doughnut').getContext('2d');
                 datasets: [{
                     data: totalcountbelumlunas,
                     backgroundColor: [
-                        'rgb(179, 255, 171)',
+                        '#ffb2b2',
                     ],
                     borderWidth: 1,
 

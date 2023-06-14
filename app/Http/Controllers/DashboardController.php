@@ -36,7 +36,8 @@ class DashboardController extends Controller
         if ($semester) {
             $query->where('semester', $semester);
         }
-        $data = $query->select('status', DB::raw("COUNT(status) as count"))->groupBy('status' )->get();
+        $data = $query->select('status', DB::raw("COUNT(status) as count"))->groupBy('status'
+         )->get();
         $dataSemester = Pembayaran::distinct('semester')->pluck('semester');
         
         return view('home', compact('title', 'data', 'tahunAkademik', 'tahunAkademikOptions', 'semester', 'semesterOptions','user','userall','lunas','lunasall','belumlunas','belumlunasall','pembayaran','pembayaranall'));

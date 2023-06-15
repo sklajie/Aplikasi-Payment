@@ -266,7 +266,7 @@
 						</li>
 
 						<li class="nav-item {{ $title === "Histori Pembayaran" ? 'active' : '' }}">
-							<a href="/pembayaran/histori_pembayaran">
+							<a href="/histori_pembayaran">
 								<i class="fas fa-file-invoice-dollar"></i>
 								<p>Histori Pembayaran</p>
 							</a>

@@ -24,7 +24,7 @@ class BpiNotificationController extends Controller
 {
     public function receiveBpiNotification(Request $request)
     {
-        // try {
+        try {
             $data = $request->validate([
                 'va' => 'required',
                 'date' => 'required',
@@ -129,8 +129,6 @@ class BpiNotificationController extends Controller
                     'data' => json_decode($notification->data, true),
                 ];
 
-                $data = [$data];
-
                 // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
                 $response = http::post($endpoint, $data);
                 
@@ -159,27 +157,28 @@ class BpiNotificationController extends Controller
                     'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
                 ]);
             }
-        // // } catch (\Exception $e) {
-        //     DB::rollback();
+        } catch (\Exception $e) {
+            
+            DB::rollback();
 
-        //     // Menyimpan data notifikasi ke histori
-        //     $histori = Histori::create([
-        //         'pembayaran_lainnya_id' => $pembayaranLainnya->id,
-        //         'method' => $request->method(),
-        //         'endpoint' => $request->fullUrl(),
-        //         'mode' => 'production',
-        //         'request_body' => json_encode($data),
-        //         'respons' => $response->body(),
-        //         'user_id' => $userId,
-        //     ]);
+            // Menyimpan data notifikasi ke histori
+            $histori = Histori::create([
+                'pembayaran_lainnya_id' => $pembayaranLainnya->id,
+                'method' => $request->method(),
+                'endpoint' => $request->fullUrl(),
+                'mode' => 'production',
+                'request_body' => json_encode($data),
+                'respons' => $response->body(),
+                'user_id' => $userId,
+            ]);
 
-        //     return response()->json([
-        //         'timestamp' => date('m/d/Y, h:i:s A'),
-        //         'success' => false,
-        //         'message' => 'Terjadi kesalahan saat memproses notifikasi.',
-        //         'error' => $e->getMessage(),
-        //     ], 500);
-        // }
+            return response()->json([
+                'timestamp' => date('m/d/Y, h:i:s A'),
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses notifikasi.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
 }

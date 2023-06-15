@@ -492,6 +492,7 @@ class TransaksiPmbControllerDev extends Controller
                     'success' => $response->getStatusCode() != 200 ? false : true,
                     'message' => $response->getStatusCode() != 200 ? 'terjadi kesalahan yang tidak diketahui' : 'notifikasi diterima dan proses kirim berhasil.',
                 ]);
+                
             }elseif($pembayaran) {
 
                 if($data['message'] == 'Payment Sukses'){

@@ -110,6 +110,7 @@ class BpiNotificationController extends Controller
                 $user = User::find($id_user);
                 $endpoint = $user->endpoint;
 
+
                 // Simpan notifikasi dalam tabel notifications
                 $notification = Notification::create([
                     'user_id' => $pembayaran->user_id,
@@ -127,6 +128,8 @@ class BpiNotificationController extends Controller
                     'message' => $notification->message,
                     'data' => json_decode($notification->data, true),
                 ];
+
+                $data = [$data];
 
                 // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
                 $response = http::post($endpoint, $data);

@@ -66,25 +66,25 @@ class PembayaranController extends Controller
             $pembayaran->save();
         }
 
-        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->join('item_pembayaran', 'item_pembayaran.id', '=', 'pembayaran.item_pembayaran_id')->get();
+        $pembayarans = Pembayaran::whereIn('pembayaran.id', $ids)->get();
 
         $data = $pembayarans->map(function ($pembayaran) {
             return [
                 'date' => date("Y-m-d"),
-                'amount' => $pembayaran->amount,
+                'amount' => (int)$pembayaran->amount,
                 'name' => $pembayaran->nama,
                 'email' => $pembayaran->email,
                 'address' => $pembayaran->address,
-                'va' => (int)$pembayaran->va,
+                'va' => $pembayaran->va,
                 'phone' => $pembayaran->phone,
                 'activeDate' => $pembayaran->activeDate,
                 'inactiveDate' => $pembayaran->inactiveDate,
                 'items' => [
                     [
                         'description' => 'Pembayaran UKT',
-                        'unitPrice' => $pembayaran->amount,
+                        'unitPrice' => (int)$pembayaran->amount,
                         'qty' => 1,
-                        'amount' => $pembayaran->amount
+                        'amount' => (int)$pembayaran->amount
                     ]
                 ],
                 'attributes' => []
@@ -111,19 +111,20 @@ class PembayaranController extends Controller
             $save_number->save();
 
             // Mengirim pesan email
-            $nama = $pembayaran->nama;
-            $va = $pembayaran->va;
-            $activeDate = $pembayaran->activeDate;
-            $inactiveDate = $pembayaran->inactiveDate;
+            $semester = substr($datas['va'], 7);
+            $nim = substr($datas['va'], 0, 7);
 
             $emailData = [
                 'subject' => 'Aktivasi VA Berhasil',
                 'body' => 'Aktivasi VA berhasil dilakukan.',
                 'recipient' => $datas['email'],
-                'nama' => $nama,
-                'va' => $va,
-                'activeDate' => $activeDate,
-                'inactiveDate' => $inactiveDate,
+                'nim' => $nim,
+                'nama' => $datas['name'],
+                'semester' => $semester,
+                'amount' => $datas['amount'],
+                'va' => $datas['va'],
+                'activeDate' => $datas['activeDate'],
+                'inactiveDate' => $datas['inactiveDate'],
             ];
             Mail::to($datas['email'])->send(new SendMail($emailData));
 

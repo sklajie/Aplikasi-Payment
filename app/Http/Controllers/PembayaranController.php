@@ -618,7 +618,8 @@ class PembayaranController extends Controller
                 $no_va =  $data_invoice['mahasiswa_nim'].$semester;
                 
 
-                $existingDataUkt = Pembayaran::where('va', $no_va)->first();
+                // $existingDataUkt = Pembayaran::where('va', $no_va)->first();
+                $existingDataUkt = Pembayaran::where('nim', $data_invoice['mahasiswa_nim'])->where('semester', $semester)->first();
     
                 if (!$existingDataUkt) {
                     // Jika data tidak ada dalam database, simpan data baru

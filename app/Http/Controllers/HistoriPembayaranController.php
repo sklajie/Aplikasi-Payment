@@ -10,7 +10,7 @@ class HistoriPembayaranController extends Controller
     public function index()
     {
         $title = 'Histori Pembayaran';
-        $data = HistoriPembayaran::all();
+        $data = HistoriPembayaran::orderByDesc('tanggal_bayar')->get();
         return view('pages.historiPembayaran', compact('data','title'));
 
     }

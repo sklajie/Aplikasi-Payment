@@ -51,7 +51,7 @@
 													<th>VA</th>
 													<th>Nominal Tagihan</th>
 													<th>Np Tagihan</th>
-													<th>Action</th>
+													<th>tanggal Bayar</th>
 												</tr>
 											</thead>
 											
@@ -59,13 +59,13 @@
 												@foreach ($data as $item)	
 												<tr>
 													<td>{{$loop->iteration}}</td>
-													<td>{{$item->nama}}</td>
+													<td>{{$item->nama_pembayar}}</td>
 													<td>{{$item->va}}</td>
 													<td>{{$item->amount}}</td>
 													<td>{{$item->number}}</td>
-													<td>
+													<td>{{ $item->tanggal_bayar }}
 					
-														<form action="{{ route('users.destroy', $item->id )}}" method="POST">
+														{{-- <form action="{{ route('users.destroy', $item->id )}}" method="POST">
 															@csrf
 															@method('delete')
 													
@@ -98,7 +98,7 @@
 																</div>
 															</div>
 														
-														</form>
+														</form> --}}
 													</td>
 												</tr>
 												@endforeach

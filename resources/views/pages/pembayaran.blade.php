@@ -544,14 +544,14 @@
         "targets": 14,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.date;
+          return row.activeDate;
         }
       },
       {
         "targets": 15,
         "class":"text-nowrap",
         "render": function(data, type, row, meta){
-          return row.date;
+          return row.inactiveDate;
         }
       },
       {

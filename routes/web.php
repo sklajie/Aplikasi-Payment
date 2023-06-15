@@ -88,3 +88,7 @@ Route::get('/log_transaksi_dev', 'App\Http\Controllers\PembayaranLainnyaDevContr
 Route::any('/log_transaksi_dev/data', 'App\Http\Controllers\PembayaranLainnyaDevController@data');
 Route::any('/log_transaksi_dev/detail/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@showDetail');
 Route::any('/log_transaksi_dev/kirim_ulang_notif/{pembayaran_id}', 'App\Http\Controllers\PembayaranLainnyaDevController@kirimulang');
+
+//Histori Pembayaran
+Route::resource('/histori_pembayaran', 'App\Http\Controllers\HistoriPembayaranController')->middleware(['auth', 'adminkeuangan']);
+

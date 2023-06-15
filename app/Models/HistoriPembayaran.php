@@ -10,7 +10,7 @@ class HistoriPembayaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'histori';
+    protected $table = 'histori_pembayaran';
 
     protected $guarded = [];
      /**

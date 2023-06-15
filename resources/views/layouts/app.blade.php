@@ -234,13 +234,6 @@
 							</a>
 						</li>
 
-						<li class="nav-item {{ $title === "Histori Pembayaran" ? 'active' : '' }}">
-							<a href="/histori_pembayaran">
-								<i class="fas fa-file-invoice-dollar"></i>
-								<p>Histori Pembayaran</p>
-							</a>
-						</li>
-
 						<li class="nav-item">
 							<div class="nav-item">
 							<a data-toggle="collapse" href="#sidebarLayouts">
@@ -269,6 +262,13 @@
 							<a href="/pembayaran_lainnya">
 								<i class="far fa-list-alt"></i>
 								<p>Pembayaran Lainnya</p>
+							</a>
+						</li>
+
+						<li class="nav-item {{ $title === "Histori Pembayaran" ? 'active' : '' }}">
+							<a href="/pembayaran/histori_pembayaran">
+								<i class="fas fa-file-invoice-dollar"></i>
+								<p>Histori Pembayaran</p>
 							</a>
 						</li>
 
@@ -324,12 +324,6 @@
 						</a>
 					</li>
 
-					<li class="nav-item">
-						<a href="/pembayaran/histori_pembayaran">
-							<i class="fas fa-file-invoice-dollar"></i>
-							<p>Histori Pembayaran</p>
-						</a>
-					</li>
 
 					<li class="nav-item">
 						<div class="nav-item">
@@ -362,6 +356,13 @@
 						</a>
 					</li>
 
+					<li class="nav-item {{ $title === "Histori Pembayaran" ? 'active' : '' }}">
+						<a href="/pembayaran/histori_pembayaran">
+							<i class="fas fa-file-invoice-dollar"></i>
+							<p>Histori Pembayaran</p>
+						</a>
+					</li>
+
 					<li class="nav-item">
 						<a href="/kategori_pembayaran">
 							<i class="fas fa-layer-group"></i>
@@ -370,105 +371,6 @@
 					</li>
 				</ul>
 
-
-				@elseif ( Auth::user()->level['nama_level'] == 'Admin Apps')
-
-				<div class="user">
-					<div class="avatar-sm float-left mr-2 mt-1">
-						<center><i class="fas fa-user avatar-img rounded-circle" style="font-size: 23px; padding-top:8px; border:1px solid;"></i></center>
-					</div>
-					<div class="info">
-						<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-							<span>
-								{{ Auth::user()->name }}
-								<span class="user-level">{{ Auth::user()->level['nama_level'] }}</span>
-								
-							</span>
-						</a>
-						<div class="clearfix"></div>
-
-						<div class="collapse in" id="collapseExample">
-							<ul class="nav">
-								<li>
-									<a href="/profil">
-										<span class="link-collapse">My Profile</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>	
-				
-				<center>
-				<ul class="nav nav-tabs ro-doc-tabs">
-					<li><a style=" width:200px;" class="btn btn-outline-secondary active" href="#">Production</a></li>
-					<br>
-					<li><a style=" width:200px;" class="btn btn-outline-secondary " href="/api/sandbox">Sandbox</a></li>
-					<br>
-				</ul>
-				</center>
-				
-			
-				<div class="tab-content">
-					<div class="tab-pane active" id="production">
-						<ul class="nav nav-primary ">
-
-							<li class="nav-section">
-								<span class="sidebar-mini-icon">
-									<i class="fa fa-ellipsis-h"></i>
-								</span>
-								<h4 class="text-section">Navigation</h4>
-							</li>
-	
-							<li class="nav-item">
-								<a href="/api/production">
-									<i class="fas fa-key"></i>
-									<p>API Keys</p>
-								</a>
-							</li>
-	
-							<li class="nav-item">
-								<a href="/dokumentasi/production">
-									<i class="fas fa-swatchbook"></i>
-									<p>Dokumentasi</p>
-								</a>
-							</li>
-
-							<li class="nav-item {{ $title === "Log Transaksi" ? 'active' : '' }}">
-								<a href="/log_transaksi">
-									<i class="far fa-list-alt"></i>
-									<p>Log Transaksi</p>
-								</a>
-							</li>
-							
-						</ul>
-					</div>
-					<div class="tab-pane fade" id="sandbox">
-						<ul class="nav nav-primary">
-
-							<li class="nav-section">
-								<span class="sidebar-mini-icon">
-									<i class="fa fa-ellipsis-h"></i>
-								</span>
-								<h4 class="text-section">Navigation</h4>
-							</li>
-	
-							<li class="nav-item">
-								<a href="/api/sandbox">
-									<i class="fas fa-key"></i>
-									<p>API Keys</p>
-								</a>
-							</li>
-	
-							<li class="nav-item">
-								<a href="/dokumentasi/sandbox">
-									<i class="fas fa-swatchbook"></i>
-									<p>Dokumentasi</p>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
 
 				@endif
 						

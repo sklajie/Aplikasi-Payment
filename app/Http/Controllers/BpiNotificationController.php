@@ -49,12 +49,14 @@ class BpiNotificationController extends Controller
                     $pembayaranLainnya->save();
                 }
 
+
                 // Simpan notifikasi dalam tabel notifications
                 $notification = Notification::create([
                     'pembayaran_lainnya_id' => $pembayaranLainnya->id,
                     'message' => $data['message'],
                     'data' => json_encode($request->except(['va', 'message'])),
                 ]);
+
 
                 DB::commit();
 
@@ -71,9 +73,9 @@ class BpiNotificationController extends Controller
                     'message' => $notification->message,
                     'data' => json_decode($notification->data, true),
                 ];
-
+                
                 // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-                $response = http::post($endpoint, $data);
+                $response = http::withoutVerifying()->withOptions(["verify"=>false])->post($endpoint, $data);
 
                 // Menyimpan data notifikasi ke histori
                 $histori = Histori::create([
@@ -130,7 +132,7 @@ class BpiNotificationController extends Controller
                 ];
 
                 // Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-                $response = http::post($endpoint, $data);
+                $response = http::withoutVerifying()->withOptions(["verify"=>false])->post($endpoint, $data);
                 
                 // Menyimpan data notifikasi ke histori
                 $histori = HistoriPembayaran::create([

@@ -31,7 +31,7 @@ Route::prefix('v1/dev')->group(function () {
     Route::put('/pembayaran_lainnya/{invoice_number}', [TransaksiPmbControllerDev::class, 'update']);
     Route::get('/DataTransactions', [PembayaranLainnyaDevController::class, 'DataTransaction']);
     Route::get('/DataDetailTransactions', [PembayaranLainnyaDevController::class, 'DataDetailTransaction']);
-    Route::post('/notification', [BpiNotificationController::class, 'receiveBpiNotification']);
+    Route::post('/notification', [TransaksiPmbControllerDevr::class, 'receiveBpiNotification']);
 });
 
 //test

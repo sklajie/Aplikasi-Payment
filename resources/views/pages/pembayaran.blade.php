@@ -46,8 +46,8 @@
           {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
 
           <a class="btn btn-default" style="margin-bottom: 1rem;" href="{{ url('') }}/cek_store">Perbarui Data Siakad</a>
-          <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create-tagihan" id="button-update-va" disabled>Buat Tagihan</button>
-          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import" disabled>Import Data Excel</button>
+          <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create-tagihan" id="button-update-va">Buat Tagihan</button>
+          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
           <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}

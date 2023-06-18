@@ -551,13 +551,14 @@ class PembayaranController extends Controller
         $prodi = $request->prodi;
 
         $parameterMahasiswa = [
-            'key' => 'ac43ce6a-8268-4887-aa50-2435d27de055',
+            'key' => '9996446f-ade6-410b-99d7-a593e9e51b23',
             'debug' => 'false',
             'datatable' => 'false',
             'prodi' => $prodi
+
         ];
 
-        $responsemhs = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
+        $responsemhs = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://dev-api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
 
         if ($responsemhs->successful()) {
 
@@ -569,7 +570,7 @@ class PembayaranController extends Controller
 
         foreach($data_mahasiswa as $items){
                     // Periksa apakah data sudah ada dalam database
-                $semester = substr($items['semester_label'], 9 );
+                $semester = substr($items['semester_kode'], 1 );
                 $existingData = Mahasiswa::where('nim_mahasiswa', $items['mahasiswa_nim'])->first();
     
                 if (!$existingData) {
@@ -594,22 +595,21 @@ class PembayaranController extends Controller
 
         foreach ($dataMHS as $data) {
 
-
             $parameterukt = [
-                'key' => 'ac43ce6a-8268-4887-aa50-2435d27de055',
+                'key' => '9996446f-ade6-410b-99d7-a593e9e51b23',
                 'debug' => 'false',
                 'datatable' => 'false',
-                'nim' => $data->nim_mahasiswa
+                'nim' => $data->nim_mahasiswa,
             ];
 
-            $responseUKT = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa/ukt',$parameterukt);
+            $responseUKT = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://dev-api-gateway.polindra.ac.id/api/mahasiswa/ukt',$parameterukt);
 
             $data_ukt= $responseUKT['result']['data'];
 
-            foreach($data_ukt as $data_invoice){
-                
 
-                $semester = substr($data_invoice['semester_label'], 9 );
+            foreach($data_ukt as $data_invoice){
+
+                $semester = substr($data_invoice['semester_kode'], 1 );
                 $tahun_akademik = substr($data_invoice['tahun_akademik'], 6 );
 
                 $tahunsekarang = date('Y');
@@ -617,10 +617,9 @@ class PembayaranController extends Controller
                 $status_value = ($data_invoice['bayar_status'] == "lunas") ? 'dibayar' : 'va_nonaktif';
 
                 $no_va =  $data_invoice['mahasiswa_nim'].$semester;
-                
 
-                // $existingDataUkt = Pembayaran::where('va', $no_va)->first();
-                $existingDataUkt = Pembayaran::where('nim', $data_invoice['mahasiswa_nim'])->where('semester', $semester)->first();
+                $existingDataUkt = Pembayaran::where('va', $no_va)->first();
+                // $existingDataUkt = Pembayaran::where('nim', $data_invoice['mahasiswa_nim'])->where('semester', $semester)->first();
     
                 if (!$existingDataUkt) {
                     // Jika data tidak ada dalam database, simpan data baru
@@ -636,14 +635,10 @@ class PembayaranController extends Controller
                         'va' => $no_va,
                         'prodi' => $data->prodi_mahasiswa,
                         'status' => $status_value,
-                        'amount' => $data_invoice['bayar_nilai'],
+                        'amount' => $data_invoice['total_biaya'],
                         'date' => $data_invoice['bayar_tanggal'],
-                        'user_id' => '',
-
+                        'user_id' => 'a2dc01ce-531f-4766-81e1-211f460d4815',
                     ]);
-
-                }else{
-                    continue;
                 }
             }
 

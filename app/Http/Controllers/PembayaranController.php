@@ -29,18 +29,18 @@ class PembayaranController extends Controller
     public function index(Request $request)
     {
         $title = 'Data Pembayaran - Belum Dibayar';
-        $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
-        $dataprodi = Pembayaran::distinct()->pluck('prodi');
-        $datasemester = Pembayaran::distinct()->pluck('semester');
+        $datatahunakademik = Pembayaran::orderBy('tahun_akademik')->distinct()->pluck('tahun_akademik');
+        $dataprodi = Pembayaran::orderBy('prodi')->distinct()->pluck('prodi');
+        $datasemester = Pembayaran::orderBy('semester')->distinct()->pluck('semester');
         return view('pages.pembayaran' , compact('title','datatahunakademik','dataprodi','datasemester'));
     }
 
      public function indexDIbayar(Request $request)
     {
         $title = 'Data Pembayaran - Dibayar';
-        $datatahunakademik = Pembayaran::distinct()->pluck('tahun_akademik');
-        $dataprodi = Pembayaran::distinct()->pluck('prodi');
-        $datasemester = Pembayaran::distinct()->pluck('semester');
+        $datatahunakademik = Pembayaran::orderBy('tahun_akademik')->distinct()->pluck('tahun_akademik');
+        $dataprodi = Pembayaran::orderBy('prodi')->distinct()->pluck('prodi');
+        $datasemester = Pembayaran::orderBy('semester')->distinct()->pluck('semester');
         return view('pages.pembayaran_dibayar' , compact('title','datatahunakademik','dataprodi','datasemester'));
     }
 
@@ -464,9 +464,9 @@ class PembayaranController extends Controller
 
         //filter berdasarkan status
         if($request->input('status')!=null){
-            if($request->input('status')== 1){
+            if($request->input('status')== 'va_nonaktif'){
                 $data = $data->where('status', $request->status);
-            }else if($request->input('status')== 0){
+            }else if($request->input('status')== 'menunggu_pembayaran'){
                 $data = $data->where('status', $request->status);
             }
         }
@@ -548,11 +548,13 @@ class PembayaranController extends Controller
 
     public function StoreDataPembayaran(Request $request)
     {
+        $prodi = $request->prodi;
+
         $parameterMahasiswa = [
             'key' => 'ac43ce6a-8268-4887-aa50-2435d27de055',
             'debug' => 'false',
             'datatable' => 'false',
-            'per_page' => 30
+            'prodi' => $prodi
         ];
 
         $responsemhs = Http::post('http://api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
@@ -576,7 +578,7 @@ class PembayaranController extends Controller
                         'nama_mahasiswa' => $items['mahasiswa_nama'],
                         'nim_mahasiswa' => $items['mahasiswa_nim'],
                         'semester_mahasiswa' => $semester,
-                        'email_mahasiswa' => $items['user_mail'],
+                        'email_mahasiwa' => $items['user_mail'],
                         'address_mahasiswa' => $items['mahasiswa_alamat'],
                         'phone_mahasiswa' => $items['mahasiswa_handphone'],
                         'tahun_akademik_mahasiswa' => $tahunakademik,
@@ -588,11 +590,10 @@ class PembayaranController extends Controller
             }
         }
 
-        $dataMHS = Mahasiswa::all();
+        $dataMHS = Mahasiswa::where('prodi', $prodi);
 
         foreach ($dataMHS as $data) {
 
-            // echo $data->nim_mahasiswa;
 
             $parameterukt = [
                 'key' => 'ac43ce6a-8268-4887-aa50-2435d27de055',
@@ -628,7 +629,7 @@ class PembayaranController extends Controller
                         'nama' => $data->nama_mahasiswa,
                         'nim' => $data->nim_mahasiswa,
                         'semester' => $semester,
-                        'email' => $data->email_mahasiswa,
+                        'email' => $data->email_mahasiwa,
                         'address' => $data->address_mahasiswa,
                         'phone' => $data->phone_mahasiswa,
                         'tahun_akademik' => $tahun_akademik,

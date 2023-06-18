@@ -172,8 +172,8 @@
                   <label>Status</label>
                   <select id="filter-status" class="form-control filter">
                     <option value="">semua</option>
-                    <option value="1">Lunas</option>
-                    <option value="0">Belum lunas</option>
+                    <option value="va_nonaktif">VA Nonaktif</option>
+                    <option value="menunggu_pembayaran">Menunggu Pembayaran</option>
                   </select>
                 </div>
               </div>
@@ -280,6 +280,37 @@
       </form>
     </div>
   </div>
+
+  <div class="modal fade" id="modal-update-data-siakad">
+    <div class="modal-dialog modal-lg">
+      <form method="post" id="form-update-data-siakad" action="{{ url('') }}/pembayaran/update_invoice" enctype="multipart/form-data" class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Perbarui Data Siakad</h4>
+          <p>Pilih prodi yang datanya akan diupdate</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{csrf_field()}}
+          <div class="row">
+            <div class="col-md-12">
+              <label>Pilih Prodi <small class="text-danger">*</small></label>
+              <select name="prodi" id="prodi" class="form-control">
+                <option value="">D3 Teknik Informatika</option>
+                <option value="">D3 Teknik Mesin</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogUpdate()">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
   <div class="modal fade" id="modal-create-tagihan">
     <div class="modal-dialog modal-lg">
@@ -868,6 +899,23 @@
     }
   });
   }
+
+  function showConfirmDialogUpdateDataSiakad() {
+
+Swal.fire({
+  title: 'Confirm',
+  text: "Apakah anda yakin ingin perbarui data",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Update'
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#form-update-data-siakad").submit()
+  }
+});
+}
 
 
 </script>

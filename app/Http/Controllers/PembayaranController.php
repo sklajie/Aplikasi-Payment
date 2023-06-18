@@ -550,6 +550,8 @@ class PembayaranController extends Controller
     {
         $prodi = $request->prodi;
 
+        // dd($prodi);
+
         $parameterMahasiswa = [
             'key' => '9996446f-ade6-410b-99d7-a593e9e51b23',
             'debug' => 'false',
@@ -559,6 +561,8 @@ class PembayaranController extends Controller
         ];
 
         $responsemhs = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://dev-api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
+
+        dd($responsemhs->json());
 
         if ($responsemhs->successful()) {
 
@@ -570,7 +574,7 @@ class PembayaranController extends Controller
 
         foreach($data_mahasiswa as $items){
                     // Periksa apakah data sudah ada dalam database
-                $semester = substr($items['semester_kode'], 1 );
+                $semester = substr($items['semester_kode'], 9 );
                 $existingData = Mahasiswa::where('nim_mahasiswa', $items['mahasiswa_nim'])->first();
     
                 if (!$existingData) {
@@ -610,7 +614,7 @@ class PembayaranController extends Controller
             foreach($data_ukt as $data_invoice){
 
                 $semester = substr($data_invoice['semester_kode'], 1 );
-                $tahun_akademik = substr($data_invoice['tahun_akademik'], 6 );
+                $tahun_akademik_ukt = substr($data_invoice['tahun_akademik'], 6 );
 
                 $tahunsekarang = date('Y');
 
@@ -631,7 +635,7 @@ class PembayaranController extends Controller
                         'email' => $data->email_mahasiwa,
                         'address' => $data->address_mahasiswa,
                         'phone' => $data->phone_mahasiswa,
-                        'tahun_akademik' => $tahun_akademik,
+                        'tahun_akademik' => $tahun_akademik_ukt,
                         'va' => $no_va,
                         'prodi' => $data->prodi_mahasiswa,
                         'status' => $status_value,

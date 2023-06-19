@@ -297,9 +297,9 @@
             <div class="col-md-12">
               <label>Pilih Prodi <small class="text-danger">*</small></label>
               <select name="prodi" id="prodi" class="form-control">
-                @foreach ($data_prodi_api as $item)
+                {{-- @foreach ($data_prodi_api as $item)
                     
-                @endforeach
+                @endforeach --}}
                 <option value="">Pilih Prodi</option>
                 <option value="D3 Teknik Informatika">D3 Teknik Informatika</option>
                 <option value="D3 Teknik Mesin">D3 Teknik Mesin</option>

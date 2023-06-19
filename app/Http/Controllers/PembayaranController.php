@@ -548,7 +548,7 @@ class PembayaranController extends Controller
 
     public function StoreDataPembayaran(Request $request)
     {
-        $prodi = $request->prodi;
+        // $prodi = $request->prodi;
 
         // dd($prodi);
 
@@ -556,13 +556,13 @@ class PembayaranController extends Controller
             'key' => '9996446f-ade6-410b-99d7-a593e9e51b23',
             'debug' => 'false',
             'datatable' => 'false',
-            'prodi' => $prodi
+            'prodi' => 'D3 Keperawatan'
 
         ];
 
         $responsemhs = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://dev-api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
 
-        dd($responsemhs->json());
+        // dd($responsemhs->json());
 
         if ($responsemhs->successful()) {
 
@@ -574,7 +574,7 @@ class PembayaranController extends Controller
 
         foreach($data_mahasiswa as $items){
                     // Periksa apakah data sudah ada dalam database
-                $semester = substr($items['semester_kode'], 9 );
+                $semester = substr($items['semester_label'], 9 );
                 $existingData = Mahasiswa::where('nim_mahasiswa', $items['mahasiswa_nim'])->first();
     
                 if (!$existingData) {
@@ -595,7 +595,7 @@ class PembayaranController extends Controller
             }
         }
 
-        $dataMHS = Mahasiswa::where('prodi', $prodi);
+        $dataMHS = Mahasiswa::where('prodi_mahasiswa', 'D3 Keperawatan')->get();
 
         foreach ($dataMHS as $data) {
 
@@ -610,6 +610,8 @@ class PembayaranController extends Controller
 
             $data_ukt= $responseUKT['result']['data'];
 
+            // dd($data_ukt);
+
 
             foreach($data_ukt as $data_invoice){
 
@@ -622,8 +624,8 @@ class PembayaranController extends Controller
 
                 $no_va =  $data_invoice['mahasiswa_nim'].$semester;
 
-                $existingDataUkt = Pembayaran::where('va', $no_va)->first();
-                // $existingDataUkt = Pembayaran::where('nim', $data_invoice['mahasiswa_nim'])->where('semester', $semester)->first();
+                // $existingDataUkt = Pembayaran::where('va', $no_va)->first();
+                $existingDataUkt = Pembayaran::where('nim', $data_invoice['mahasiswa_nim'])->where('semester', $semester)->first();
     
                 if (!$existingDataUkt) {
                     // Jika data tidak ada dalam database, simpan data baru

@@ -45,7 +45,7 @@
         <div class="col-md-12">
           {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
 
-          <a class="btn btn-default" style="margin-bottom: 1rem;" href="{{ url('') }}/cek_store">Perbarui Data Siakad</a>
+          <button type="button" class="btn btn-default" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-update-data-siakad">Perbarui Data Siakad</button>
           <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create-tagihan" id="button-update-va">Buat Tagihan</button>
           <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
           <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
@@ -172,8 +172,8 @@
                   <label>Status</label>
                   <select id="filter-status" class="form-control filter">
                     <option value="">semua</option>
-                    <option value="1">Lunas</option>
-                    <option value="0">Belum lunas</option>
+                    <option value="va_nonaktif">VA Nonaktif</option>
+                    <option value="menunggu_pembayaran">Menunggu Pembayaran</option>
                   </select>
                 </div>
               </div>
@@ -280,6 +280,41 @@
       </form>
     </div>
   </div>
+
+  <div class="modal fade" id="modal-update-data-siakad">
+    <div class="modal-dialog modal-lg">
+      <form method="post" id="form-update-data-siakad" action="{{ url('') }}/pembayaran/perbarui_data_siakad" enctype="multipart/form-data" class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Perbaharui Data Siakad</h4>
+          <p>Pilih prodi yang datanya akan diupdate</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{csrf_field()}}
+          <div class="row">
+            <div class="col-md-12">
+              <label>Pilih Prodi <small class="text-danger">*</small></label>
+              <select name="prodi" id="prodi" class="form-control">
+                @foreach ($data_prodi_api as $item)
+                    
+                @endforeach
+                <option value="">Pilih Prodi</option>
+                <option value="D3 Teknik Informatika">D3 Teknik Informatika</option>
+                <option value="D3 Teknik Mesin">D3 Teknik Mesin</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="button" class="btn btn-primary" onclick="showConfirmDialogUpdateDataSiakad()">Perbaharui</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
   <div class="modal fade" id="modal-create-tagihan">
     <div class="modal-dialog modal-lg">
@@ -868,6 +903,23 @@
     }
   });
   }
+
+  function showConfirmDialogUpdateDataSiakad() {
+
+Swal.fire({
+  title: 'Confirm',
+  text: "Apakah anda yakin ingin perbarui data",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Perbarui'
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#form-update-data-siakad").submit()
+  }
+});
+}
 
 
 </script>

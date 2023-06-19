@@ -564,7 +564,7 @@ class PembayaranController extends Controller
 
         if ($responsemhs->successful()) {
 
-            $data_mahasiswa = $responsemhs['result'];
+            $data_mahasiswa = $responsemhs['result']['data'];
 
             $tahunsekarang = date('Y');
             $tahundepan = $tahunsekarang+1;
@@ -602,19 +602,17 @@ class PembayaranController extends Controller
                 'key' => '9996446f-ade6-410b-99d7-a593e9e51b23',
                 'debug' => 'false',
                 'datatable' => 'false',
-                'nim' => $data->nim,
+                'nim' => $data->nim_mahasiswa,
             ];
 
             $responseUKT = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://dev-api-gateway.polindra.ac.id/api/mahasiswa/ukt',$parameterukt);
 
-            $data_ukt= $responseUKT['result'];
-
-            // dd($data_ukt);
+            $data_ukt= $responseUKT['result']['data'];
 
 
             foreach($data_ukt as $data_invoice){
                 
-                $data_mahasiswa = Mahasiswa::where('nim', $data_invoice['mahasiswa_nim']);
+                // $data_mahasiswa = Mahasiswa::where('nim', $data_invoice['mahasiswa_nim']);
 
                 $semester = substr($data_invoice['semester_kode'], 1 );
                 $tahun_akademik_ukt = substr($data_invoice['tahun_akademik'], 6 );
@@ -632,15 +630,15 @@ class PembayaranController extends Controller
                     // Jika data tidak ada dalam database, simpan data baru
                     Pembayaran::create([
                         'kategori_pembayaran' => 'Uang Kuliah Tahunan',
-                        'nama' => $data_mahasiswa->nama_mahasiswa,
-                        'nim' => $data_mahasiswa->nim_mahasiswa,
+                        'nama' => $data->nama_mahasiswa,
+                        'nim' => $data->nim_mahasiswa,
                         'semester' => $semester,
                         'email' => $data->email_mahasiswa,
                         'address' => $data->address_mahasiswa,
                         'phone' => $data->phone_mahasiswa,
                         'tahun_akademik' => $tahun_akademik_ukt,
                         'va' => $no_va,
-                        'prodi' => $data_mahasiswa->prodi_mahasiswa,
+                        'prodi' => $data->prodi_mahasiswa,
                         'status' => $status_value,
                         'amount' => $data_invoice['total_biaya'],
                         'date' => $data_invoice['bayar_tanggal'],

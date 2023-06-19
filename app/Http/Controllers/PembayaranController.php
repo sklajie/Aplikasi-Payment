@@ -555,7 +555,7 @@ class PembayaranController extends Controller
             'key' => '9996446f-ade6-410b-99d7-a593e9e51b23',
             'debug' => 'false',
             'datatable' => 'false',
-            'prodi' => 'D3 Keperawatan'
+            'prodi' => $prodi
         ];
 
         $responsemhs = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://dev-api-gateway.polindra.ac.id/api/mahasiswa',$parameterMahasiswa);
@@ -594,7 +594,7 @@ class PembayaranController extends Controller
 
         }
 
-        $dataMHS = Mahasiswa::where('prodi_mahasiswa', 'D3 Keperawatan')->get();
+        $dataMHS = Mahasiswa::where('prodi_mahasiswa', $prodi)->get();
 
         foreach ($dataMHS as $data) {
 
@@ -645,7 +645,10 @@ class PembayaranController extends Controller
                         'user_id' => '7e62a16e-8db6-4295-a969-af4818da9435',
                     ]);
                 } else {
-                    $existingDataUkt->name->nama_mahasiswa;
+                    $existingDataUkt->nama = $data->nama_mahasiswa;
+                    $existingDataUkt->address = $data->address_mahasiswa;
+                    $existingDataUkt->phone = $data->phone_mahasiswa;
+                    $existingDataUkt->email = $data->email_mahasiwa;
                     $existingDataUkt->save();
                 }
             

@@ -633,7 +633,7 @@ class PembayaranController extends Controller
                         'nama' => $data->nama_mahasiswa,
                         'nim' => $data->nim_mahasiswa,
                         'semester' => $semester,
-                        'email' => $data->email_mahasiswa,
+                        'email' => $data->email_mahasiwa,
                         'address' => $data->address_mahasiswa,
                         'phone' => $data->phone_mahasiswa,
                         'tahun_akademik' => $tahun_akademik_ukt,

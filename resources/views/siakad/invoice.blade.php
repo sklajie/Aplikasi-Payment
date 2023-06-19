@@ -31,7 +31,7 @@
                             <div class="mb-2 copy-text" >
                             {{$invoice->invoiceNumber}}
                             </div>
-                            <div class="mb-2" style="font-size:20px;">Tanggal : 21agustus</div>
+                            <div class="mb-2" style="font-size:20px;">Tanggal : {{$invoice->date}}</div>
                             @if($invoice->status == 'dibayar')
                             <div class="mb-2" style="font-size:15px;">Status :
                                 <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Dibayar</span>

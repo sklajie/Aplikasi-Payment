@@ -300,9 +300,13 @@
                 {{-- @foreach ($data_prodi_api as $item)
                     
                 @endforeach --}}
-                <option value="">Pilih Prodi</option>
+                <option value="" hidden>Pilih Prodi</option>
                 <option value="D3 Teknik Informatika">D3 Teknik Informatika</option>
                 <option value="D3 Teknik Mesin">D3 Teknik Mesin</option>
+                <option value="D3 Teknik Pendingin dan Tata Udara">D3 Teknik Pendingin dan Tata Udara</option>
+                <option value="D3 Keperawatan">D3 Keperawatan</option>
+                <option value="D4 Rekayasa Perangkat Lunak">D4 Rekayasa Perangkat Lunak</option>
+                <option value="D4 Teknik Perancangan Manufaktur">D4 Teknik Perancangan Manufaktur</option>
               </select>
             </div>
           </div>

@@ -548,7 +548,7 @@ class PembayaranController extends Controller
 
     public function StoreDataPembayaran(Request $request)
     {
-        // $prodi = $request->prodi;
+        $prodi = $request->prodi;
 
 
         $parameterMahasiswa = [
@@ -644,6 +644,9 @@ class PembayaranController extends Controller
                         'date' => $data_invoice['bayar_tanggal'],
                         'user_id' => '7e62a16e-8db6-4295-a969-af4818da9435',
                     ]);
+                } else {
+                    $existingDataUkt->name->nama_mahasiswa;
+                    $existingDataUkt->save();
                 }
             
 

@@ -460,7 +460,7 @@ class TransaksiPmbControllerDev extends Controller
             ];
 
             //Kirim data notifikasi ke endpoint menggunakan HTTP POST request
-            $response = http::post($endpoint, $data);
+            $response = http::withoutVerifying()->withOptions(["verify"=>false])->post($endpoint, $data);
 
             $method = $request->method();
             $endpointapi = $request->fullUrl();

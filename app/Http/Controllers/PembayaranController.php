@@ -594,6 +594,8 @@ class PembayaranController extends Controller
 
         }
 
+
+
         $dataMHS = Mahasiswa::where('prodi_mahasiswa', $prodi)->get();
 
         foreach ($dataMHS as $data) {
@@ -666,6 +668,11 @@ class PembayaranController extends Controller
         $invoice = Pembayaran::find($id);
         return view('pdf.invoice', compact('title','invoice'));
 
+    }
+
+    public function RequestCreatePembayaran(){
+        dd('cek cek cek');
+        $response =Http::withoutVerifying()->withOptions(["verify"=>false])->get('https://api-gateway.polindra.ac.id/api/createPembayaran');
     }
 
 }

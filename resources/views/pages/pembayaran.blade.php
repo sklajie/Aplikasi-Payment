@@ -46,8 +46,9 @@
           {{-- <button class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create">Tambah Mahasiswa</button> --}}
 
           <button type="button" class="btn btn-default" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-update-data-siakad">Perbarui Data Siakad</button>
-          <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create-tagihan" id="button-update-va">Buat Tagihan</button>
-          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import">Import Data Excel</button>
+          <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-create-tagihan" disabled>Buat Tagihan</button>
+          <button type="button" class="btn btn-primary" style="margin-bottom: 1rem;" data-toggle="modal" onclick="showConfirmDialogCreateTagihanSiakad()" id="button-create-tagihan">Buat Tagihan Siakad</button>
+          <button class="btn btn-warning" style="margin-bottom: 1rem;" data-toggle="modal" data-target="#modal-import" disabled>Import Data Excel</button>
           <a download class="btn btn-success" style="margin-bottom: 1rem;" href="{{ url('') }}/pembayaran/export">Export Data Excel</a>
           {{-- <button type="button" id="button-nonaktif-all" disabled onclick="nonAktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Non Aktifkan</button>
           <button type="button" id="button-aktif-all" disabled onclick="aktifkanTerpilih()" class="btn btn-danger" style="margin-bottom: 1rem;">Aktifkan</button> --}}
@@ -340,7 +341,7 @@
               <label>Nama <small class="text-danger">*</small></label>
               <input type="text" name="nama" class="form-control" required><br>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12">ff
               <label>Nim <small class="text-danger">*</small></label>
               <input type="text" name="nim" class="form-control"><br>
             </div>
@@ -430,6 +431,12 @@
 
   <form action="{{url('')}}/pembayaran/export_data_terpilih" method="post" id="form-export-terpilih" class="hidden">
     <input type="hidden" name="ids">
+    <button class="hidden" style="display: none;" type="submit">S</button>
+  </form> 
+
+  <form action="{{url('')}}/pembayaran/create_tagihan_siakad" method="post" id="form-create-tagihan-siakad" class="hidden">
+    {{method_field('POST')}}
+          {{csrf_field()}}
     <button class="hidden" style="display: none;" type="submit">S</button>
   </form> 
 
@@ -921,6 +928,22 @@ Swal.fire({
 }).then((result) => {
   if (result.isConfirmed) {
     $("#form-update-data-siakad").submit()
+  }
+});
+}
+  function showConfirmDialogCreateTagihanSiakad() {
+
+Swal.fire({
+  title: 'Confirm',
+  text: "Apakah anda yakin membuat tagihan",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Submit'
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#form-create-tagihan-siakad").submit()
   }
 });
 }

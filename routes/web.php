@@ -46,6 +46,7 @@ Route::post('/pembayaran/aktivasi', [App\Http\Controllers\PembayaranController::
 Route::get('/pembayaran/invoice/{id}', 'App\Http\Controllers\PembayaranController@invoice')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/store', 'App\Http\Controllers\PembayaranController@buatTagihan')->middleware(['auth', 'adminkeuangan']);
 Route::post('/pembayaran/perbarui_data_siakad','App\Http\Controllers\PembayaranController@StoreDataPembayaran')->middleware(['auth', 'adminkeuangan']);
+Route::post('/pembayaran/create_tagihan_siakad','App\Http\Controllers\PembayaranController@RequestCreatePembayaran')->middleware(['auth', 'adminkeuangan']);
 
 //siakad
 // Route::get('/siakad/invoice/{nim}', 'App\Http\Controllers\PaymentController@index');

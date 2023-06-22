@@ -59,7 +59,7 @@
             <div class="card-header">
               <h3 class="card-title">Data Pembayaran</h3>
             </div>
-           <div class="card-body">
+          <div class="card-body">
               <div class="row" id="row-tampilan">
                 <div class="col-md-12">
                   <h4>Pilih Tampilan</h4>
@@ -297,12 +297,16 @@
             <div class="col-md-12">
               <label>Pilih Prodi <small class="text-danger">*</small></label>
               <select name="prodi" id="prodi" class="form-control">
-                @foreach ($data_prodi_api as $item)
+                {{-- @foreach ($data_prodi_api as $item)
                     
-                @endforeach
-                <option value="">Pilih Prodi</option>
+                @endforeach --}}
+                <option value="" hidden>Pilih Prodi</option>
                 <option value="D3 Teknik Informatika">D3 Teknik Informatika</option>
                 <option value="D3 Teknik Mesin">D3 Teknik Mesin</option>
+                <option value="D3 Teknik Pendingin dan Tata Udara">D3 Teknik Pendingin dan Tata Udara</option>
+                <option value="D3 Keperawatan">D3 Keperawatan</option>
+                <option value="D4 Rekayasa Perangkat Lunak">D4 Rekayasa Perangkat Lunak</option>
+                <option value="D4 Teknik Perancangan Manufaktur">D4 Teknik Perancangan Manufaktur</option>
               </select>
             </div>
           </div>

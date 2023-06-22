@@ -28,18 +28,18 @@
                             <div class="mb-2 copy-text" >
                             {{$invoice->invoiceNumber}}
                             </div>
-                            <div class="mb-2" style="font-size:20px;">Tanggal : 21agustus</div>
+                            <div class="mb-2" style="font-size:20px;">Tanggal : {{$invoice->date}}</div>
                             @if($invoice->status == 'dibayar')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Dibayar</span>
+                                <span class="badge bg-success" style="width: 170px; height: 25px; color:white; font-size:13px;">Dibayar</span>
                             </div>
                             @elseif($invoice->status == 'menunggu_pembayaran')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
+                                <span class="badge bg-warning" style="width: 170px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
                             </div>
                             @elseif($invoice->status == 'va_nonaktif')
                             <div class="mb-2" style="font-size:15px;">Status :
-                                <span class="badge bg-dark" style="width: 155px; height: 25px; color:white; font-size:13px;">Belum Aktivasi</span>
+                                <span class="badge bg-dark" style="width: 170px; height: 25px; color:white; font-size:13px;">Belum Aktivasi</span>
                             </div>
                             @endif
 
@@ -87,11 +87,11 @@
                         </table>
                         <div class="mb-2" style="text-align:right; font-size:15px;">
                         @if($invoice->status == 'dibayar')
-                            <span class="badge bg-success" style="width: 100px; height: 25px; color:white; font-size:13px;">Dibayar</span>
+                            <span class="badge bg-success" style="width: 170px; height: 25px; color:white; font-size:13px;">Dibayar</span>
                         @elseif($invoice->status == 'menunggu_pembayaran')
-                            <span class="badge bg-warning" style="width: 155px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
+                            <span class="badge bg-warning" style="width: 170px; height: 25px; color:white; font-size:13px;">Menunggu Pembayaran</span>
                         @elseif($invoice->status == 'va_nonaktif')
-                            <span class="badge bg-dark" style="width: 155px; height: 25px; color:white; font-size:13px;">Belum Aktivasi</span>
+                            <span class="badge bg-dark" style="width: 170px; height: 25px; color:white; font-size:13px;">Belum Aktivasi</span>
                         @endif
                         </div>
                         </div>
